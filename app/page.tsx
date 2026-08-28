@@ -82,7 +82,7 @@ export default function HomePage() {
     // Load latest opportunities (show all, prioritize recent)
     const { data: oppsData, error: oppsError } = await supabase
       .from('opportunities')
-      .select('id, title, description, opportunity_type, application_deadline, location')
+      .select('id, title, description, opportunity_type, application_deadline, location, thumbnail_url')
       .order('created_at', { ascending: false })
       .limit(4)
 
@@ -460,10 +460,19 @@ export default function HomePage() {
                   viewport={{ once: true }}
                   className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-gold-500/50 transition-all group cursor-pointer"
                 >
-                  <div className="p-6 pt-8">
-                    <div className="absolute top-3 right-3 bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
-                      {opp.opportunity_type}
+                  {opp.thumbnail_url && (
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={opp.thumbnail_url}
+                        alt={opp.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div className="absolute top-3 right-3 bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
+                        {opp.opportunity_type}
+                      </div>
                     </div>
+                  )}
+                  <div className="p-6">
                     <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-gold-500 transition-colors">
                       {opp.title}
                     </h3>

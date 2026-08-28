@@ -68,21 +68,19 @@ export default function HomePage() {
   }, [])
 
   const loadContent = async () => {
-    // Load upcoming events
+    // Load recent events (show all, prioritize upcoming)
     const { data: eventsData } = await supabase
       .from('events')
       .select('id, title, description, event_type, start_date, location, image_url')
-      .gte('start_date', new Date().toISOString())
-      .order('start_date', { ascending: true })
+      .order('start_date', { ascending: false })
       .limit(4)
 
     if (eventsData) setEvents(eventsData)
 
-    // Load latest opportunities
+    // Load latest opportunities (show all, prioritize recent)
     const { data: oppsData } = await supabase
       .from('opportunities')
       .select('id, title, description, opportunity_type, deadline, location, image_url')
-      .gte('deadline', new Date().toISOString())
       .order('created_at', { ascending: false })
       .limit(4)
 
@@ -328,14 +326,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Upcoming Events */}
+      {/* Recent Events */}
       {events.length > 0 && (
         <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-12">
               <div>
                 <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
-                  Upcoming Events
+                  Recent Events
                 </h2>
                 <p className="text-xl text-gray-300">
                   Connect with entrepreneurs, investors, and professionals

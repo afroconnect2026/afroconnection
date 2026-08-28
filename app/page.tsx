@@ -71,7 +71,7 @@ export default function HomePage() {
     // Load recent events (show all, prioritize upcoming)
     const { data: eventsData, error: eventsError } = await supabase
       .from('events')
-      .select('id, title, description, event_type, start_date, location, image_url')
+      .select('id, title, description, event_type, start_date, location, cover_image_url')
       .order('start_date', { ascending: false })
       .limit(4)
 
@@ -82,7 +82,7 @@ export default function HomePage() {
     // Load latest opportunities (show all, prioritize recent)
     const { data: oppsData, error: oppsError } = await supabase
       .from('opportunities')
-      .select('id, title, description, opportunity_type, deadline, location, image_url')
+      .select('id, title, description, opportunity_type, application_deadline, location')
       .order('created_at', { ascending: false })
       .limit(4)
 
@@ -366,10 +366,10 @@ export default function HomePage() {
                   viewport={{ once: true }}
                   className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-gold-500/50 transition-all group cursor-pointer"
                 >
-                  {event.image_url && (
+                  {event.cover_image_url && (
                     <div className="relative h-48 overflow-hidden">
                       <img
-                        src={event.image_url}
+                        src={event.cover_image_url}
                         alt={event.title}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                       />
@@ -460,19 +460,10 @@ export default function HomePage() {
                   viewport={{ once: true }}
                   className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-gold-500/50 transition-all group cursor-pointer"
                 >
-                  {opp.image_url && (
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={opp.image_url}
-                        alt={opp.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                      <div className="absolute top-3 right-3 bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
-                        {opp.opportunity_type}
-                      </div>
+                  <div className="p-6 pt-8">
+                    <div className="absolute top-3 right-3 bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
+                      {opp.opportunity_type}
                     </div>
-                  )}
-                  <div className="p-6">
                     <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-gold-500 transition-colors">
                       {opp.title}
                     </h3>
@@ -480,10 +471,10 @@ export default function HomePage() {
                       {opp.description}
                     </p>
                     <div className="space-y-2 text-sm text-gray-300">
-                      {opp.deadline && (
+                      {opp.application_deadline && (
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4 text-primary-500" />
-                          <span>Deadline: {new Date(opp.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                          <span>Deadline: {new Date(opp.application_deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                         </div>
                       )}
                       {opp.location && (

@@ -69,21 +69,25 @@ export default function HomePage() {
 
   const loadContent = async () => {
     // Load recent events (show all, prioritize upcoming)
-    const { data: eventsData } = await supabase
+    const { data: eventsData, error: eventsError } = await supabase
       .from('events')
       .select('id, title, description, event_type, start_date, location, image_url')
       .order('start_date', { ascending: false })
       .limit(4)
 
+    console.log('Events data:', eventsData)
+    console.log('Events error:', eventsError)
     if (eventsData) setEvents(eventsData)
 
     // Load latest opportunities (show all, prioritize recent)
-    const { data: oppsData } = await supabase
+    const { data: oppsData, error: oppsError } = await supabase
       .from('opportunities')
       .select('id, title, description, opportunity_type, deadline, location, image_url')
       .order('created_at', { ascending: false })
       .limit(4)
 
+    console.log('Opportunities data:', oppsData)
+    console.log('Opportunities error:', oppsError)
     if (oppsData) setOpportunities(oppsData)
   }
 
@@ -327,8 +331,7 @@ export default function HomePage() {
       </section>
 
       {/* Recent Events */}
-      {events.length > 0 && (
-        <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-12">
               <div>
@@ -348,8 +351,13 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {events.map((event, i) => (
+            {events.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-white text-xl">No events found. Check console for details.</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {events.map((event, i) => (
                 <motion.div
                   key={event.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -402,21 +410,22 @@ export default function HomePage() {
                 </motion.div>
               ))}
             </div>
+            )}
 
-            <Link
-              href="/auth/register"
-              className="md:hidden flex items-center justify-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium mt-8"
-            >
-              View All Events
-              <ArrowRight className="h-5 w-5" />
-            </Link>
+            {events.length > 0 && (
+              <Link
+                href="/auth/register"
+                className="md:hidden flex items-center justify-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium mt-8"
+              >
+                View All Events
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            )}
           </div>
         </section>
-      )}
 
       {/* Latest Opportunities */}
-      {opportunities.length > 0 && (
-        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-sm">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-12">
               <div>
@@ -436,8 +445,13 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {opportunities.map((opp, i) => (
+            {opportunities.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-white text-xl">No opportunities found. Check console for details.</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {opportunities.map((opp, i) => (
                 <motion.div
                   key={opp.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -492,17 +506,19 @@ export default function HomePage() {
                 </motion.div>
               ))}
             </div>
+            )}
 
-            <Link
-              href="/auth/register"
-              className="md:hidden flex items-center justify-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium mt-8"
-            >
-              View All Opportunities
-              <ArrowRight className="h-5 w-5" />
-            </Link>
+            {opportunities.length > 0 && (
+              <Link
+                href="/auth/register"
+                className="md:hidden flex items-center justify-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium mt-8"
+              >
+                View All Opportunities
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            )}
           </div>
         </section>
-      )}
 
       {/* AI-Powered Features */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">

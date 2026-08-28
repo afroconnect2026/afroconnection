@@ -16,11 +16,16 @@ import {
   Building2,
   Briefcase,
   DollarSign,
-  UserPlus
+  UserPlus,
+  Calendar,
+  MapPin,
+  Clock,
+  Eye
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { createClient } from '@/lib/supabase/client'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -38,6 +43,9 @@ const stagger = {
 export default function HomePage() {
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [events, setEvents] = useState<any[]>([])
+  const [opportunities, setOpportunities] = useState<any[]>([])
+  const supabase = createClient()
 
   // Background images
   const heroImages = [
@@ -53,6 +61,33 @@ export default function HomePage() {
     }, 5000)
     return () => clearInterval(timer)
   }, [])
+
+  // Load events and opportunities
+  useEffect(() => {
+    loadContent()
+  }, [])
+
+  const loadContent = async () => {
+    // Load upcoming events
+    const { data: eventsData } = await supabase
+      .from('events')
+      .select('id, title, description, event_type, start_date, location, image_url')
+      .gte('start_date', new Date().toISOString())
+      .order('start_date', { ascending: true })
+      .limit(4)
+
+    if (eventsData) setEvents(eventsData)
+
+    // Load latest opportunities
+    const { data: oppsData } = await supabase
+      .from('opportunities')
+      .select('id, title, description, opportunity_type, deadline, location, image_url')
+      .gte('deadline', new Date().toISOString())
+      .order('created_at', { ascending: false })
+      .limit(4)
+
+    if (oppsData) setOpportunities(oppsData)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-primary-900">
@@ -292,6 +327,184 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Upcoming Events */}
+      {events.length > 0 && (
+        <section className="py-20 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-12">
+              <div>
+                <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+                  Upcoming Events
+                </h2>
+                <p className="text-xl text-gray-300">
+                  Connect with entrepreneurs, investors, and professionals
+                </p>
+              </div>
+              <Link
+                href="/auth/register"
+                className="hidden md:flex items-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium"
+              >
+                View All Events
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {events.map((event, i) => (
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-gold-500/50 transition-all group cursor-pointer"
+                >
+                  {event.image_url && (
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={event.image_url}
+                        alt={event.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div className="absolute top-3 right-3 bg-gold-500 text-navy-900 px-3 py-1 rounded-full text-xs font-bold uppercase">
+                        {event.event_type}
+                      </div>
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-gold-500 transition-colors">
+                      {event.title}
+                    </h3>
+                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                      {event.description}
+                    </p>
+                    <div className="space-y-2 text-sm text-gray-300">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 text-primary-500" />
+                        <span>{new Date(event.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                      </div>
+                      {event.location && (
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4 text-primary-500" />
+                          <span className="line-clamp-1">{event.location}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="mt-4 pt-4 border-t border-white/10">
+                      <Link
+                        href="/auth/register"
+                        className="text-gold-500 hover:text-gold-400 font-medium text-sm flex items-center gap-2 group"
+                      >
+                        Register to View
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <Link
+              href="/auth/register"
+              className="md:hidden flex items-center justify-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium mt-8"
+            >
+              View All Events
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* Latest Opportunities */}
+      {opportunities.length > 0 && (
+        <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-12">
+              <div>
+                <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+                  Latest Opportunities
+                </h2>
+                <p className="text-xl text-gray-300">
+                  Investment, partnerships, mentorship and more
+                </p>
+              </div>
+              <Link
+                href="/auth/register"
+                className="hidden md:flex items-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium"
+              >
+                View All Opportunities
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {opportunities.map((opp, i) => (
+                <motion.div
+                  key={opp.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-gold-500/50 transition-all group cursor-pointer"
+                >
+                  {opp.image_url && (
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={opp.image_url}
+                        alt={opp.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div className="absolute top-3 right-3 bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
+                        {opp.opportunity_type}
+                      </div>
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-gold-500 transition-colors">
+                      {opp.title}
+                    </h3>
+                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                      {opp.description}
+                    </p>
+                    <div className="space-y-2 text-sm text-gray-300">
+                      {opp.deadline && (
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-4 w-4 text-primary-500" />
+                          <span>Deadline: {new Date(opp.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                        </div>
+                      )}
+                      {opp.location && (
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4 text-primary-500" />
+                          <span className="line-clamp-1">{opp.location}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="mt-4 pt-4 border-t border-white/10">
+                      <Link
+                        href="/auth/register"
+                        className="text-gold-500 hover:text-gold-400 font-medium text-sm flex items-center gap-2 group"
+                      >
+                        Register to Apply
+                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <Link
+              href="/auth/register"
+              className="md:hidden flex items-center justify-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium mt-8"
+            >
+              View All Opportunities
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* AI-Powered Features */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">

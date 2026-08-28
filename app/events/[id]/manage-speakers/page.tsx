@@ -574,11 +574,19 @@ export default function ManageSpeakersPage() {
                   className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-shadow"
                 >
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center flex-shrink-0">
-                      <span className="text-xl font-bold text-white">
-                        {speaker.name.charAt(0)}
-                      </span>
-                    </div>
+                    {speaker.photo_url ? (
+                      <img
+                        src={speaker.photo_url}
+                        alt={speaker.name}
+                        className="w-16 h-16 rounded-full object-cover flex-shrink-0"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center flex-shrink-0">
+                        <span className="text-xl font-bold text-white">
+                          {speaker.name.charAt(0)}
+                        </span>
+                      </div>
+                    )}
                     <div className="flex-1 min-w-0">
                       <h3 className="font-bold text-navy-900 mb-1">
                         {speaker.name}

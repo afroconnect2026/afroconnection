@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#008000;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2ca42c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="72" height="72" fill="url(#bg)" rx="7.2"/>
+
+  <!-- Handshake icon (simplified) -->
+  <g transform="translate(36, 36)">
+    <!-- Left hand -->
+    <path d="M -14.4 0 L -3.6 -7.2 L -3.6 7.2 Z"
+          fill="#FFC300" opacity="0.9"/>
+
+    <!-- Right hand -->
+    <path d="M 14.4 0 L 3.6 -7.2 L 3.6 7.2 Z"
+          fill="#FFC300" opacity="0.9"/>
+
+    <!-- "AC" text -->
+    <text x="0" y="3.6"
+          font-family="Arial, sans-serif"
+          font-weight="bold"
+          font-size="25.2"
+          fill="white"
+          text-anchor="middle">AC</text>
+  </g>
+</svg>

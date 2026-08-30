@@ -25,20 +25,12 @@ export default function Logo({
   const { img, text } = sizeMap[size]
 
   const LogoContent = () => (
-    <div className={`flex items-center space-x-2 ${className}`}>
-      <Image
-        src="/icons/icon-192x192.png"
+    <div className={`flex items-center ${className}`}>
+      <img
+        src="/logo-afroconnect.png"
         alt="AfroConnect Logo"
-        width={img}
-        height={img}
-        className="object-contain"
-        priority
+        className="h-12 w-auto object-contain"
       />
-      {showText && (
-        <span className={`font-display font-bold ${text} ${textColor}`}>
-          AfroConnect
-        </span>
-      )}
     </div>
   )
 

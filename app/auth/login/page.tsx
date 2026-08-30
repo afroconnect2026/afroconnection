@@ -60,11 +60,10 @@ function LoginForm() {
         className="fixed top-6 left-6 flex items-center space-x-2 text-white hover:text-gold-400 transition-colors z-50"
       >
         <img
-          src="/icons/icon-192x192.png"
+          src="/logo-afroconnect.png"
           alt="AfroConnect"
-          className="h-10 w-10"
+          className="h-12 w-auto object-contain"
         />
-        <span className="font-display font-bold text-lg">AfroConnect</span>
       </Link>
 
       <motion.div

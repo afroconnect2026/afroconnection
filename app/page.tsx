@@ -99,16 +99,10 @@ export default function HomePage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
               <img
-                src="/icons/icon-192x192.png"
+                src="/logo-afroconnect.png"
                 alt="AfroConnect"
-                className="h-10 w-10"
+                className="h-12 w-auto object-contain"
               />
-              <div>
-                <h1 className="text-white font-display font-bold text-xl">
-                  Afro<span className="text-gold-500">Connect</span>
-                </h1>
-                <p className="text-xs text-gray-300 hidden sm:block">Building Bridges. Creating Futures.</p>
-              </div>
             </div>
 
             <div className="flex items-center space-x-2 sm:space-x-4">

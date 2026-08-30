@@ -27,14 +27,14 @@ const userTypes = [
     value: 'entrepreneur' as UserType,
     icon: Rocket,
     title: 'Entrepreneur',
-    desc: 'African startup seeking global investors',
+    desc: 'Startup seeking global investors and opportunities',
     color: 'from-primary-500 to-primary-600'
   },
   {
     value: 'investor' as UserType,
     icon: TrendingUp,
     title: 'Investor',
-    desc: 'Global investor seeking African opportunities',
+    desc: 'Discover high-potential opportunities worldwide',
     color: 'from-gold-500 to-gold-600'
   },
   {
@@ -137,7 +137,7 @@ export default function RegisterPage() {
             Join AfroConnect
           </h1>
           <p className="text-gray-300 text-base sm:text-lg">
-            Connect with entrepreneurs, investors, and opportunities across Africa
+            Connect with entrepreneurs, investors, and opportunities worldwide
           </p>
         </div>
 

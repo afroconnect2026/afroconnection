@@ -76,7 +76,7 @@ function LoginForm() {
             Welcome Back
           </h1>
           <p className="text-gray-300 text-lg">
-            Sign in to continue building connections
+            Sign in to access global opportunities
           </p>
         </div>
 

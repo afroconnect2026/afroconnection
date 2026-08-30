@@ -188,7 +188,7 @@ export default function HomePage() {
             className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight text-center px-4"
             variants={fadeIn}
           >
-            Connect the World to African<br />
+            Connect Africa to Global<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">
               Opportunities
             </span>
@@ -198,8 +198,7 @@ export default function HomePage() {
             className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed px-4"
             variants={fadeIn}
           >
-            A global platform connecting worldwide investors, companies, and professionals
-            with entrepreneurs and opportunities across Africa.
+            Global professional network connecting entrepreneurs, investors, and companies worldwide—with deep expertise in African markets and opportunities.
           </motion.p>
 
           <motion.div
@@ -260,7 +259,7 @@ export default function HomePage() {
               Who We Serve
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-              AfroConnect brings together the entire African entrepreneurship ecosystem
+              Connecting entrepreneurs, investors, and professionals worldwide—specializing in African markets
             </p>
           </div>
 
@@ -269,30 +268,30 @@ export default function HomePage() {
               {
                 icon: Rocket,
                 title: 'Entrepreneurs',
-                desc: 'African startups connecting with global investors, mentors, and partners',
+                desc: 'Startups worldwide connecting with global investors, mentors, and partners—specializing in African markets',
                 color: 'from-primary-500 to-primary-600',
-                features: ['Global Investor Access', 'Pitch to Worldwide VCs', 'International Mentorship']
+                features: ['Global Investor Access', 'Worldwide Opportunities', 'International Mentorship']
               },
               {
                 icon: TrendingUp,
                 title: 'Investors',
-                desc: 'Global investors discovering high-potential African startups and opportunities',
+                desc: 'Discover high-potential startups and opportunities worldwide, with deep access to African markets',
                 color: 'from-gold-500 to-gold-600',
-                features: ['African Deal Flow', 'Due Diligence Tools', 'Portfolio Tracking']
+                features: ['Global Deal Flow', 'African Market Expertise', 'Portfolio Tracking']
               },
               {
                 icon: Award,
                 title: 'Professionals',
-                desc: 'Experts worldwide offering services, consulting, and mentorship',
+                desc: 'Connect with opportunities worldwide—from Silicon Valley to Lagos, London to Nairobi',
                 color: 'from-blue-500 to-blue-600',
-                features: ['Global Opportunities', 'Cross-Border Consulting', 'International Network']
+                features: ['Global Opportunities', 'Cross-Border Network', 'Africa & Beyond']
               },
               {
                 icon: Building2,
                 title: 'Companies',
-                desc: 'Businesses worldwide recruiting African talent and seeking partnerships',
+                desc: 'Access talent and partnerships globally, with expertise in African markets and expansion',
                 color: 'from-purple-500 to-purple-600',
-                features: ['Access African Talent', 'Strategic Partnerships', 'Market Entry']
+                features: ['Global Talent Pool', 'Strategic Partnerships', 'Market Entry Support']
               },
             ].map((audience, i) => (
               <motion.div
@@ -614,7 +613,7 @@ export default function HomePage() {
                 />
               </div>
               <p className="text-gray-400 text-sm">
-                Building bridges between global investors and African entrepreneurs. Creating futures through connection and opportunity.
+                Global professional network connecting opportunities worldwide. Specializing in African markets with expertise that bridges continents.
               </p>
             </div>
             <div>

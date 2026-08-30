@@ -145,7 +145,7 @@ export default function PrivacyPolicyPage() {
                 <li><strong>Control Visibility:</strong> Manage what information is shown on your profile</li>
               </ul>
               <p className="text-gray-700">
-                To exercise these rights, contact us at <strong>privacy@afroconnect.com</strong> or use the settings in your account dashboard.
+                To exercise these rights, contact us at <strong>privacy@afroconnect.io</strong> or use the settings in your account dashboard.
               </p>
             </section>
 
@@ -188,9 +188,9 @@ export default function PrivacyPolicyPage() {
                 If you have questions or concerns about this Privacy Policy or our data practices, please contact us:
               </p>
               <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-                <p className="text-gray-700 mb-2"><strong>Email:</strong> privacy@afroconnect.com</p>
-                <p className="text-gray-700 mb-2"><strong>Support:</strong> support@afroconnect.com</p>
-                <p className="text-gray-700"><strong>Platform:</strong> www.afroconnect.com</p>
+                <p className="text-gray-700 mb-2"><strong>Email:</strong> privacy@afroconnect.io</p>
+                <p className="text-gray-700 mb-2"><strong>Support:</strong> support@afroconnect.io</p>
+                <p className="text-gray-700"><strong>Platform:</strong> www.afroconnect.io</p>
               </div>
             </section>
 

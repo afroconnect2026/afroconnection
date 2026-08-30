@@ -253,7 +253,7 @@ export default function TermsOfServicePage() {
                 These Terms shall be governed by and construed in accordance with the laws of [Your Jurisdiction], without regard to conflict of law principles.
               </p>
               <p className="text-gray-700 mb-4">
-                In the event of any dispute arising from these Terms or your use of the Platform, you agree to first attempt to resolve the dispute informally by contacting us at <strong>legal@afroconnect.com</strong>.
+                In the event of any dispute arising from these Terms or your use of the Platform, you agree to first attempt to resolve the dispute informally by contacting us at <strong>legal@afroconnect.io</strong>.
               </p>
               <p className="text-gray-700">
                 If informal resolution fails, disputes shall be resolved through binding arbitration in accordance with the rules of [Arbitration Body], unless otherwise required by local law.
@@ -292,9 +292,9 @@ export default function TermsOfServicePage() {
                 If you have questions about these Terms, please contact us:
               </p>
               <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-                <p className="text-gray-700 mb-2"><strong>Legal Inquiries:</strong> legal@afroconnect.com</p>
-                <p className="text-gray-700 mb-2"><strong>General Support:</strong> support@afroconnect.com</p>
-                <p className="text-gray-700"><strong>Platform:</strong> www.afroconnect.com</p>
+                <p className="text-gray-700 mb-2"><strong>Legal Inquiries:</strong> legal@afroconnect.io</p>
+                <p className="text-gray-700 mb-2"><strong>General Support:</strong> support@afroconnect.io</p>
+                <p className="text-gray-700"><strong>Platform:</strong> www.afroconnect.io</p>
               </div>
             </section>
 

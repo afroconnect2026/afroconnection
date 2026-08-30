@@ -620,24 +620,25 @@ export default function HomePage() {
             <div>
               <h4 className="text-white font-semibold mb-4">Platform</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link href="/explore" className="text-gray-400 hover:text-gold-500 transition-colors">Explore</Link></li>
-                <li><Link href="/opportunities" className="text-gray-400 hover:text-gold-500 transition-colors">Opportunities</Link></li>
-                <li><Link href="/about" className="text-gray-400 hover:text-gold-500 transition-colors">About Us</Link></li>
+                <li><Link href="/auth/login" className="text-gray-400 hover:text-gold-500 transition-colors">Explore</Link></li>
+                <li><Link href="/auth/login" className="text-gray-400 hover:text-gold-500 transition-colors">Events</Link></li>
+                <li><Link href="/auth/login" className="text-gray-400 hover:text-gold-500 transition-colors">Opportunities</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-4">Resources</h4>
+              <h4 className="text-white font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link href="/blog" className="text-gray-400 hover:text-gold-500 transition-colors">Blog</Link></li>
-                <li><Link href="/help" className="text-gray-400 hover:text-gold-500 transition-colors">Help Center</Link></li>
-                <li><Link href="/contact" className="text-gray-400 hover:text-gold-500 transition-colors">Contact</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-white font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm">
+                <li><a href="mailto:africybersolution@gmail.com" className="text-gray-400 hover:text-gold-500 transition-colors">Contact Us</a></li>
                 <li><Link href="/legal/privacy" className="text-gray-400 hover:text-gold-500 transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/legal/terms" className="text-gray-400 hover:text-gold-500 transition-colors">Terms of Service</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white font-semibold mb-4">Get Started</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/auth/register" className="text-gray-400 hover:text-gold-500 transition-colors">Create Account</Link></li>
+                <li><Link href="/auth/login" className="text-gray-400 hover:text-gold-500 transition-colors">Sign In</Link></li>
+                <li><Link href="/auth/login" className="text-gray-400 hover:text-gold-500 transition-colors">Dashboard</Link></li>
               </ul>
             </div>
           </div>

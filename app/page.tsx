@@ -337,7 +337,7 @@ export default function HomePage() {
                 </p>
               </div>
               <Link
-                href="/auth/register"
+                href="/auth/login"
                 className="hidden md:flex items-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium"
               >
                 View All Events
@@ -399,10 +399,10 @@ export default function HomePage() {
                         </div>
                       ) : (
                         <Link
-                          href="/auth/register"
+                          href="/auth/login"
                           className="text-gold-500 hover:text-gold-400 font-medium text-sm flex items-center gap-2 group"
                         >
-                          Register to View
+                          Sign In to View
                           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                       )}
@@ -438,7 +438,7 @@ export default function HomePage() {
                 </p>
               </div>
               <Link
-                href="/auth/register"
+                href="/auth/login"
                 className="hidden md:flex items-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium"
               >
                 View All Opportunities
@@ -502,10 +502,10 @@ export default function HomePage() {
                         </div>
                       ) : (
                         <Link
-                          href="/auth/register"
+                          href="/auth/login"
                           className="text-gold-500 hover:text-gold-400 font-medium text-sm flex items-center gap-2 group"
                         >
-                          Register to Apply
+                          Sign In to Apply
                           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                         </Link>
                       )}
@@ -606,13 +606,12 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center space-x-3 mb-4">
+              <div className="mb-4">
                 <img
-                  src="/icons/icon-192x192.png"
+                  src="/logo-afroconnect.png"
                   alt="AfroConnect"
-                  className="h-10 w-10"
+                  className="h-16 w-auto object-contain"
                 />
-                <h3 className="text-white font-display font-bold text-xl">AfroConnect</h3>
               </div>
               <p className="text-gray-400 text-sm">
                 Building bridges between global investors and African entrepreneurs. Creating futures through connection and opportunity.

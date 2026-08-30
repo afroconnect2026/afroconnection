@@ -116,10 +116,10 @@ export default function SupportPage() {
                   <div>
                     <h3 className="font-semibold text-navy-900 mb-1">General Inquiries</h3>
                     <a
-                      href="mailto:africybersolution@gmail.com"
+                      href="mailto:admin@afroconnect.io"
                       className="text-primary-600 hover:text-primary-700 text-sm"
                     >
-                      africybersolution@gmail.com
+                      admin@afroconnect.io
                     </a>
                     <p className="text-xs text-gray-500 mt-1">Business inquiries</p>
                   </div>

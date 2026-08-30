@@ -628,7 +628,7 @@ export default function HomePage() {
             <div>
               <h4 className="text-white font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="mailto:africybersolution@gmail.com" className="text-gray-400 hover:text-gold-500 transition-colors">Contact Us</a></li>
+                <li><Link href="/support" className="text-gray-400 hover:text-gold-500 transition-colors">Support</Link></li>
                 <li><Link href="/legal/privacy" className="text-gray-400 hover:text-gold-500 transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/legal/terms" className="text-gray-400 hover:text-gold-500 transition-colors">Terms of Service</Link></li>
               </ul>

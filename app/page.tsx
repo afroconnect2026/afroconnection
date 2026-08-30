@@ -398,13 +398,20 @@ export default function HomePage() {
                       )}
                     </div>
                     <div className="mt-4 pt-4 border-t border-white/10">
-                      <Link
-                        href="/auth/register"
-                        className="text-gold-500 hover:text-gold-400 font-medium text-sm flex items-center gap-2 group"
-                      >
-                        Register to View
-                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      </Link>
+                      {new Date(event.start_date) < new Date() ? (
+                        <div className="text-gray-500 font-medium text-sm flex items-center gap-2">
+                          <Clock className="h-4 w-4" />
+                          Event Ended
+                        </div>
+                      ) : (
+                        <Link
+                          href="/auth/register"
+                          className="text-gold-500 hover:text-gold-400 font-medium text-sm flex items-center gap-2 group"
+                        >
+                          Register to View
+                          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -494,13 +501,20 @@ export default function HomePage() {
                       )}
                     </div>
                     <div className="mt-4 pt-4 border-t border-white/10">
-                      <Link
-                        href="/auth/register"
-                        className="text-gold-500 hover:text-gold-400 font-medium text-sm flex items-center gap-2 group"
-                      >
-                        Register to Apply
-                        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      </Link>
+                      {opp.application_deadline && new Date(opp.application_deadline) < new Date() ? (
+                        <div className="text-gray-500 font-medium text-sm flex items-center gap-2">
+                          <Clock className="h-4 w-4" />
+                          Applications Closed
+                        </div>
+                      ) : (
+                        <Link
+                          href="/auth/register"
+                          className="text-gold-500 hover:text-gold-400 font-medium text-sm flex items-center gap-2 group"
+                        >
+                          Register to Apply
+                          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </motion.div>

@@ -229,14 +229,29 @@ export default function RegisterPage() {
 
             <div className="space-y-5">
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">Full Name</label>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  {userType === 'company' ? 'Company Name' :
+                   userType === 'investor' ? 'Organization/Individual Name' :
+                   'Full Name'}
+                </label>
+                {(userType === 'company' || userType === 'investor') && (
+                  <p className="text-sm text-gray-500 mb-2">
+                    {userType === 'company'
+                      ? 'Enter your organization or company name'
+                      : 'Enter your fund name, organization, or your full name'}
+                  </p>
+                )}
                 <div className="relative">
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="John Doe"
+                    placeholder={
+                      userType === 'company' ? 'e.g., Acme Corporation' :
+                      userType === 'investor' ? 'e.g., ABC Ventures or John Smith' :
+                      'e.g., John Doe'
+                    }
                     className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl pl-12 pr-4 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors"
                   />
                 </div>

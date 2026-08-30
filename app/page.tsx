@@ -111,16 +111,16 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <Link
                 href="/auth/login"
-                className="text-white hover:text-gold-400 transition-colors text-sm font-medium"
+                className="text-white hover:text-gold-400 transition-colors text-sm sm:text-base font-medium px-2 py-2"
               >
                 Sign In
               </Link>
               <Link
                 href="/auth/register"
-                className="bg-gradient-to-r from-gold-400 to-gold-500 text-navy-900 px-6 py-2.5 rounded-lg font-bold hover:shadow-xl hover:shadow-gold-500/60 hover:scale-105 transition-all text-sm shadow-lg"
+                className="bg-gradient-to-r from-gold-400 to-gold-500 text-navy-900 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold hover:shadow-xl hover:shadow-gold-500/60 hover:scale-105 transition-all text-sm sm:text-base shadow-lg"
               >
                 Get Started
               </Link>
@@ -191,7 +191,7 @@ export default function HomePage() {
           </motion.div>
 
           <motion.h1
-            className="text-5xl md:text-7xl font-display font-bold text-white mb-6 leading-tight text-center"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight text-center px-4"
             variants={fadeIn}
           >
             Connect the World to African<br />
@@ -201,7 +201,7 @@ export default function HomePage() {
           </motion.h1>
 
           <motion.p
-            className="text-xl md:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed px-4"
             variants={fadeIn}
           >
             A global platform connecting worldwide investors, companies, and professionals
@@ -218,24 +218,24 @@ export default function HomePage() {
             >
               <Link
                 href="/auth/register"
-                className="relative bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 text-navy-900 px-10 py-5 rounded-xl font-bold text-xl hover:shadow-2xl hover:shadow-gold-500/60 transition-all flex items-center space-x-3 group overflow-hidden"
+                className="relative bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 text-navy-900 px-6 sm:px-8 md:px-10 py-4 md:py-5 rounded-xl font-bold text-base sm:text-lg md:text-xl hover:shadow-2xl hover:shadow-gold-500/60 transition-all flex items-center space-x-2 sm:space-x-3 group overflow-hidden w-full sm:w-auto justify-center"
               >
                 {/* Animated shine effect */}
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 <span className="relative z-10">START CONNECTING</span>
-                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform relative z-10" />
+                <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-2 transition-transform relative z-10" />
               </Link>
             </motion.div>
             <Link
               href="/auth/register"
-              className="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 hover:border-gold-500/50 transition-all"
+              className="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 hover:border-gold-500/50 transition-all w-full sm:w-auto text-center"
             >
               Explore Platform
             </Link>
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto px-4"
             variants={stagger}
           >
             {[
@@ -246,12 +246,12 @@ export default function HomePage() {
             ].map((stat, i) => (
               <motion.div
                 key={i}
-                className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all"
+                className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 sm:p-6 hover:bg-white/10 transition-all"
                 variants={fadeIn}
               >
-                <stat.icon className="w-8 h-8 text-gold-500 mb-3 mx-auto" />
-                <div className="text-3xl font-bold text-white mb-1">{stat.label}</div>
-                <div className="text-sm text-gray-300">{stat.desc}</div>
+                <stat.icon className="w-6 h-6 sm:w-8 sm:h-8 text-gold-500 mb-2 sm:mb-3 mx-auto" />
+                <div className="text-2xl sm:text-3xl font-bold text-white mb-1">{stat.label}</div>
+                <div className="text-xs sm:text-sm text-gray-300">{stat.desc}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -261,11 +261,11 @@ export default function HomePage() {
       {/* Who We Serve */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+          <div className="text-center mb-16 px-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
               Who We Serve
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
               AfroConnect brings together the entire African entrepreneurship ecosystem
             </p>
           </div>
@@ -335,10 +335,10 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-12">
               <div>
-                <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
                   Recent Events
                 </h2>
-                <p className="text-xl text-gray-300">
+                <p className="text-base sm:text-lg md:text-xl text-gray-300">
                   Connect with entrepreneurs, investors, and professionals
                 </p>
               </div>
@@ -436,10 +436,10 @@ export default function HomePage() {
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-12">
               <div>
-                <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
                   Latest Opportunities
                 </h2>
-                <p className="text-xl text-gray-300">
+                <p className="text-base sm:text-lg md:text-xl text-gray-300">
                   Investment, partnerships, mentorship and more
                 </p>
               </div>

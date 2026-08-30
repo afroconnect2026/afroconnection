@@ -133,11 +133,11 @@ export default function RegisterPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-3">
+        <div className="text-center mb-8 px-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-3">
             Join AfroConnect
           </h1>
-          <p className="text-gray-300 text-lg">
+          <p className="text-gray-300 text-base sm:text-lg">
             Connect with entrepreneurs, investors, and opportunities across Africa
           </p>
         </div>

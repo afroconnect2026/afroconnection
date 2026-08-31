@@ -232,7 +232,7 @@ export default function HomePage() {
             variants={stagger}
           >
             {[
-              { icon: Globe2, label: '54', desc: 'African Countries' },
+              { icon: Globe2, label: 'Worldwide', desc: 'Global Network' },
               { icon: Users, label: '4', desc: 'Member Types' },
               { icon: Building2, label: 'Free', desc: 'To Join' },
               { icon: DollarSign, label: '100%', desc: 'Verified Members' },

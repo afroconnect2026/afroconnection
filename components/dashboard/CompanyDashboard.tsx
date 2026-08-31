@@ -347,7 +347,7 @@ export default function CompanyDashboard({ user, profile }: CompanyDashboardProp
             title="No active job posts"
             description="Post your first role to start attracting top talent worldwide"
             actionLabel="Post a Role"
-            actionHref="/opportunities/new?type=job"
+            actionHref="/opportunities/create"
           />
         )}
       </motion.div>

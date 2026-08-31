@@ -215,7 +215,7 @@ export default function CompanyDashboard({ user, profile }: CompanyDashboardProp
   const quickActions = [
     {
       title: 'Post a Role',
-      description: 'Hire talent from across Africa',
+      description: 'Hire talent from around the world',
       href: '/opportunities/create',
       icon: Briefcase,
       color: 'from-primary-500 to-primary-600'
@@ -345,7 +345,7 @@ export default function CompanyDashboard({ user, profile }: CompanyDashboardProp
           <EmptyState
             icon={Briefcase}
             title="No active job posts"
-            description="Post your first role to start attracting top talent from across Africa"
+            description="Post your first role to start attracting top talent worldwide"
             actionLabel="Post a Role"
             actionHref="/opportunities/new?type=job"
           />

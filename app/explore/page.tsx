@@ -183,7 +183,7 @@ export default function ExplorePage() {
               Explore Network
             </h1>
             <p className="text-gray-600">
-              Discover and connect with entrepreneurs, investors, and professionals across Africa and beyond
+              Discover and connect with entrepreneurs, investors, and professionals worldwide
             </p>
           </div>
 

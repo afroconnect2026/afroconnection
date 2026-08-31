@@ -295,7 +295,7 @@ export default function SupportPage() {
               },
               {
                 q: 'Is AfroConnect free to use?',
-                a: 'Yes! AfroConnect is completely free to join and use. We believe in making opportunities accessible to everyone across Africa.'
+                a: 'Yes! AfroConnect is completely free to join and use. We believe in making opportunities accessible to everyone worldwide.'
               },
               {
                 q: 'How do I post an event or opportunity?',

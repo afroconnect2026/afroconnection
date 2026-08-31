@@ -161,7 +161,7 @@ export default function PrivacyPolicyPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-navy-900 mb-4">8. International Data Transfers</h2>
               <p className="text-gray-700">
-                AfroConnect is designed for users across Africa and globally. Your data may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place for such transfers in compliance with applicable data protection laws.
+                AfroConnect is designed for users worldwide. Your data may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place for such transfers in compliance with applicable data protection laws.
               </p>
             </section>
 

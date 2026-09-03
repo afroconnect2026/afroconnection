@@ -553,7 +553,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   },
 ]
 
-export const CONTACT_EMAIL = 'hello@afroconnect.net'
+export const CONTACT_EMAIL = 'Support@afroconnect.io'
 
 /* ------------------------------------------------------------------ */
 /* 6. Public preview fallbacks                                         */

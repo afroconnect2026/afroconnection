@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Logo from '@/components/Logo'
 import NotificationBell from '@/components/NotificationBell'
+import SocialLinks from '@/components/marketing/SocialLinks'
 import {
   LayoutDashboard,
   Search,
@@ -244,6 +245,40 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
       <main className="pt-16 min-h-screen">
         {children}
       </main>
+
+      {/* App Footer */}
+      <footer className="border-t border-gray-200 bg-white py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+            <Link href="/about" className="text-gray-600 hover:text-primary-600 transition-colors">
+              About &amp; Team
+            </Link>
+            <Link href="/support" className="text-gray-600 hover:text-primary-600 transition-colors">
+              Support
+            </Link>
+            <Link
+              href="/legal/privacy"
+              className="text-gray-600 hover:text-primary-600 transition-colors"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/legal/terms"
+              className="text-gray-600 hover:text-primary-600 transition-colors"
+            >
+              Terms
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-gray-500">Follow us</span>
+            <SocialLinks variant="ghost" size="sm" />
+          </div>
+        </div>
+        <p className="max-w-7xl mx-auto text-center md:text-left text-xs text-gray-400 mt-6">
+          © {new Date().getFullYear()} AfroConnect. Connecting Africa to Opportunity.
+        </p>
+      </footer>
     </div>
   )
 }

@@ -19,6 +19,12 @@ export interface Database {
           avatar_url: string | null
           bio: string | null
           user_type: 'entrepreneur' | 'investor' | 'professional' | 'company'
+          /** Role specific CTA the member signed up through. */
+          signup_role: string | null
+          /** What the member came to AfroConnect to do. */
+          primary_goal: string | null
+          /** Answer to the role specific onboarding question. */
+          onboarding_answer: string | null
           country: string | null
           city: string | null
           phone: string | null
@@ -38,6 +44,9 @@ export interface Database {
           avatar_url?: string | null
           bio?: string | null
           user_type: 'entrepreneur' | 'investor' | 'professional' | 'company'
+          signup_role?: string | null
+          primary_goal?: string | null
+          onboarding_answer?: string | null
           country?: string | null
           city?: string | null
           phone?: string | null
@@ -57,6 +66,9 @@ export interface Database {
           avatar_url?: string | null
           bio?: string | null
           user_type?: 'entrepreneur' | 'investor' | 'professional' | 'company'
+          signup_role?: string | null
+          primary_goal?: string | null
+          onboarding_answer?: string | null
           country?: string | null
           city?: string | null
           phone?: string | null

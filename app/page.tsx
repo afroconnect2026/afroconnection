@@ -1,60 +1,51 @@
 'use client'
 
 import Link from 'next/link'
-import Logo from '@/components/Logo'
-import {
-  Handshake,
-  TrendingUp,
-  Users,
-  Globe2,
-  Sparkles,
-  Target,
-  Rocket,
-  Award,
-  ArrowRight,
-  CheckCircle2,
-  Building2,
-  Briefcase,
-  DollarSign,
-  UserPlus,
-  Calendar,
-  MapPin,
-  Clock,
-  Eye
-} from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { createClient } from '@/lib/supabase/client'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  ArrowRight,
+  Award,
+  Building2,
+  CheckCircle2,
+  DollarSign,
+  Globe2,
+  Rocket,
+  Sparkles,
+  TrendingUp,
+  UserPlus,
+  Users,
+} from 'lucide-react'
+
+import PublicNav from '@/components/marketing/PublicNav'
+import PublicFooter from '@/components/marketing/PublicFooter'
+import HowItWorks from '@/components/marketing/HowItWorks'
+import RoleCtas from '@/components/marketing/RoleCtas'
+import AiExplained from '@/components/marketing/AiExplained'
+import Testimonials from '@/components/marketing/Testimonials'
+import PreviewShowcase from '@/components/marketing/PreviewShowcase'
+import { PLATFORM_FOCUS, TAGLINE_SUPPORT } from '@/lib/marketing/content'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
+  visible: { opacity: 1, y: 0 },
 }
 
 const stagger = {
   visible: {
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 }
 
+const heroImages = ['/hero-1.png', '/hero-2.png', '/hero-3.png']
+
 export default function HomePage() {
-  const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [events, setEvents] = useState<any[]>([])
-  const [opportunities, setOpportunities] = useState<any[]>([])
-  const supabase = createClient()
 
-  // Background images
-  const heroImages = [
-    '/hero-1.png',
-    '/hero-2.png',
-    '/hero-3.png'
-  ]
-
-  // Auto-advance slides every 5 seconds
+  // Auto-advance hero slides every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length)
@@ -62,70 +53,14 @@ export default function HomePage() {
     return () => clearInterval(timer)
   }, [])
 
-  // Load events and opportunities
-  useEffect(() => {
-    loadContent()
-  }, [])
-
-  const loadContent = async () => {
-    // Load recent events (show all, prioritize upcoming)
-    const { data: eventsData, error: eventsError } = await supabase
-      .from('events')
-      .select('id, title, description, event_type, start_date, location, cover_image_url')
-      .order('start_date', { ascending: false })
-      .limit(4)
-
-    console.log('Events data:', eventsData)
-    console.log('Events error:', eventsError)
-    if (eventsData) setEvents(eventsData)
-
-    // Load latest opportunities (show all, prioritize recent)
-    const { data: oppsData, error: oppsError } = await supabase
-      .from('opportunities')
-      .select('id, title, description, opportunity_type, application_deadline, location, thumbnail_url')
-      .order('created_at', { ascending: false })
-      .limit(4)
-
-    console.log('Opportunities data:', oppsData)
-    console.log('Opportunities error:', oppsError)
-    if (oppsData) setOpportunities(oppsData)
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-primary-900">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-3">
-              <img
-                src="/logo-afroconnect.png"
-                alt="AfroConnect"
-                className="h-12 w-auto object-contain"
-              />
-            </div>
+      <PublicNav active="/" />
 
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <Link
-                href="/auth/login"
-                className="text-white hover:text-gold-400 transition-colors text-sm sm:text-base font-medium px-2 py-2"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/auth/register"
-                className="bg-gradient-to-r from-gold-400 to-gold-500 text-navy-900 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold hover:shadow-xl hover:shadow-gold-500/60 hover:scale-105 transition-all text-sm sm:text-base shadow-lg"
-              >
-                Get Started
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden min-h-screen flex items-center">
-        {/* Background Image Slider */}
+      {/* ---------------------------------------------------------- */}
+      {/* Hero                                                        */}
+      {/* ---------------------------------------------------------- */}
+      <section className="pt-28 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden min-h-screen flex items-center">
         <div className="absolute inset-0 overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
@@ -138,20 +73,21 @@ export default function HomePage() {
             >
               <Image
                 src={heroImages[currentSlide]}
-                alt="AfroConnect Hero"
+                alt=""
                 fill
                 className="object-cover"
                 priority
                 quality={90}
               />
-              {/* Lighter overlay for text readability while showing images */}
-              <div className="absolute inset-0 bg-gradient-to-br from-navy-900/70 via-navy-900/60 to-primary-900/75" />
+              <div className="absolute inset-0 bg-gradient-to-br from-navy-900/80 via-navy-900/70 to-primary-900/80" />
             </motion.div>
           </AnimatePresence>
 
-          {/* Animated gradient blobs */}
           <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-primary-500/10 rounded-full blur-3xl animate-float" />
-          <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gold-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
+          <div
+            className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gold-500/10 rounded-full blur-3xl animate-float"
+            style={{ animationDelay: '1s' }}
+          />
         </div>
 
         {/* Slide indicators */}
@@ -161,9 +97,7 @@ export default function HomePage() {
               key={index}
               onClick={() => setCurrentSlide(index)}
               className={`w-2 h-2 rounded-full transition-all ${
-                index === currentSlide
-                  ? 'bg-gold-500 w-8'
-                  : 'bg-white/30 hover:bg-white/50'
+                index === currentSlide ? 'bg-gold-500 w-8' : 'bg-white/30 hover:bg-white/50'
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -181,49 +115,51 @@ export default function HomePage() {
             variants={fadeIn}
           >
             <Sparkles className="w-4 h-4 text-gold-500" />
-            <span className="text-white text-sm font-medium">AI-Powered Professional Network</span>
+            <span className="text-white text-sm font-medium">{PLATFORM_FOCUS}</span>
           </motion.div>
 
           <motion.h1
-            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight text-center px-4"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight text-center px-4"
             variants={fadeIn}
           >
-            Connect Africa to Global<br />
+            Connecting Africa to{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">
-              Opportunities
+              Opportunity
             </span>
           </motion.h1>
 
           <motion.p
-            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed px-4"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-4 max-w-3xl mx-auto leading-relaxed px-4"
             variants={fadeIn}
           >
-            Global professional network connecting entrepreneurs, investors, and companies worldwide—with deep expertise in African markets and opportunities.
+            {TAGLINE_SUPPORT}
           </motion.p>
+
+          <motion.p
+            className="text-sm sm:text-base text-gray-300 mb-10 max-w-2xl mx-auto px-4"
+            variants={fadeIn}
+          >
+            Sign up, build a profile, get matched, connect — and build real opportunities.
+          </motion.p>
+
+          {/* Role specific calls to action */}
+          <motion.div variants={fadeIn} className="mb-6 px-2">
+            <p className="text-white/70 text-sm font-medium mb-4 uppercase tracking-wider">
+              Get started as
+            </p>
+            <RoleCtas variant="compact" />
+          </motion.div>
 
           <motion.div
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
             variants={fadeIn}
           >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                href="/auth/register"
-                className="relative bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 text-navy-900 px-6 sm:px-8 md:px-10 py-4 md:py-5 rounded-xl font-bold text-base sm:text-lg md:text-xl hover:shadow-2xl hover:shadow-gold-500/60 transition-all flex items-center space-x-2 sm:space-x-3 group overflow-hidden w-full sm:w-auto justify-center"
-              >
-                {/* Animated shine effect */}
-                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                <span className="relative z-10">START CONNECTING</span>
-                <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-2 transition-transform relative z-10" />
-              </Link>
-            </motion.div>
             <Link
-              href="/auth/register"
-              className="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 hover:border-gold-500/50 transition-all w-full sm:w-auto text-center"
+              href="/preview"
+              className="inline-flex items-center justify-center gap-2 text-white/90 hover:text-gold-400 font-medium transition-colors text-sm sm:text-base"
             >
-              Explore Platform
+              Or see the network first — no account needed
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
 
@@ -243,7 +179,9 @@ export default function HomePage() {
                 variants={fadeIn}
               >
                 <stat.icon className="w-6 h-6 sm:w-8 sm:h-8 text-gold-500 mb-2 sm:mb-3 mx-auto" />
-                <div className="text-2xl sm:text-3xl font-bold text-white mb-1">{stat.label}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
+                  {stat.label}
+                </div>
                 <div className="text-xs sm:text-sm text-gray-300">{stat.desc}</div>
               </motion.div>
             ))}
@@ -251,15 +189,19 @@ export default function HomePage() {
         </motion.div>
       </section>
 
+      {/* 1. How It Works + platform focus */}
+      <HowItWorks />
+
       {/* Who We Serve */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-sm">
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 px-4">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
               Who We Serve
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-              Connecting entrepreneurs, investors, and professionals worldwide—specializing in African markets
+              Connecting entrepreneurs, investors, and professionals worldwide —
+              specialising in African markets
             </p>
           </div>
 
@@ -268,43 +210,51 @@ export default function HomePage() {
               {
                 icon: Rocket,
                 title: 'Entrepreneurs',
-                desc: 'Startups worldwide connecting with global investors, mentors, and partners—specializing in African markets',
+                desc: 'Startups connecting with investors, mentors and partners — with deep reach into African markets',
                 color: 'from-primary-500 to-primary-600',
-                features: ['Global Investor Access', 'Worldwide Opportunities', 'International Mentorship']
+                features: [
+                  'Global Investor Access',
+                  'Worldwide Opportunities',
+                  'International Mentorship',
+                ],
               },
               {
                 icon: TrendingUp,
                 title: 'Investors',
-                desc: 'Discover high-potential startups and opportunities worldwide, with deep access to African markets',
+                desc: 'Discover high-potential startups and opportunities, with deep access to African deal flow',
                 color: 'from-gold-500 to-gold-600',
-                features: ['Global Deal Flow', 'African Market Expertise', 'Portfolio Tracking']
+                features: ['Global Deal Flow', 'African Market Expertise', 'Portfolio Tracking'],
               },
               {
                 icon: Award,
                 title: 'Professionals',
-                desc: 'Connect with opportunities worldwide—from Silicon Valley to Lagos, London to Nairobi',
+                desc: 'Connect with opportunities worldwide — from Silicon Valley to Lagos, London to Nairobi',
                 color: 'from-blue-500 to-blue-600',
-                features: ['Global Opportunities', 'Cross-Border Network', 'Africa & Beyond']
+                features: ['Global Opportunities', 'Cross-Border Network', 'Africa & Beyond'],
               },
               {
                 icon: Building2,
                 title: 'Companies',
                 desc: 'Access talent and partnerships globally, with expertise in African markets and expansion',
                 color: 'from-purple-500 to-purple-600',
-                features: ['Global Talent Pool', 'Strategic Partnerships', 'Market Entry Support']
+                features: [
+                  'Global Talent Pool',
+                  'Strategic Partnerships',
+                  'Market Entry Support',
+                ],
               },
             ].map((audience, i) => (
               <motion.div
                 key={i}
-                className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all cursor-pointer group"
+                className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all group"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                onHoverStart={() => setHoveredFeature(i)}
-                onHoverEnd={() => setHoveredFeature(null)}
               >
-                <div className={`w-16 h-16 bg-gradient-to-br ${audience.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                <div
+                  className={`w-16 h-16 bg-gradient-to-br ${audience.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
+                >
                   <audience.icon className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-3">{audience.title}</h3>
@@ -323,269 +273,27 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Recent Events */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-12">
-              <div>
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
-                  Recent Events
-                </h2>
-                <p className="text-base sm:text-lg md:text-xl text-gray-300">
-                  Connect with entrepreneurs, investors, and professionals
-                </p>
-              </div>
-              <Link
-                href="/auth/login"
-                className="hidden md:flex items-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium"
-              >
-                View All Events
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+      {/* 6. Public preview — value before sign up */}
+      <PreviewShowcase variant="landing" limit={4} />
 
-            {events.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-white text-xl">No events found. Check console for details.</p>
-              </div>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {events.map((event, i) => (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-gold-500/50 transition-all group cursor-pointer"
-                >
-                  {event.cover_image_url && (
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={event.cover_image_url}
-                        alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                      <div className="absolute top-3 right-3 bg-gold-500 text-navy-900 px-3 py-1 rounded-full text-xs font-bold uppercase">
-                        {event.event_type}
-                      </div>
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-gold-500 transition-colors">
-                      {event.title}
-                    </h3>
-                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                      {event.description}
-                    </p>
-                    <div className="space-y-2 text-sm text-gray-300">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-primary-500" />
-                        <span>{new Date(event.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                      </div>
-                      {event.location && (
-                        <div className="flex items-center gap-2">
-                          <MapPin className="h-4 w-4 text-primary-500" />
-                          <span className="line-clamp-1">{event.location}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="mt-4 pt-4 border-t border-white/10">
-                      {new Date(event.start_date) < new Date() ? (
-                        <div className="text-gray-500 font-medium text-sm flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          Event Ended
-                        </div>
-                      ) : (
-                        <Link
-                          href="/auth/login"
-                          className="text-gold-500 hover:text-gold-400 font-medium text-sm flex items-center gap-2 group"
-                        >
-                          Sign In to View
-                          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            )}
+      {/* 3. Practical AI */}
+      <AiExplained />
 
-            {events.length > 0 && (
-              <Link
-                href="/auth/register"
-                className="md:hidden flex items-center justify-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium mt-8"
-              >
-                View All Events
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            )}
-          </div>
-        </section>
+      {/* 2. Testimonials, trust indicators and partners */}
+      <Testimonials />
 
-      {/* Latest Opportunities */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-12">
-              <div>
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
-                  Latest Opportunities
-                </h2>
-                <p className="text-base sm:text-lg md:text-xl text-gray-300">
-                  Investment, partnerships, mentorship and more
-                </p>
-              </div>
-              <Link
-                href="/auth/login"
-                className="hidden md:flex items-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium"
-              >
-                View All Opportunities
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+      {/* 7. Role specific calls to action */}
+      <RoleCtas />
 
-            {opportunities.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-white text-xl">No opportunities found. Check console for details.</p>
-              </div>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {opportunities.map((opp, i) => (
-                <motion.div
-                  key={opp.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-gold-500/50 transition-all group cursor-pointer"
-                >
-                  {opp.thumbnail_url && (
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={opp.thumbnail_url}
-                        alt={opp.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                      <div className="absolute top-3 right-3 bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
-                        {opp.opportunity_type}
-                      </div>
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-gold-500 transition-colors">
-                      {opp.title}
-                    </h3>
-                    <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                      {opp.description}
-                    </p>
-                    <div className="space-y-2 text-sm text-gray-300">
-                      {opp.application_deadline && (
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-primary-500" />
-                          <span>Deadline: {new Date(opp.application_deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                        </div>
-                      )}
-                      {opp.location && (
-                        <div className="flex items-center gap-2">
-                          <MapPin className="h-4 w-4 text-primary-500" />
-                          <span className="line-clamp-1">{opp.location}</span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="mt-4 pt-4 border-t border-white/10">
-                      {opp.application_deadline && new Date(opp.application_deadline) < new Date() ? (
-                        <div className="text-gray-500 font-medium text-sm flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          Applications Closed
-                        </div>
-                      ) : (
-                        <Link
-                          href="/auth/login"
-                          className="text-gold-500 hover:text-gold-400 font-medium text-sm flex items-center gap-2 group"
-                        >
-                          Sign In to Apply
-                          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            )}
-
-            {opportunities.length > 0 && (
-              <Link
-                href="/auth/register"
-                className="md:hidden flex items-center justify-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium mt-8"
-              >
-                View All Opportunities
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            )}
-          </div>
-        </section>
-
-      {/* AI-Powered Features */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
-              <Sparkles className="w-4 h-4 text-gold-500" />
-              <span className="text-white text-sm font-medium">Powered by Advanced AI</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
-              Smart Connections, Real Results
-            </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Our AI engine analyzes your goals, skills, and preferences to make perfect matches
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Target,
-                title: 'Smart Matching',
-                desc: 'AI finds your ideal co-founders, investors, or partners based on compatibility scores'
-              },
-              {
-                icon: Sparkles,
-                title: 'Profile Optimization',
-                desc: 'Get AI-powered suggestions to improve your profile and attract better opportunities'
-              },
-              {
-                icon: TrendingUp,
-                title: 'Opportunity Recommendations',
-                desc: 'Personalized feed of relevant opportunities, jobs, and connections'
-              },
-            ].map((feature, i) => (
-              <motion.div
-                key={i}
-                className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:border-gold-500/50 transition-all"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.15 }}
-                viewport={{ once: true }}
-              >
-                <feature.icon className="w-12 h-12 text-gold-500 mb-6" />
-                <h3 className="text-2xl font-bold text-white mb-3">{feature.title}</h3>
-                <p className="text-gray-300 leading-relaxed">{feature.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
+      {/* Closing CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-600 to-primary-700">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6">
             Ready to Connect Africa to Opportunity?
           </h2>
-          <p className="text-xl text-white/90 mb-10">
-            Join thousands of entrepreneurs, investors, and professionals building the future of African business
+          <p className="text-lg sm:text-xl text-white/90 mb-10">
+            Join the entrepreneurs, investors and professionals building the future of
+            African business.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -596,56 +304,17 @@ export default function HomePage() {
               <span>Create Free Account</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
+            <Link
+              href="/preview"
+              className="bg-white/10 backdrop-blur-sm border-2 border-white/40 text-white px-8 py-5 rounded-xl font-bold text-lg hover:bg-white/20 transition-all"
+            >
+              Browse the preview
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-navy-900 border-t border-white/10 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="mb-4">
-                <img
-                  src="/logo-afroconnect.png"
-                  alt="AfroConnect"
-                  className="h-16 w-auto object-contain"
-                />
-              </div>
-              <p className="text-gray-400 text-sm">
-                Global professional network connecting opportunities worldwide. Specializing in African markets with expertise that bridges continents.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-white font-semibold mb-4">Platform</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/auth/login" className="text-gray-400 hover:text-gold-500 transition-colors">Explore</Link></li>
-                <li><Link href="/auth/login" className="text-gray-400 hover:text-gold-500 transition-colors">Events</Link></li>
-                <li><Link href="/auth/login" className="text-gray-400 hover:text-gold-500 transition-colors">Opportunities</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-white font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/support" className="text-gray-400 hover:text-gold-500 transition-colors">Support</Link></li>
-                <li><Link href="/legal/privacy" className="text-gray-400 hover:text-gold-500 transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/legal/terms" className="text-gray-400 hover:text-gold-500 transition-colors">Terms of Service</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-white font-semibold mb-4">Get Started</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/auth/register" className="text-gray-400 hover:text-gold-500 transition-colors">Create Account</Link></li>
-                <li><Link href="/auth/login" className="text-gray-400 hover:text-gold-500 transition-colors">Sign In</Link></li>
-                <li><Link href="/auth/login" className="text-gray-400 hover:text-gold-500 transition-colors">Dashboard</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-white/10 pt-8 text-center text-gray-400 text-sm">
-            © {new Date().getFullYear()} AfroConnect. All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   )
 }

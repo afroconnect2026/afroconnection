@@ -30,43 +30,6 @@ import type { PlatformUserType, RoleCta } from '@/lib/marketing/content'
 
 type UserType = PlatformUserType
 
-const userTypes: {
-  value: UserType
-  icon: LucideIcon
-  title: string
-  desc: string
-  color: string
-}[] = [
-  {
-    value: 'entrepreneur',
-    icon: Rocket,
-    title: 'Entrepreneur',
-    desc: 'Startup seeking global investors and opportunities',
-    color: 'from-primary-500 to-primary-600',
-  },
-  {
-    value: 'investor',
-    icon: TrendingUp,
-    title: 'Investor',
-    desc: 'Discover high-potential opportunities worldwide',
-    color: 'from-gold-500 to-gold-600',
-  },
-  {
-    value: 'professional',
-    icon: Award,
-    title: 'Professional',
-    desc: 'Expert offering services worldwide',
-    color: 'from-blue-500 to-blue-600',
-  },
-  {
-    value: 'company',
-    icon: Building2,
-    title: 'Company',
-    desc: 'Hiring talent or seeking partnerships',
-    color: 'from-purple-500 to-purple-600',
-  },
-]
-
 const roleIcons: Record<RoleCta['icon'], LucideIcon> = {
   TrendingUp,
   Rocket,
@@ -80,17 +43,18 @@ function RegisterPageContent() {
   const supabase = createClient()
 
   /** Role specific entry point, e.g. /auth/register?role=investor */
-  const role = getRoleCta(searchParams.get('role'))
+  const urlRole = getRoleCta(searchParams.get('role'))
 
-  const [step, setStep] = useState(role ? 2 : 1)
-  const [userType, setUserType] = useState<UserType | null>(role?.userType ?? null)
+  const [step, setStep] = useState(urlRole ? 2 : 1)
+  const [selectedRole, setSelectedRole] = useState<RoleCta | null>(urlRole)
+  const [userType, setUserType] = useState<UserType | null>(urlRole?.userType ?? null)
   const [goalAnswer, setGoalAnswer] = useState('')
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const onboarding = userType ? getOnboardingQuestion(userType, role) : null
+  const onboarding = userType ? getOnboardingQuestion(userType, selectedRole) : null
   const totalSteps = 3
 
   const handleRegister = async () => {
@@ -116,7 +80,7 @@ function RegisterPageContent() {
             user_type: userType,
             // Role specific onboarding context. Persisted to `profiles` by the
             // handle_new_user trigger (see sql/add-role-onboarding-fields.sql).
-            signup_role: role?.slug ?? userType,
+            signup_role: selectedRole?.slug ?? userType,
             primary_goal: onboarding?.primaryGoal ?? null,
             onboarding_answer: goalAnswer || null,
           },
@@ -144,7 +108,7 @@ function RegisterPageContent() {
     }
   }
 
-  const RoleIcon = role ? roleIcons[role.icon] : null
+  const RoleIcon = selectedRole ? roleIcons[selectedRole.icon] : null
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-primary-900 flex items-center justify-center px-4 py-12">
@@ -166,18 +130,18 @@ function RegisterPageContent() {
       >
         {/* Header — tailored to the role the visitor arrived with */}
         <div className="text-center mb-8 px-4">
-          {role && RoleIcon && (
+          {selectedRole && RoleIcon && (
             <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 mb-4">
               <RoleIcon className="w-4 h-4 text-gold-500" />
-              <span className="text-white text-sm font-medium">{role.label}</span>
+              <span className="text-white text-sm font-medium">{selectedRole.label}</span>
             </div>
           )}
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-3">
-            {role ? role.headline : 'Join AfroConnect'}
+            {selectedRole ? selectedRole.headline : 'Join AfroConnect'}
           </h1>
           <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto">
-            {role
-              ? role.subheadline
+            {selectedRole
+              ? selectedRole.subheadline
               : 'Connect with entrepreneurs, investors, and opportunities worldwide'}
           </p>
         </div>
@@ -206,7 +170,7 @@ function RegisterPageContent() {
           ))}
         </div>
 
-        {/* Step 1: Choose member type */}
+        {/* Step 1: Choose your goal (role-specific entry points) */}
         {step === 1 && (
           <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -214,65 +178,64 @@ function RegisterPageContent() {
             className="space-y-6"
           >
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-white mb-2">I am a...</h2>
-              <p className="text-gray-400">Choose the option that best describes you</p>
+              <h2 className="text-2xl font-bold text-white mb-2">
+                What brings you to AfroConnect?
+              </h2>
+              <p className="text-gray-400">
+                Choose the path that matches your goal — we'll tailor everything from here
+              </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-5">
-              {userTypes.map((type) => (
-                <button
-                  key={type.value}
-                  onClick={() => {
-                    setUserType(type.value)
-                    setGoalAnswer('')
-                  }}
-                  className={`p-6 rounded-2xl border-2 transition-all text-left shadow-lg ${
-                    userType === type.value
-                      ? 'border-primary-500 bg-white scale-105'
-                      : 'border-gray-200 bg-white/95 hover:bg-white hover:scale-[1.02] hover:border-primary-300'
-                  }`}
-                >
-                  <div
-                    className={`w-16 h-16 bg-gradient-to-br ${type.color} rounded-xl flex items-center justify-center mb-4 shadow-lg`}
+              {ROLE_CTAS.map((roleOption) => {
+                const Icon = roleIcons[roleOption.icon]
+                const isSelected = selectedRole?.slug === roleOption.slug
+
+                return (
+                  <button
+                    key={roleOption.slug}
+                    onClick={() => {
+                      setSelectedRole(roleOption)
+                      setUserType(roleOption.userType)
+                      setGoalAnswer('')
+                      // Auto-advance after selection
+                      setTimeout(() => setStep(2), 300)
+                    }}
+                    className={`p-6 rounded-2xl border-2 transition-all text-left shadow-lg group ${
+                      isSelected
+                        ? 'border-primary-500 bg-white scale-105'
+                        : 'border-gray-200 bg-white/95 hover:bg-white hover:scale-[1.02] hover:border-primary-300'
+                    }`}
                   >
-                    <type.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{type.title}</h3>
-                  <p className="text-gray-600 text-sm">{type.desc}</p>
-                  {userType === type.value && (
-                    <div className="mt-3 flex items-center text-primary-600 text-sm font-semibold">
-                      <CheckCircle2 className="w-4 h-4 mr-1" />
-                      Selected
+                    <div
+                      className={`w-16 h-16 bg-gradient-to-br ${roleOption.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform`}
+                    >
+                      <Icon className="w-8 h-8 text-white" />
                     </div>
-                  )}
-                </button>
-              ))}
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      {roleOption.label}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">
+                      {roleOption.subheadline}
+                    </p>
+                    {isSelected && (
+                      <div className="mt-3 flex items-center text-primary-600 text-sm font-semibold">
+                        <CheckCircle2 className="w-4 h-4 mr-1" />
+                        Selected
+                      </div>
+                    )}
+                  </button>
+                )
+              })}
             </div>
 
-            <button
-              onClick={() => userType && setStep(2)}
-              disabled={!userType}
-              className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-4 rounded-xl font-bold text-lg hover:from-primary-700 hover:to-primary-800 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 mt-8"
-            >
-              <span>Continue</span>
-              <ArrowRight className="w-5 h-5" />
-            </button>
-
-            {/* Quick role entry points */}
-            <div className="pt-4 border-t border-white/10">
-              <p className="text-center text-gray-400 text-sm mb-3">Or start from a goal</p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {ROLE_CTAS.map((option) => (
-                  <Link
-                    key={option.slug}
-                    href={`/auth/register?role=${option.slug}`}
-                    className="text-xs sm:text-sm text-gray-200 bg-white/5 hover:bg-white/15 border border-white/15 rounded-full px-4 py-2 transition-all"
-                  >
-                    {option.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
+            <p className="text-center text-gray-400 text-sm mt-6">
+              Not sure?{' '}
+              <Link href="/preview" className="text-gold-400 hover:text-gold-300 font-semibold">
+                Browse the network first
+              </Link>{' '}
+              — no account needed
+            </p>
           </motion.div>
         )}
 
@@ -318,9 +281,9 @@ function RegisterPageContent() {
               ))}
             </div>
 
-            {role && (
+            {selectedRole && (
               <ul className="mt-8 space-y-2 bg-gray-50 border border-gray-200 rounded-xl p-5">
-                {role.benefits.map((benefit) => (
+                {selectedRole.benefits.map((benefit) => (
                   <li key={benefit} className="flex items-start text-sm text-gray-700">
                     <CheckCircle2 className="w-4 h-4 text-primary-600 mr-2 mt-0.5 shrink-0" />
                     {benefit}

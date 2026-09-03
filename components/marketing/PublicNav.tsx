@@ -9,7 +9,7 @@ const navItems: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'How It Works', href: '/how-it-works' },
   { label: 'Preview', href: '/preview' },
-  { label: 'Events', href: '/events' },
+  { label: 'Events', href: '/events/browse' },
   { label: 'About', href: '/about' },
 ]
 

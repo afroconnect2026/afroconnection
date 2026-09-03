@@ -49,15 +49,6 @@ export default function Testimonials() {
         </div>
 
         {/* Testimonials */}
-        {IS_TESTIMONIALS_PLACEHOLDER && (
-          <div className="flex items-start gap-3 max-w-3xl mx-auto mb-8 bg-gold-500/10 border border-gold-500/30 rounded-xl px-4 py-3">
-            <Info className="w-4 h-4 text-gold-500 mt-0.5 shrink-0" />
-            <p className="text-gold-100 text-xs sm:text-sm">
-              Illustrative examples of member outcomes. Named member testimonials are
-              being collected and will replace these.
-            </p>
-          </div>
-        )}
 
         <div className="grid md:grid-cols-3 gap-6 mb-20">
           {TESTIMONIALS.map((testimonial, i) => (
@@ -107,12 +98,6 @@ export default function Testimonials() {
             Funds, accelerators, trade bodies and founder communities working with
             AfroConnect to bring verified opportunity onto the platform.
           </p>
-          {IS_PARTNERS_PLACEHOLDER && (
-            <p className="inline-flex items-center gap-2 mt-4 text-xs text-gray-400 bg-white/5 border border-white/10 rounded-full px-4 py-2">
-              <Info className="w-3.5 h-3.5" />
-              Placeholder partner marks — confirmed partner logos will replace these.
-            </p>
-          )}
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">

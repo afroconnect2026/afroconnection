@@ -165,15 +165,6 @@ export default function AboutPage() {
             <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto">
               The founders and operators building AfroConnect.
             </p>
-            {IS_TEAM_PLACEHOLDER && (
-              <p className="inline-flex items-start gap-2 mt-5 text-xs sm:text-sm text-gray-300 bg-gold-500/10 border border-gold-500/30 rounded-xl px-4 py-3 text-left max-w-2xl">
-                <Info className="w-4 h-4 text-gold-500 mt-0.5 shrink-0" />
-                <span>
-                  Founder names, photos and profiles are being finalised. The roles below
-                  reflect how the team is structured today.
-                </span>
-              </p>
-            )}
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

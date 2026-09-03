@@ -6,7 +6,7 @@ import { Menu, X } from 'lucide-react'
 import SocialLinks from './SocialLinks'
 
 const navItems: { label: string; href: string }[] = [
-  { label: 'How It Works', href: '/#how-it-works' },
+  { label: 'How It Works', href: '/how-it-works' },
   { label: 'Preview', href: '/preview' },
   { label: 'Events', href: '/events' },
   { label: 'About', href: '/about' },

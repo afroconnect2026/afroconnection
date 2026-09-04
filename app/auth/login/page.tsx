@@ -150,12 +150,43 @@ function LoginForm() {
             </button>
           </div>
 
-          <p className="text-center text-gray-600 mt-8">
-            Don't have an account?{' '}
-            <Link href="/auth/register" className="text-primary-600 hover:text-primary-700 font-bold hover:underline">
-              Sign Up
+          <div className="mt-8 pt-6 border-t-2 border-gray-100">
+            <p className="text-center text-gray-700 font-semibold mb-4">
+              New to AfroConnect?
+            </p>
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              <Link
+                href="/auth/register?role=investor"
+                className="text-center py-2.5 px-3 bg-gradient-to-br from-gold-50 to-gold-100 border-2 border-gold-200 text-gold-800 rounded-lg hover:from-gold-100 hover:to-gold-200 hover:border-gold-300 transition-all text-sm font-semibold"
+              >
+                I'm an Investor
+              </Link>
+              <Link
+                href="/auth/register?role=founder"
+                className="text-center py-2.5 px-3 bg-gradient-to-br from-primary-50 to-primary-100 border-2 border-primary-200 text-primary-800 rounded-lg hover:from-primary-100 hover:to-primary-200 hover:border-primary-300 transition-all text-sm font-semibold"
+              >
+                I'm a Founder
+              </Link>
+              <Link
+                href="/auth/register?role=opportunities"
+                className="text-center py-2.5 px-3 bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 text-blue-800 rounded-lg hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 transition-all text-sm font-semibold"
+              >
+                Looking for Work
+              </Link>
+              <Link
+                href="/auth/register?role=funding"
+                className="text-center py-2.5 px-3 bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 text-purple-800 rounded-lg hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 transition-all text-sm font-semibold"
+              >
+                Need Funding
+              </Link>
+            </div>
+            <Link
+              href="/auth/register"
+              className="block text-center text-primary-600 hover:text-primary-700 font-semibold hover:underline text-sm"
+            >
+              Or choose your path →
             </Link>
-          </p>
+          </div>
         </div>
       </motion.div>
     </div>

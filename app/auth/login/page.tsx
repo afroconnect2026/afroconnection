@@ -4,9 +4,8 @@ import { useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import Logo from '@/components/Logo'
 import { motion } from 'framer-motion'
-import { Handshake, Mail, Lock, ArrowRight } from 'lucide-react'
+import { Mail, Lock, ArrowRight } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 function LoginForm() {
@@ -109,11 +108,6 @@ function LoginForm() {
                   className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl pl-12 pr-4 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors"
                   required
                 />
-              </div>
-              <div className="text-right mt-3">
-                <Link href="/auth/forgot-password" className="text-gold-600 hover:text-gold-700 font-medium text-sm hover:underline">
-                  Forgot password?
-                </Link>
               </div>
             </div>
 

@@ -18,7 +18,6 @@ import { createClient } from '@/lib/supabase/client'
 import {
   ANONYMISED_DEALS,
   SAMPLE_EVENTS,
-  SAMPLE_MATCHES,
   SAMPLE_OPPORTUNITIES,
   SUCCESS_STORIES,
 } from '@/lib/marketing/content'
@@ -456,59 +455,6 @@ export default function PreviewShowcase({
                       Unlock full details
                       <ArrowRight className="w-4 h-4" />
                     </Link>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* ------------------------------------------------------ */}
-          {/* Example matches                                        */}
-          {/* ------------------------------------------------------ */}
-          <section
-            id="preview-matches"
-            className="py-20 px-4 sm:px-6 lg:px-8 scroll-mt-20 bg-white/5 backdrop-blur-sm"
-          >
-            <div className="max-w-5xl mx-auto">
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-4">
-                  <Sparkles className="w-3.5 h-3.5 text-gold-500" />
-                  <span className="text-white text-xs font-medium">
-                    Examples of potential matches
-                  </span>
-                </div>
-                <h2 className="text-3xl sm:text-4xl font-display font-bold text-white mb-3">
-                  The introductions we would make for you
-                </h2>
-                <p className="text-gray-300">
-                  Build a profile and these become real people you can message.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                {SAMPLE_MATCHES.map((match, i) => (
-                  <motion.div
-                    key={match.reason}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.08 }}
-                    viewport={{ once: true }}
-                    className="grid md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-6 items-center bg-navy-900/40 border border-white/10 rounded-2xl p-6"
-                  >
-                    <div className="text-sm text-gray-200">{match.personA}</div>
-                    <div className="flex md:flex-col items-center gap-2 justify-self-start md:justify-self-center">
-                      <div className="w-16 h-16 rounded-full border-4 border-gold-500/70 flex items-center justify-center bg-navy-900">
-                        <span className="text-gold-500 font-bold text-lg">{match.score}%</span>
-                      </div>
-                      <span className="text-[11px] uppercase tracking-wide text-gray-500">
-                        Compatibility
-                      </span>
-                    </div>
-                    <div className="text-sm text-gray-200 md:text-right">{match.personB}</div>
-                    <p className="md:col-span-3 text-xs text-gray-400 border-t border-white/10 pt-3">
-                      <span className="text-primary-400 font-semibold">Why: </span>
-                      {match.reason}
-                    </p>
                   </motion.div>
                 ))}
               </div>

@@ -12,7 +12,6 @@ const anchors: { label: string; href: string }[] = [
   { label: 'Events', href: '#preview-events' },
   { label: 'Opportunities', href: '#preview-opportunities' },
   { label: 'Investment deals', href: '#preview-deals' },
-  { label: 'Example matches', href: '#preview-matches' },
   { label: 'Success stories', href: '#preview-stories' },
 ]
 

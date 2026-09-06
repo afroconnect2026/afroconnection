@@ -7,7 +7,6 @@ import PublicNav from '@/components/marketing/PublicNav'
 import PublicFooter from '@/components/marketing/PublicFooter'
 import PreviewShowcase from '@/components/marketing/PreviewShowcase'
 import RoleCtas from '@/components/marketing/RoleCtas'
-import AiExplained from '@/components/marketing/AiExplained'
 
 const anchors: { label: string; href: string }[] = [
   { label: 'Events', href: '#preview-events' },
@@ -70,8 +69,6 @@ export default function PreviewPage() {
       </section>
 
       <PreviewShowcase variant="full" limit={4} />
-
-      <AiExplained />
 
       <div className="bg-white/5 backdrop-blur-sm">
         <RoleCtas

@@ -22,7 +22,6 @@ import PublicNav from '@/components/marketing/PublicNav'
 import PublicFooter from '@/components/marketing/PublicFooter'
 import HowItWorks from '@/components/marketing/HowItWorks'
 import RoleCtas from '@/components/marketing/RoleCtas'
-import AiExplained from '@/components/marketing/AiExplained'
 import Testimonials from '@/components/marketing/Testimonials'
 import PreviewShowcase from '@/components/marketing/PreviewShowcase'
 import { PLATFORM_FOCUS, TAGLINE_SUPPORT } from '@/lib/marketing/content'
@@ -275,9 +274,6 @@ export default function HomePage() {
 
       {/* 6. Public preview — value before sign up */}
       <PreviewShowcase variant="landing" limit={4} />
-
-      {/* 3. Practical AI */}
-      <AiExplained />
 
       {/* 2. Testimonials, trust indicators and partners */}
       <Testimonials />

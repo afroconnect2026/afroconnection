@@ -46,7 +46,7 @@ export default function HowItWorksPage() {
           >
             <Link
               href="/auth/register"
-              className="inline-flex items-center gap-2 bg-gradient-gold text-navy-900 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-gold-500/50 transition-all"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-gold-400 to-gold-500 text-navy-900 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-gold-500/50 hover:scale-105 transition-all shadow-xl"
             >
               <span>Get Started Free</span>
               <ArrowRight className="w-5 h-5" />
@@ -79,7 +79,7 @@ export default function HowItWorksPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/auth/register"
-              className="bg-gradient-gold text-navy-900 px-10 py-5 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-gold-500/50 transition-all flex items-center space-x-2"
+              className="bg-gradient-to-r from-gold-400 to-gold-500 text-navy-900 px-10 py-5 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-gold-500/50 hover:scale-105 transition-all flex items-center space-x-2 shadow-xl"
             >
               <UserPlus className="w-5 h-5" />
               <span>Create Free Account</span>
@@ -87,7 +87,7 @@ export default function HowItWorksPage() {
             </Link>
             <Link
               href="/preview"
-              className="bg-white/10 backdrop-blur-sm border-2 border-white/40 text-white px-8 py-5 rounded-xl font-bold text-lg hover:bg-white/20 transition-all"
+              className="bg-white text-navy-900 px-8 py-5 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-xl"
             >
               Browse the Preview
             </Link>

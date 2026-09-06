@@ -37,7 +37,11 @@ const pillarIcons: Record<PlatformPillar['icon'], LucideIcon> = {
   Building2,
 }
 
-export default function HowItWorks() {
+interface HowItWorksProps {
+  variant?: 'compact' | 'full'
+}
+
+export default function HowItWorks({ variant = 'full' }: HowItWorksProps) {
   return (
     <section
       id="how-it-works"
@@ -45,10 +49,6 @@ export default function HowItWorks() {
     >
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
-          <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
-            <Handshake className="w-4 h-4 text-gold-500" />
-            <span className="text-white text-sm font-medium">How It Works</span>
-          </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
             From sign up to signed deal
           </h2>
@@ -100,8 +100,21 @@ export default function HowItWorks() {
           </ol>
         </div>
 
+        {variant === 'compact' && (
+          <div className="mt-10 text-center">
+            <Link
+              href="/how-it-works"
+              className="inline-flex items-center gap-2 text-gold-500 hover:text-gold-400 font-semibold transition-colors"
+            >
+              See the full journey
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+        )}
+
         {/* Platform focus statement */}
-        <div className="mt-16 bg-gradient-to-br from-white/10 to-white/5 border border-white/15 rounded-3xl p-8 sm:p-10">
+        {variant === 'full' && (
+          <div className="mt-16 bg-gradient-to-br from-white/10 to-white/5 border border-white/15 rounded-3xl p-8 sm:p-10">
           <div className="text-center mb-10">
             <p className="text-gold-500 font-semibold uppercase tracking-wider text-xs sm:text-sm mb-3">
               What AfroConnect is for
@@ -142,6 +155,7 @@ export default function HowItWorks() {
             </Link>
           </div>
         </div>
+        )}
       </div>
     </section>
   )

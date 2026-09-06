@@ -189,8 +189,8 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      {/* 1. How It Works + platform focus */}
-      <HowItWorks />
+      {/* 1. How It Works teaser */}
+      <HowItWorks variant="compact" />
 
       {/* Who We Serve */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">

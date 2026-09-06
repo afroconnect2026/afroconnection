@@ -71,6 +71,7 @@ export default function PreviewPage() {
 
       <div className="bg-white/5 backdrop-blur-sm">
         <RoleCtas
+          variant="compact"
           heading="Ready to see the full picture?"
           subheading="Pick your path and your onboarding, matches and feed are tailored from the first click."
         />

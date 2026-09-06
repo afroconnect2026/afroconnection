@@ -203,6 +203,7 @@ export default function AboutPage() {
       {/* Role CTAs */}
       <div className="bg-white/5 backdrop-blur-sm">
         <RoleCtas
+          variant="compact"
           heading="Join the network"
           subheading="Tell us who you are and we will tailor your onboarding, matches and feed from the first click."
         />

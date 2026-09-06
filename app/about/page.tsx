@@ -13,7 +13,6 @@ import {
 } from 'lucide-react'
 import PublicNav from '@/components/marketing/PublicNav'
 import PublicFooter from '@/components/marketing/PublicFooter'
-import RoleCtas from '@/components/marketing/RoleCtas'
 import SocialLinks from '@/components/marketing/SocialLinks'
 import {
   IS_TEAM_PLACEHOLDER,
@@ -220,15 +219,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* Role CTAs */}
-      <div className="bg-white/5 backdrop-blur-sm">
-        <RoleCtas
-          variant="compact"
-          heading="Join the network"
-          subheading="Tell us who you are and we will tailor your onboarding, matches and feed from the first click."
-        />
-      </div>
 
       {/* Closing CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-600 to-primary-700">

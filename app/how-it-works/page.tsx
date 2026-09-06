@@ -7,7 +7,6 @@ import PublicNav from '@/components/marketing/PublicNav'
 import PublicFooter from '@/components/marketing/PublicFooter'
 import HowItWorks from '@/components/marketing/HowItWorks'
 import AiExplained from '@/components/marketing/AiExplained'
-import RoleCtas from '@/components/marketing/RoleCtas'
 
 export default function HowItWorksPage() {
   return (
@@ -60,11 +59,6 @@ export default function HowItWorksPage() {
 
       {/* AI Matching Explanation */}
       <AiExplained />
-
-      {/* Role-Based CTAs */}
-      <div className="bg-white/5 backdrop-blur-sm">
-        <RoleCtas variant="compact" />
-      </div>
 
       {/* Final CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">

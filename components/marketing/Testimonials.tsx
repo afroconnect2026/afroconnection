@@ -81,38 +81,57 @@ export default function Testimonials() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-          {PARTNERS.map((partner, i) => (
-            <motion.div
-              key={partner.name}
-              className="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col items-center text-center hover:bg-white/10 hover:border-gold-500/40 transition-all hover:grayscale-0"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.05 }}
-              viewport={{ once: true }}
-            >
-              {partner.logoUrl ? (
-                <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-3 bg-white p-2">
-                  <img
-                    src={partner.logoUrl}
-                    alt={`${partner.name} logo`}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              ) : (
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-900 font-bold mb-3">
-                  {partner.initials}
-                </div>
-              )}
-              <div className="text-white text-xs font-semibold leading-tight mb-1">
-                {partner.name}
+            {/* Auto-scrolling carousel */}
+            <div className="relative overflow-hidden">
+              <div className="flex gap-6 animate-scroll hover:[animation-play-state:paused]">
+                {/* Duplicate partners array for infinite scroll */}
+                {[...PARTNERS, ...PARTNERS, ...PARTNERS].map((partner, i) => (
+                  <motion.div
+                    key={`${partner.name}-${i}`}
+                    className="min-w-[160px] bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col items-center text-center hover:bg-white/10 hover:border-gold-500/40 transition-all hover:grayscale-0"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: (i % PARTNERS.length) * 0.05 }}
+                    viewport={{ once: true }}
+                  >
+                    {partner.logoUrl ? (
+                      <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-3 bg-white p-2">
+                        <img
+                          src={partner.logoUrl}
+                          alt={`${partner.name} logo`}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-900 font-bold mb-3">
+                        {partner.initials}
+                      </div>
+                    )}
+                    <div className="text-white text-xs font-semibold leading-tight mb-1">
+                      {partner.name}
+                    </div>
+                    <div className="text-gray-500 text-[11px] uppercase tracking-wide">
+                      {partner.category}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
-              <div className="text-gray-500 text-[11px] uppercase tracking-wide">
-                {partner.category}
-              </div>
-            </motion.div>
-          ))}
             </div>
+
+            <style jsx>{`
+              @keyframes scroll {
+                0% {
+                  transform: translateX(0);
+                }
+                100% {
+                  transform: translateX(calc(-100% / 3));
+                }
+              }
+
+              .animate-scroll {
+                animation: scroll 30s linear infinite;
+              }
+            `}</style>
           </>
         )}
       </div>

@@ -7,7 +7,6 @@ import {
   IS_TESTIMONIALS_PLACEHOLDER,
   PARTNERS,
   TESTIMONIALS,
-  TRUST_INDICATORS,
 } from '@/lib/marketing/content'
 
 export default function Testimonials() {
@@ -25,27 +24,6 @@ export default function Testimonials() {
           <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
             Every profile is checked before it can match. Here is what members get out of it.
           </p>
-        </div>
-
-        {/* Trust indicators */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-16">
-          {TRUST_INDICATORS.map((indicator, i) => (
-            <motion.div
-              key={indicator.label}
-              className="bg-navy-900/40 border border-white/10 rounded-2xl p-6 text-center"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06 }}
-              viewport={{ once: true }}
-            >
-              <div className="text-3xl sm:text-4xl font-bold text-gold-500 mb-2">
-                {indicator.value}
-              </div>
-              <div className="text-xs sm:text-sm text-gray-300 leading-snug">
-                {indicator.label}
-              </div>
-            </motion.div>
-          ))}
         </div>
 
         {/* Testimonials */}

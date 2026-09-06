@@ -18,6 +18,7 @@ import SocialLinks from '@/components/marketing/SocialLinks'
 import {
   IS_TEAM_PLACEHOLDER,
   MISSION_STATEMENT,
+  OUR_STORY,
   OUR_VALUES,
   PLATFORM_FOCUS,
   TAGLINE,
@@ -89,6 +90,35 @@ export default function AboutPage() {
               {MISSION_STATEMENT}
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Our Story */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
+              Why We Built This
+            </h2>
+            <p className="text-gray-300 text-base sm:text-lg">
+              The gap AfroConnect exists to close.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {OUR_STORY.map((paragraph, i) => (
+              <motion.p
+                key={i}
+                className="text-gray-200 text-base sm:text-lg leading-relaxed"
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.06 }}
+                viewport={{ once: true }}
+              >
+                {paragraph}
+              </motion.p>
+            ))}
+          </div>
         </div>
       </section>
 

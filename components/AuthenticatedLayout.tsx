@@ -8,6 +8,7 @@ import Logo from '@/components/Logo'
 import NotificationBell from '@/components/NotificationBell'
 import SocialLinks from '@/components/marketing/SocialLinks'
 import {
+  Home,
   LayoutDashboard,
   Search,
   MessageCircle,
@@ -27,6 +28,7 @@ interface AuthenticatedLayoutProps {
 }
 
 const navigation = [
+  { name: 'Home', href: '/', icon: Home },
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Explore', href: '/explore', icon: Search },
   { name: 'Messages', href: '/messages', icon: MessageCircle },

@@ -422,15 +422,13 @@ export const TESTIMONIALS: Testimonial[] = [
  * to /public/partners. Placeholder names are intentionally generic so the
  * live site never implies an endorsement that does not exist.
  */
-export const IS_PARTNERS_PLACEHOLDER = true
+export const IS_PARTNERS_PLACEHOLDER = false
 
 export const PARTNERS: Partner[] = [
-  { name: 'Pan-African Growth Fund', category: 'Investment', initials: 'PG' },
-  { name: 'Continental Startup Hub', category: 'Accelerator', initials: 'CS' },
-  { name: 'Diaspora Capital Network', category: 'Investment', initials: 'DC' },
-  { name: 'Africa Trade Alliance', category: 'Trade body', initials: 'AT' },
-  { name: 'Sahel Innovation Lab', category: 'Innovation', initials: 'SI' },
-  { name: 'East Africa Founders Guild', category: 'Community', initials: 'EF' },
+  { name: 'Haraka', category: 'Food Delivery & Courier', initials: 'HR' },
+  { name: 'Africa Cyber Trust', category: 'Cybersecurity', initials: 'AC' },
+  { name: 'Nilus', category: 'Fintech', initials: 'NL' },
+  { name: 'Lifeline', category: 'Healthcare', initials: 'LL' },
 ]
 
 export const TRUST_INDICATORS: { label: string; value: string }[] = [

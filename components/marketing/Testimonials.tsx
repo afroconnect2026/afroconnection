@@ -85,15 +85,25 @@ export default function Testimonials() {
           {PARTNERS.map((partner, i) => (
             <motion.div
               key={partner.name}
-              className="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col items-center text-center hover:bg-white/10 hover:border-gold-500/40 transition-all grayscale hover:grayscale-0"
+              className="bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col items-center text-center hover:bg-white/10 hover:border-gold-500/40 transition-all hover:grayscale-0"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.05 }}
               viewport={{ once: true }}
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-900 font-bold mb-3">
-                {partner.initials}
-              </div>
+              {partner.logoUrl ? (
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-3 bg-white p-2">
+                  <img
+                    src={partner.logoUrl}
+                    alt={`${partner.name} logo`}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-900 font-bold mb-3">
+                  {partner.initials}
+                </div>
+              )}
               <div className="text-white text-xs font-semibold leading-tight mb-1">
                 {partner.name}
               </div>

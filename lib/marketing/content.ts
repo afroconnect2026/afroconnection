@@ -67,6 +67,7 @@ export interface Partner {
   name: string
   category: string
   initials: string
+  logoUrl?: string
 }
 
 export interface TeamMember {
@@ -425,10 +426,11 @@ export const TESTIMONIALS: Testimonial[] = [
 export const IS_PARTNERS_PLACEHOLDER = false
 
 export const PARTNERS: Partner[] = [
-  { name: 'Haraka', category: 'Food Delivery & Courier', initials: 'HR' },
-  { name: 'Africa Cyber Trust', category: 'Cybersecurity', initials: 'AC' },
-  { name: 'Nilus', category: 'Fintech', initials: 'NL' },
-  { name: 'Lifeline', category: 'Healthcare', initials: 'LL' },
+  { name: 'Netkigali', category: 'Technology', initials: 'NK', logoUrl: '/partners/netkigali.png' },
+  { name: 'East African Community', category: 'Regional Body', initials: 'EAC', logoUrl: '/partners/eac.png' },
+  { name: 'Haraka', category: 'Food Delivery & Courier', initials: 'HR', logoUrl: '/partners/haraka.png' },
+  { name: 'Africa Cyber Trust', category: 'Cybersecurity', initials: 'AC', logoUrl: '/partners/africa-cyber-trust.png' },
+  { name: 'RobTech', category: 'Technology', initials: 'RT', logoUrl: '/partners/robtech.png' },
 ]
 
 export const TRUST_INDICATORS: { label: string; value: string }[] = [

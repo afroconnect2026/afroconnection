@@ -167,18 +167,8 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {IS_TEAM_PLACEHOLDER && (
-            <div className="mb-8 mx-auto max-w-2xl">
-              <div className="flex items-start gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4">
-                <Info className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                <p className="text-sm text-blue-800">
-                  <strong>Team profiles coming soon</strong> — Full bios and photos of the founding team will be added here.
-                </p>
-              </div>
-            </div>
-          )}
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {!IS_TEAM_PLACEHOLDER && (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {TEAM.map((member, i) => (
               <motion.div
                 key={`${member.name}-${i}`}
@@ -219,7 +209,8 @@ export default function AboutPage() {
                 )}
               </motion.div>
             ))}
-          </div>
+            </div>
+          )}
 
           <div className="mt-12 text-center">
             <p className="text-gray-300 mb-4">Follow AfroConnect</p>

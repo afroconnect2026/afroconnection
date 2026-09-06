@@ -27,18 +27,8 @@ export default function Testimonials() {
         </div>
 
         {/* Testimonials */}
-        {IS_TESTIMONIALS_PLACEHOLDER && (
-          <div className="mb-6 mx-auto max-w-2xl">
-            <div className="flex items-start gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4">
-              <Info className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-              <p className="text-sm text-blue-800">
-                <strong>Illustrative examples</strong> — Real member testimonials will replace these as the network grows.
-              </p>
-            </div>
-          </div>
-        )}
-
-        <div className="grid md:grid-cols-3 gap-6 mb-20">
+        {!IS_TESTIMONIALS_PLACEHOLDER && (
+          <div className="grid md:grid-cols-3 gap-6 mb-20">
           {TESTIMONIALS.map((testimonial, i) => (
             <motion.figure
               key={testimonial.quote}
@@ -76,30 +66,22 @@ export default function Testimonials() {
             </motion.figure>
           ))}
         </div>
-
-        {/* Partners */}
-        <div className="text-center mb-8">
-          <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mb-3">
-            Our growing ecosystem
-          </h3>
-          <p className="text-gray-300 max-w-2xl mx-auto">
-            Funds, accelerators, trade bodies and founder communities working with
-            AfroConnect to bring verified opportunity onto the platform.
-          </p>
-        </div>
-
-        {IS_PARTNERS_PLACEHOLDER && (
-          <div className="mb-6 mx-auto max-w-2xl">
-            <div className="flex items-start gap-3 bg-blue-50 border border-blue-200 rounded-xl p-4">
-              <Info className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-              <p className="text-sm text-blue-800">
-                <strong>Illustrative examples</strong> — Confirmed partnerships will be announced here as agreements are finalized.
-              </p>
-            </div>
-          </div>
         )}
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        {/* Partners */}
+        {!IS_PARTNERS_PLACEHOLDER && (
+          <>
+            <div className="text-center mb-8">
+              <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mb-3">
+                Our growing ecosystem
+              </h3>
+              <p className="text-gray-300 max-w-2xl mx-auto">
+                Funds, accelerators, trade bodies and founder communities working with
+                AfroConnect to bring verified opportunity onto the platform.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {PARTNERS.map((partner, i) => (
             <motion.div
               key={partner.name}
@@ -120,7 +102,9 @@ export default function Testimonials() {
               </div>
             </motion.div>
           ))}
-        </div>
+            </div>
+          </>
+        )}
       </div>
     </section>
   )

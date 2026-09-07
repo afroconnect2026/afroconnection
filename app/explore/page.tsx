@@ -278,11 +278,11 @@ export default function ExplorePage() {
 
                     {/* Action Button */}
                     <button
-                      onClick={() => handleStartConversation(profile.id)}
+                      onClick={() => router.push(`/profile/${profile.id}`)}
                       className="w-full bg-primary-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2"
                     >
                       <MessageCircle className="h-4 w-4" />
-                      <span>Send Message</span>
+                      <span>View Profile</span>
                     </button>
                   </div>
                 </motion.div>

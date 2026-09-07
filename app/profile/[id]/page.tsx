@@ -162,7 +162,7 @@ export default function PublicProfilePage() {
 
   const handleMessage = async () => {
     if (connectionStatus !== 'accepted') {
-      toast.error('You must be connected to send messages')
+      toast.error('You must be connected to open a dealroom')
       return
     }
 
@@ -193,8 +193,8 @@ export default function PublicProfilePage() {
 
       router.push(`/messages?conversation=${newConvo.id}`)
     } catch (error: any) {
-      console.error('Error starting conversation:', error)
-      toast.error('Failed to start conversation')
+      console.error('Error opening dealroom:', error)
+      toast.error('Failed to open dealroom')
     }
   }
 
@@ -315,7 +315,7 @@ export default function PublicProfilePage() {
                       className="flex items-center space-x-2 bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors"
                     >
                       <MessageCircle className="h-5 w-5" />
-                      <span>Send Message</span>
+                      <span>Open Dealroom</span>
                     </button>
                     <button
                       onClick={handleRemoveConnection}

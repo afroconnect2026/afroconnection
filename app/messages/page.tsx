@@ -59,7 +59,7 @@ function MessagesPageContent() {
               <div className="p-4 border-b border-gray-200">
                 <h1 className="text-2xl font-bold text-navy-900 flex items-center space-x-2">
                   <MessageCircle className="h-6 w-6 text-primary-600" />
-                  <span>Messages</span>
+                  <span>Dealroom</span>
                 </h1>
               </div>
               <ConversationsList
@@ -80,8 +80,8 @@ function MessagesPageContent() {
                 <div className="flex-1 flex items-center justify-center text-gray-400">
                   <div className="text-center">
                     <MessageCircle className="h-16 w-16 mx-auto mb-4 text-gray-300" />
-                    <p className="text-lg font-medium">Select a conversation to start messaging</p>
-                    <p className="text-sm mt-2">Choose from your conversations on the left</p>
+                    <p className="text-lg font-medium">Select a dealroom to start collaborating</p>
+                    <p className="text-sm mt-2">Choose from your dealrooms on the left</p>
                   </div>
                 </div>
               )}

@@ -158,7 +158,7 @@ export default function ConnectionsPage() {
 
       router.push(`/messages?conversation=${newConvo.id}`)
     } catch (error) {
-      toast.error('Failed to start conversation')
+      toast.error('Failed to open dealroom')
     }
   }
 
@@ -221,7 +221,7 @@ export default function ConnectionsPage() {
               className="flex items-center space-x-2 bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
             >
               <MessageCircle className="h-4 w-4" />
-              <span>Message</span>
+              <span>Dealroom</span>
             </button>
             <button
               onClick={() => handleRemove(connection.id)}

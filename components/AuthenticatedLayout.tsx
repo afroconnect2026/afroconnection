@@ -33,7 +33,7 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Explore', href: '/explore', icon: Search },
   { name: 'Connections', href: '/connections', icon: Users },
-  { name: 'Messages', href: '/messages', icon: MessageCircle },
+  { name: 'Dealroom', href: '/messages', icon: MessageCircle },
   { name: 'Opportunities', href: '/opportunities', icon: Briefcase },
   { name: 'Events', href: '/events', icon: Calendar },
   { name: 'Profile', href: '/profile', icon: User },
@@ -159,7 +159,7 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
               {navigation.slice(0, 5).map((item) => {
                 const Icon = item.icon
                 const isActive = pathname === item.href
-                const showBadge = item.name === 'Messages' && unreadCount > 0
+                const showBadge = item.name === 'Dealroom' && unreadCount > 0
                 return (
                   <Link
                     key={item.name}
@@ -218,7 +218,7 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
               {navigation.map((item) => {
                 const Icon = item.icon
                 const isActive = pathname === item.href
-                const showBadge = item.name === 'Messages' && unreadCount > 0
+                const showBadge = item.name === 'Dealroom' && unreadCount > 0
                 return (
                   <Link
                     key={item.name}

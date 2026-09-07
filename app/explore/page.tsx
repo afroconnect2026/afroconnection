@@ -151,11 +151,11 @@ export default function ExplorePage() {
 
       if (error) throw error
 
-      toast.success('Conversation started!')
+      toast.success('Dealroom opened!')
       router.push(`/messages?conversation=${newConvo.id}`)
     } catch (error: any) {
-      console.error('Error starting conversation:', error)
-      toast.error(error.message || 'Failed to start conversation')
+      console.error('Error opening dealroom:', error)
+      toast.error(error.message || 'Failed to open dealroom')
     }
   }
 

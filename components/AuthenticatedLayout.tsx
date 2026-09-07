@@ -155,8 +155,8 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-4">
-              {navigation.slice(0, 5).map((item) => {
+            <div className="hidden md:flex items-center space-x-2">
+              {navigation.slice(0, 7).map((item) => {
                 const Icon = item.icon
                 const isActive = pathname === item.href
                 const showBadge = item.name === 'Dealroom' && unreadCount > 0
@@ -164,13 +164,13 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`relative flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    className={`relative flex items-center space-x-1.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                       isActive
                         ? 'bg-primary-50 text-primary-700'
                         : 'text-gray-700 hover:bg-gray-100'
                     }`}
                   >
-                    <Icon className="h-5 w-5" />
+                    <Icon className="h-4 w-4" />
                     <span>{item.name}</span>
                     {showBadge && (
                       <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">

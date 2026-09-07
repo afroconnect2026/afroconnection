@@ -1,19 +1,17 @@
-// AI helper functions using Anthropic Claude API
+// AI helper functions using Google Gemini API (100% FREE!)
 // Safe for server-side use only (API key required)
 
-import Anthropic from '@anthropic-ai/sdk'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
-// Initialize Anthropic client (server-side only)
-const getAnthropicClient = () => {
-  const apiKey = process.env.ANTHROPIC_API_KEY
+// Initialize Gemini client (server-side only)
+const getGeminiClient = () => {
+  const apiKey = process.env.GOOGLE_GEMINI_API_KEY
 
   if (!apiKey) {
-    throw new Error('ANTHROPIC_API_KEY not configured. Add it to your .env.local file.')
+    throw new Error('GOOGLE_GEMINI_API_KEY not configured. Add it to your .env.local file.')
   }
 
-  return new Anthropic({
-    apiKey: apiKey,
-  })
+  return new GoogleGenerativeAI(apiKey)
 }
 
 /**
@@ -32,7 +30,8 @@ export async function generateEnhancedBio(
     experience?: string
   }
 ): Promise<string> {
-  const client = getAnthropicClient()
+  const genAI = getGeminiClient()
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
   const prompt = `You are a professional bio writer for AfroConnect, a professional networking platform for African entrepreneurs, investors, and professionals.
 
@@ -55,22 +54,11 @@ Guidelines:
 - For professionals: highlight expertise and what they offer
 - For companies: highlight mission and what they do
 
-Return ONLY the enhanced bio text, nothing else.`
+Return ONLY the enhanced bio text, nothing else. No explanations, no quotes, just the bio.`
 
-  const message = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 300,
-    messages: [
-      {
-        role: 'user',
-        content: prompt
-      }
-    ]
-  })
-
-  const bioText = message.content[0].type === 'text'
-    ? message.content[0].text
-    : userInput
+  const result = await model.generateContent(prompt)
+  const response = result.response
+  const bioText = response.text()
 
   return bioText.trim()
 }
@@ -95,7 +83,8 @@ export async function generateConversationStarters(
     industry?: string
   }
 ): Promise<string[]> {
-  const client = getAnthropicClient()
+  const genAI = getGeminiClient()
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
   const prompt = `You are helping two professionals on AfroConnect start a meaningful conversation.
 
@@ -114,26 +103,17 @@ Task: Generate 3 conversation starters that would help them start a meaningful p
 - Be professional but friendly
 - Focus on collaboration opportunities
 
-Return the conversation starters as a JSON array of strings, nothing else. Format:
+Return ONLY a JSON array of 3 strings, nothing else. Format:
 ["Starter 1", "Starter 2", "Starter 3"]`
 
-  const message = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 500,
-    messages: [
-      {
-        role: 'user',
-        content: prompt
-      }
-    ]
-  })
+  const result = await model.generateContent(prompt)
+  const response = result.response
+  const responseText = response.text()
 
   try {
-    const responseText = message.content[0].type === 'text'
-      ? message.content[0].text
-      : '[]'
-
-    const starters = JSON.parse(responseText)
+    // Clean up response (remove markdown code blocks if present)
+    const cleaned = responseText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+    const starters = JSON.parse(cleaned)
     return Array.isArray(starters) ? starters : []
   } catch (error) {
     console.error('Error parsing conversation starters:', error)
@@ -170,7 +150,8 @@ export async function analyzeOpportunityMatch(
   missingSkills: string[]
   recommendation: string
 }> {
-  const client = getAnthropicClient()
+  const genAI = getGeminiClient()
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
   const prompt = `You are analyzing how well a user matches an opportunity on AfroConnect.
 
@@ -186,7 +167,7 @@ Opportunity:
 - Description: ${opportunity.description}
 ${opportunity.requirements ? `- Requirements: ${opportunity.requirements}` : ''}
 
-Task: Analyze the match and return a JSON object with:
+Task: Analyze the match and return ONLY a JSON object with:
 {
   "score": <number 0-100>,
   "reasons": ["reason1", "reason2", "reason3"],
@@ -194,25 +175,16 @@ Task: Analyze the match and return a JSON object with:
   "recommendation": "one sentence recommendation"
 }
 
-Be honest and helpful. Return ONLY the JSON object, nothing else.`
+Be honest and helpful. Return ONLY the JSON object, no markdown formatting, no explanations.`
 
-  const message = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 600,
-    messages: [
-      {
-        role: 'user',
-        content: prompt
-      }
-    ]
-  })
+  const result = await model.generateContent(prompt)
+  const response = result.response
+  const responseText = response.text()
 
   try {
-    const responseText = message.content[0].type === 'text'
-      ? message.content[0].text
-      : '{}'
-
-    const analysis = JSON.parse(responseText)
+    // Clean up response (remove markdown code blocks if present)
+    const cleaned = responseText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+    const analysis = JSON.parse(cleaned)
     return {
       score: analysis.score || 0,
       reasons: analysis.reasons || [],

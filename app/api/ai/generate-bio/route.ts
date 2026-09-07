@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { generateEnhancedBio } from '@/lib/ai/anthropic'
+import { generateEnhancedBio } from '@/lib/ai/gemini'
 
 export const runtime = 'edge'
 

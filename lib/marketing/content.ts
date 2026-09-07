@@ -429,7 +429,7 @@ export const PARTNERS: Partner[] = [
   { name: 'Netkigali', category: 'Technology', initials: 'NK', logoUrl: '/partners/netkigali.png' },
   { name: 'East African Community', category: 'Regional Body', initials: 'EAC', logoUrl: '/partners/eac.png' },
   { name: 'Haraka', category: 'Food Delivery & Courier', initials: 'HR', logoUrl: '/partners/haraka.png' },
-  { name: 'Africa Cyber Trust', category: 'Cybersecurity', initials: 'AC', logoUrl: '/partners/africa-cyber-trust.png' },
+  { name: 'Africa Cyber Trust', category: 'Cybersecurity', initials: 'BK', logoUrl: '/partners/africa-cyber-trust.png' },
   { name: 'RobTech', category: 'Technology', initials: 'RT', logoUrl: '/partners/robtech.png' },
 ]
 
@@ -486,15 +486,15 @@ export const OUR_VALUES: { title: string; description: string }[] = [
  * While `IS_TEAM_PLACEHOLDER` is true the page shows a "profiles being finalised"
  * note instead of presenting placeholder people as real.
  */
-export const IS_TEAM_PLACEHOLDER = true
+export const IS_TEAM_PLACEHOLDER = false
 
 export const TEAM: TeamMember[] = [
   {
-    name: 'Co-Founder & Chief Executive',
+    name: 'BIAR KON',
     role: 'Vision, partnerships and network growth',
     bio: 'Leads AfroConnect’s vision and partnerships, working with funds, accelerators and trade bodies across the continent to bring verified opportunity onto the platform.',
     location: 'Africa · Remote',
-    initials: 'AC',
+    initials: 'BK',
     photoUrl: null,
     linkedinUrl: null,
   },
@@ -503,7 +503,7 @@ export const TEAM: TeamMember[] = [
     role: 'Product, matching engine and platform',
     bio: 'Owns the matching engine and platform architecture — the verification, scoring and messaging systems that turn a directory into a network that actually introduces people.',
     location: 'Africa · Remote',
-    initials: 'AC',
+    initials: 'BK',
     photoUrl: null,
     linkedinUrl: null,
   },
@@ -512,7 +512,7 @@ export const TEAM: TeamMember[] = [
     role: 'Members, events and verification',
     bio: 'Runs member verification, events and the day-to-day life of the community, making sure every new member arrives to a network that is ready for them.',
     location: 'Africa · Remote',
-    initials: 'AC',
+    initials: 'BK',
     photoUrl: null,
     linkedinUrl: null,
   },

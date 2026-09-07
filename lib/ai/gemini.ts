@@ -31,7 +31,7 @@ export async function generateEnhancedBio(
   }
 ): Promise<string> {
   const genAI = getGeminiClient()
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+  const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
 
   const prompt = `You are a professional bio writer for AfroConnect, a professional networking platform for African entrepreneurs, investors, and professionals.
 
@@ -84,7 +84,7 @@ export async function generateConversationStarters(
   }
 ): Promise<string[]> {
   const genAI = getGeminiClient()
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+  const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
 
   const prompt = `You are helping two professionals on AfroConnect start a meaningful conversation.
 
@@ -151,7 +151,7 @@ export async function analyzeOpportunityMatch(
   recommendation: string
 }> {
   const genAI = getGeminiClient()
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+  const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
 
   const prompt = `You are analyzing how well a user matches an opportunity on AfroConnect.
 

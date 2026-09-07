@@ -19,6 +19,7 @@ import {
 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import toast from 'react-hot-toast'
+import OpportunityMatchBadge from '@/components/ai/OpportunityMatchBadge'
 
 interface Opportunity {
   id: string
@@ -424,6 +425,11 @@ export default function OpportunitiesPage() {
                     <p className="text-sm text-gray-600 mb-4 line-clamp-3">
                       {opportunity.description}
                     </p>
+
+                    {/* AI Match Badge */}
+                    <div className="mb-4">
+                      <OpportunityMatchBadge opportunityId={opportunity.id} compact />
+                    </div>
 
                     {/* Details */}
                     <div className="space-y-2 mb-4">

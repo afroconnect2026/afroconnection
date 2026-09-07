@@ -22,6 +22,7 @@ import {
   GraduationCap
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import BioGenerator from '@/components/ai/BioGenerator'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -460,6 +461,15 @@ export default function ProfilePage() {
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none resize-none"
                       placeholder="Tell others about yourself, your experience, and what you're looking for..."
                     />
+                    {/* AI Bio Generator */}
+                    <div className="mt-3">
+                      <BioGenerator
+                        currentBio={formData.bio}
+                        userType={profile?.user_type || 'professional'}
+                        industry={profile?.industry}
+                        onBioGenerated={(newBio) => setFormData({ ...formData, bio: newBio })}
+                      />
+                    </div>
                   </div>
 
                   {/* Location */}

@@ -40,7 +40,10 @@ function LoginForm() {
 
         // Redirect to original destination or dashboard
         const redirectTo = searchParams.get('redirectedFrom')
-        const destination = (redirectTo && redirectTo.startsWith('/')) ? redirectTo : '/dashboard'
+        // Prevent open redirect: only allow relative paths starting with / but not //
+        const destination = (redirectTo && redirectTo.startsWith('/') && !redirectTo.startsWith('//'))
+          ? redirectTo
+          : '/dashboard'
         router.push(destination)
       }
     } catch (error: any) {

@@ -67,11 +67,6 @@ export default function DashboardPage() {
 
       setProfile(profileData)
 
-      // DEBUG: Log what we loaded
-      console.log('🔍 DEBUG - User:', user.id)
-      console.log('🔍 DEBUG - Profile user_type:', profileData?.user_type)
-      console.log('🔍 DEBUG - Full profile:', profileData)
-
       // Fetch real stats
       const fetchStats = async () => {
         // Get total network size (excluding current user)

@@ -242,7 +242,14 @@ export default function PublicProfilePage() {
           {/* Profile Card */}
           <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-lg">
             {/* Cover Photo */}
-            <div className={`h-32 sm:h-48 bg-gradient-to-r ${getUserTypeColor(profile.user_type)}`}></div>
+            <div
+              className={`h-32 sm:h-48 bg-gradient-to-r ${getUserTypeColor(profile.user_type)}`}
+              style={profile?.cover_url ? {
+                backgroundImage: `url(${profile.cover_url})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              } : {}}
+            ></div>
 
             {/* Profile Info */}
             <div className="px-6 pb-6">

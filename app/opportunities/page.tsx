@@ -84,7 +84,7 @@ export default function OpportunitiesPage() {
         .from('opportunities')
         .select(`
           *,
-          poster:profiles!opportunities_posted_by_fkey (
+          poster:profiles!opportunities_creator_id_fkey (
             id,
             full_name,
             avatar_url,

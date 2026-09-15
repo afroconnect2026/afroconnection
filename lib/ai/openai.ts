@@ -1,5 +1,8 @@
-// AI helper functions using OpenAI API
+// ========================================
+// AfroConnect AI Features - OpenAI GPT-4o-mini
+// All AI functions powered by OpenAI API
 // Safe for server-side use only (API key required)
+// ========================================
 
 import OpenAI from 'openai'
 

@@ -3,6 +3,7 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { generateEnhancedBio } from '@/lib/ai/openai'
 
+// AI Bio Enhancement API - OpenAI GPT-4o-mini Powered
 export const runtime = 'edge'
 
 export async function POST(request: NextRequest) {

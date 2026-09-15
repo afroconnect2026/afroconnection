@@ -3,6 +3,7 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { analyzeOpportunityMatch } from '@/lib/ai/openai'
 
+// AI Opportunity Matching API - OpenAI GPT-4o-mini Powered
 export const runtime = 'edge'
 
 export async function POST(request: NextRequest) {

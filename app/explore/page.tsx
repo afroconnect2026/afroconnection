@@ -36,6 +36,7 @@ const userTypes = [
 
 export default function ExplorePage() {
   const [user, setUser] = useState<any>(null)
+  const [currentUserProfile, setCurrentUserProfile] = useState<any>(null)
   const [profiles, setProfiles] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedType, setSelectedType] = useState('all')
@@ -61,6 +62,18 @@ export default function ExplorePage() {
       }
 
       setUser(user)
+
+      // Load current user's profile for AI matching
+      const { data: userProfile } = await supabase
+        .from('profiles')
+        .select('bio, user_type, industry, country')
+        .eq('id', user.id)
+        .single()
+
+      if (userProfile) {
+        setCurrentUserProfile(userProfile)
+      }
+
       // loadProfiles will be called by the second useEffect when user is set
       setLoading(false)
     }
@@ -287,6 +300,7 @@ export default function ExplorePage() {
                         industry: profile.industry,
                         country: profile.country
                       }}
+                      currentUserProfile={currentUserProfile}
                     />
 
                     {/* Action Button */}

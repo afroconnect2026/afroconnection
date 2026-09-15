@@ -13,10 +13,16 @@ interface SmartRecommendationBadgeProps {
     industry?: string
     country?: string
   }
+  currentUserProfile?: {
+    bio: string
+    user_type: string
+    industry?: string
+    country?: string
+  }
   compact?: boolean
 }
 
-export default function SmartRecommendationBadge({ userId, userProfile, compact = true }: SmartRecommendationBadgeProps) {
+export default function SmartRecommendationBadge({ userId, userProfile, currentUserProfile, compact = true }: SmartRecommendationBadgeProps) {
   const [analysis, setAnalysis] = useState<{
     score: number
     reasons: string[]
@@ -33,35 +39,22 @@ export default function SmartRecommendationBadge({ userId, userProfile, compact 
       return
     }
 
+    // If no current user profile provided, don't analyze
+    if (!currentUserProfile) {
+      setError('Profile data not available')
+      return
+    }
+
     setLoading(true)
     setError(null)
 
     try {
-      // Get current user's profile from Supabase
-      const { createClient } = await import('@/lib/supabase/client')
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-
-      if (!user) {
-        throw new Error('Not authenticated')
-      }
-
-      const { data: currentProfile } = await supabase
-        .from('profiles')
-        .select('bio, user_type, industry, country')
-        .eq('id', user.id)
-        .single()
-
-      if (!currentProfile) {
-        throw new Error('Profile not found')
-      }
-
       const response = await fetch('/api/ai/recommend-users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           targetUserId: userId,
-          currentUserProfile: currentProfile,
+          currentUserProfile: currentUserProfile,
           targetUserProfile: userProfile
         })
       })

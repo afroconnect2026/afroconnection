@@ -19,9 +19,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get request body
+    // Get request body with profile data (avoiding database queries)
     const body = await request.json()
-    const { targetUserId } = body
+    const {
+      targetUserId,
+      currentUserProfile,
+      targetUserProfile
+    } = body
 
     if (!targetUserId) {
       return NextResponse.json(
@@ -30,33 +34,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Fetch current user profile
-    const { data: currentProfile, error: currentProfileError } = await supabase
-      .from('profiles')
-      .select('bio, user_type, industry, country')
-      .eq('id', user.id)
-      .single()
-
-    if (currentProfileError || !currentProfile) {
+    if (!currentUserProfile || !targetUserProfile) {
       return NextResponse.json(
-        { error: 'Current user profile not found' },
-        { status: 404 }
+        { error: 'Profile data is required' },
+        { status: 400 }
       )
     }
 
-    // Fetch target user profile
-    const { data: targetProfile, error: targetProfileError } = await supabase
-      .from('profiles')
-      .select('full_name, bio, user_type, industry, country')
-      .eq('id', targetUserId)
-      .single()
-
-    if (targetProfileError || !targetProfile) {
-      return NextResponse.json(
-        { error: 'Target user profile not found' },
-        { status: 404 }
-      )
-    }
+    const currentProfile = currentUserProfile
+    const targetProfile = targetUserProfile
 
     // Analyze match
     const analysis = await analyzeUserMatch(

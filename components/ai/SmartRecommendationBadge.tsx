@@ -6,10 +6,17 @@ import { Sparkles, Loader2, ChevronDown, ChevronUp } from 'lucide-react'
 
 interface SmartRecommendationBadgeProps {
   userId: string
+  userProfile: {
+    full_name: string
+    bio: string
+    user_type: string
+    industry?: string
+    country?: string
+  }
   compact?: boolean
 }
 
-export default function SmartRecommendationBadge({ userId, compact = true }: SmartRecommendationBadgeProps) {
+export default function SmartRecommendationBadge({ userId, userProfile, compact = true }: SmartRecommendationBadgeProps) {
   const [analysis, setAnalysis] = useState<{
     score: number
     reasons: string[]
@@ -30,10 +37,33 @@ export default function SmartRecommendationBadge({ userId, compact = true }: Sma
     setError(null)
 
     try {
+      // Get current user's profile from Supabase
+      const { createClient } = await import('@/lib/supabase/client')
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+
+      if (!user) {
+        throw new Error('Not authenticated')
+      }
+
+      const { data: currentProfile } = await supabase
+        .from('profiles')
+        .select('bio, user_type, industry, country')
+        .eq('id', user.id)
+        .single()
+
+      if (!currentProfile) {
+        throw new Error('Profile not found')
+      }
+
       const response = await fetch('/api/ai/recommend-users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ targetUserId: userId })
+        body: JSON.stringify({
+          targetUserId: userId,
+          currentUserProfile: currentProfile,
+          targetUserProfile: userProfile
+        })
       })
 
       const data = await response.json()

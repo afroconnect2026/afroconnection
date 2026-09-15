@@ -278,7 +278,16 @@ export default function ExplorePage() {
                     </p>
 
                     {/* AI Smart Recommendation Badge */}
-                    <SmartRecommendationBadge userId={profile.id} />
+                    <SmartRecommendationBadge
+                      userId={profile.id}
+                      userProfile={{
+                        full_name: profile.full_name || 'User',
+                        bio: profile.bio || '',
+                        user_type: profile.user_type || 'professional',
+                        industry: profile.industry,
+                        country: profile.country
+                      }}
+                    />
 
                     {/* Action Button */}
                     <button

@@ -3,6 +3,7 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { generateConversationStarters } from '@/lib/ai/openai'
 
+// AI Conversation Starters API - OpenAI Powered
 export const runtime = 'edge'
 
 export async function POST(request: NextRequest) {

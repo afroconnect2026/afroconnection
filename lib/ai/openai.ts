@@ -1,17 +1,17 @@
-// AI helper functions using Google Gemini API (100% FREE!)
+// AI helper functions using OpenAI API
 // Safe for server-side use only (API key required)
 
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import OpenAI from 'openai'
 
-// Initialize Gemini client (server-side only)
-const getGeminiClient = () => {
-  const apiKey = process.env.GOOGLE_GEMINI_API_KEY
+// Initialize OpenAI client (server-side only)
+const getOpenAIClient = () => {
+  const apiKey = process.env.OPENAI_API_KEY
 
   if (!apiKey) {
-    throw new Error('GOOGLE_GEMINI_API_KEY not configured. Add it to your .env.local file.')
+    throw new Error('OPENAI_API_KEY not configured. Add it to your .env.local file.')
   }
 
-  return new GoogleGenerativeAI(apiKey)
+  return new OpenAI({ apiKey })
 }
 
 /**
@@ -30,8 +30,7 @@ export async function generateEnhancedBio(
     experience?: string
   }
 ): Promise<string> {
-  const genAI = getGeminiClient()
-  const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+  const openai = getOpenAIClient()
 
   const prompt = `You are a professional bio writer for AfroConnect, a professional networking platform for African entrepreneurs, investors, and professionals.
 
@@ -56,10 +55,19 @@ Guidelines:
 
 Return ONLY the enhanced bio text, nothing else. No explanations, no quotes, just the bio.`
 
-  const result = await model.generateContent(prompt)
-  const response = result.response
-  const bioText = response.text()
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini', // Fast, cheap, and smart!
+    messages: [
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ],
+    temperature: 0.7,
+    max_tokens: 300,
+  })
 
+  const bioText = completion.choices[0]?.message?.content || ''
   return bioText.trim()
 }
 
@@ -83,8 +91,7 @@ export async function generateConversationStarters(
     industry?: string
   }
 ): Promise<string[]> {
-  const genAI = getGeminiClient()
-  const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+  const openai = getOpenAIClient()
 
   const prompt = `You are helping two professionals on AfroConnect start a meaningful conversation.
 
@@ -106,9 +113,19 @@ Task: Generate 3 conversation starters that would help them start a meaningful p
 Return ONLY a JSON array of 3 strings, nothing else. Format:
 ["Starter 1", "Starter 2", "Starter 3"]`
 
-  const result = await model.generateContent(prompt)
-  const response = result.response
-  const responseText = response.text()
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ],
+    temperature: 0.8,
+    max_tokens: 400,
+  })
+
+  const responseText = completion.choices[0]?.message?.content || ''
 
   try {
     // Clean up response (remove markdown code blocks if present)
@@ -150,8 +167,7 @@ export async function analyzeOpportunityMatch(
   missingSkills: string[]
   recommendation: string
 }> {
-  const genAI = getGeminiClient()
-  const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+  const openai = getOpenAIClient()
 
   const prompt = `You are analyzing how well a user matches an opportunity on AfroConnect.
 
@@ -177,9 +193,19 @@ Task: Analyze the match and return ONLY a JSON object with:
 
 Be honest and helpful. Return ONLY the JSON object, no markdown formatting, no explanations.`
 
-  const result = await model.generateContent(prompt)
-  const response = result.response
-  const responseText = response.text()
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ],
+    temperature: 0.5,
+    max_tokens: 500,
+  })
+
+  const responseText = completion.choices[0]?.message?.content || ''
 
   try {
     // Clean up response (remove markdown code blocks if present)
@@ -198,6 +224,90 @@ Be honest and helpful. Return ONLY the JSON object, no markdown formatting, no e
       reasons: ['Moderate match based on general profile'],
       missingSkills: [],
       recommendation: 'Review the opportunity details to determine if it\'s a good fit.'
+    }
+  }
+}
+
+/**
+ * Analyze user match for smart recommendations
+ * @param currentUser - Current user's profile
+ * @param targetUser - Target user to match against
+ * @returns Match analysis with score and reasons
+ */
+export async function analyzeUserMatch(
+  currentUser: {
+    bio: string
+    userType: string
+    industry?: string
+    country?: string
+  },
+  targetUser: {
+    fullName: string
+    bio: string
+    userType: string
+    industry?: string
+    country?: string
+  }
+): Promise<{
+  score: number
+  reasons: string[]
+  recommendation: string
+}> {
+  const openai = getOpenAIClient()
+
+  const prompt = `You are analyzing how well two users on AfroConnect would benefit from connecting.
+
+Current User:
+- Type: ${currentUser.userType}
+- Bio: ${currentUser.bio}
+${currentUser.industry ? `- Industry: ${currentUser.industry}` : ''}
+${currentUser.country ? `- Location: ${currentUser.country}` : ''}
+
+Potential Connection:
+- Name: ${targetUser.fullName}
+- Type: ${targetUser.userType}
+- Bio: ${targetUser.bio}
+${targetUser.industry ? `- Industry: ${targetUser.industry}` : ''}
+${targetUser.country ? `- Location: ${targetUser.country}` : ''}
+
+Task: Analyze the potential for meaningful professional connection and return ONLY a JSON object with:
+{
+  "score": <number 0-100>,
+  "reasons": ["reason1", "reason2"],
+  "recommendation": "one sentence on why they should connect"
+}
+
+Focus on: shared interests, complementary skills, collaboration potential, industry synergies.
+Return ONLY the JSON object, no markdown formatting, no explanations.`
+
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+      {
+        role: 'user',
+        content: prompt,
+      },
+    ],
+    temperature: 0.6,
+    max_tokens: 300,
+  })
+
+  const responseText = completion.choices[0]?.message?.content || ''
+
+  try {
+    const cleaned = responseText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+    const analysis = JSON.parse(cleaned)
+    return {
+      score: analysis.score || 0,
+      reasons: analysis.reasons || [],
+      recommendation: analysis.recommendation || 'Could be a valuable connection.'
+    }
+  } catch (error) {
+    console.error('Error parsing user match:', error)
+    return {
+      score: 50,
+      reasons: ['Potential professional synergy'],
+      recommendation: 'Connect to explore collaboration opportunities.'
     }
   }
 }

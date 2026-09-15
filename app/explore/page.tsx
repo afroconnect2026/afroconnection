@@ -19,6 +19,7 @@ import {
   MessageCircle
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import SmartRecommendationBadge from '@/components/ai/SmartRecommendationBadge'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -275,6 +276,9 @@ export default function ExplorePage() {
                     <p className="text-sm text-gray-600 mb-4 line-clamp-2">
                       {profile.bio || 'No bio provided yet'}
                     </p>
+
+                    {/* AI Smart Recommendation Badge */}
+                    <SmartRecommendationBadge userId={profile.id} />
 
                     {/* Action Button */}
                     <button

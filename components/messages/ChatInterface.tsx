@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Send, User, Download, Image as ImageIcon, File as FileIcon, Paperclip, X } from 'lucide-react'
 import { format } from 'date-fns'
 import toast from 'react-hot-toast'
+import ConversationStarters from '@/components/ai/ConversationStarters'
 
 interface Attachment {
   id: string
@@ -601,6 +602,14 @@ export default function ChatInterface({ conversationId, currentUserId }: ChatInt
 
       {/* Message Input */}
       <div className="border-t border-gray-200 bg-white p-4">
+        {/* AI Conversation Starters - Show only if no messages */}
+        {messages.length === 0 && otherUser && (
+          <ConversationStarters
+            otherUserId={otherUser.id}
+            onSelectStarter={(starter) => setNewMessage(starter)}
+          />
+        )}
+
         {/* Selected Files Preview */}
         {selectedFiles.length > 0 && (
           <div className="mb-3 flex flex-wrap gap-2">

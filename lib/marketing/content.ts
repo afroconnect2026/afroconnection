@@ -541,7 +541,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   },
   {
     name: 'Facebook',
-    href: 'https://www.facebook.com/afroconnect',
+    href: 'https://web.facebook.com/profile.php?id=61594373494154',
     icon: 'Facebook',
     primary: false,
   },

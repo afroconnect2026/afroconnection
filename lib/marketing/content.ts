@@ -535,7 +535,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   },
   {
     name: 'X',
-    href: 'https://x.com/afroconnect',
+    href: 'https://x.com/afroconnect2026',
     icon: 'Twitter',
     primary: false,
   },

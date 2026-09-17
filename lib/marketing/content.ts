@@ -547,7 +547,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   },
   {
     name: 'Instagram',
-    href: 'https://www.instagram.com/afroconnect',
+    href: 'https://www.instagram.com/afr_oconnect/',
     icon: 'Instagram',
     primary: false,
   },

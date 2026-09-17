@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { generateEnhancedBio } from '@/lib/ai/openai'
+import { ratelimit, AI_RATE_LIMITS } from '@/lib/ratelimit'
 
 // AI Bio Enhancement API - OpenAI GPT-4o-mini Powered
 export const runtime = 'edge'
@@ -16,6 +17,31 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
+      )
+    }
+
+    // Rate limiting
+    const { success, limit, remaining, reset } = ratelimit(
+      `bio:${user.id}`,
+      AI_RATE_LIMITS.bioEnhancement
+    )
+
+    if (!success) {
+      return NextResponse.json(
+        {
+          error: 'Too many requests. Please try again later.',
+          limit,
+          remaining,
+          reset: new Date(reset).toISOString()
+        },
+        {
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': limit.toString(),
+            'X-RateLimit-Remaining': remaining.toString(),
+            'X-RateLimit-Reset': reset.toString()
+          }
+        }
       )
     }
 

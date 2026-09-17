@@ -191,14 +191,14 @@ export default function HomePage() {
       {/* 1. How It Works teaser */}
       <HowItWorks variant="compact" />
 
+      {/* 7. Role specific calls to action */}
+      <RoleCtas />
+
       {/* 6. Public preview — value before sign up */}
       <PreviewShowcase variant="landing" limit={4} />
 
       {/* 2. Testimonials, trust indicators and partners */}
       <Testimonials />
-
-      {/* 7. Role specific calls to action */}
-      <RoleCtas />
 
       {/* Closing CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-600 to-primary-700">

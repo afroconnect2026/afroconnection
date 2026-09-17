@@ -8,7 +8,7 @@ import SocialLinks from './SocialLinks'
 const navItems: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
   { label: 'How It Works', href: '/how-it-works' },
-  { label: 'Preview', href: '/preview' },
+  { label: 'Explore', href: '/explore' },
   { label: 'Events', href: '/events/browse' },
   { label: 'About', href: '/about' },
 ]

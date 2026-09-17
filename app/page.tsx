@@ -21,7 +21,6 @@ import {
 import PublicNav from '@/components/marketing/PublicNav'
 import PublicFooter from '@/components/marketing/PublicFooter'
 import HowItWorks from '@/components/marketing/HowItWorks'
-import RoleCtas from '@/components/marketing/RoleCtas'
 import Testimonials from '@/components/marketing/Testimonials'
 import PreviewShowcase from '@/components/marketing/PreviewShowcase'
 import { PLATFORM_FOCUS, TAGLINE_SUPPORT } from '@/lib/marketing/content'
@@ -140,14 +139,6 @@ export default function HomePage() {
           >
             Sign up, build a profile, get matched, connect — and build real opportunities.
           </motion.p>
-
-          {/* Role specific calls to action */}
-          <motion.div variants={fadeIn} className="mb-6 px-2">
-            <p className="text-white/70 text-sm font-medium mb-4 uppercase tracking-wider">
-              Get started as
-            </p>
-            <RoleCtas variant="compact" />
-          </motion.div>
 
           <motion.div
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
@@ -277,9 +268,6 @@ export default function HomePage() {
 
       {/* 2. Testimonials, trust indicators and partners */}
       <Testimonials />
-
-      {/* 7. Role specific calls to action */}
-      <RoleCtas />
 
       {/* Closing CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-600 to-primary-700">

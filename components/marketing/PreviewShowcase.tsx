@@ -37,7 +37,7 @@ interface PreviewOpportunity {
   id: string
   title: string
   description: string | null
-  opportunity_type: string | null
+  type: string | null
   application_deadline?: string | null
   location: string | null
   thumbnail_url?: string | null
@@ -88,7 +88,7 @@ export default function PreviewShowcase({
         supabase
           .from('opportunities')
           .select(
-            'id, title, description, opportunity_type, application_deadline, location, thumbnail_url'
+            'id, title, description, type, application_deadline, location, thumbnail_url'
           )
           .order('created_at', { ascending: false })
           .limit(limit),
@@ -316,18 +316,18 @@ export default function PreviewShowcase({
                             alt={opp.title}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                           />
-                          {opp.opportunity_type && (
+                          {opp.type && (
                             <div className="absolute top-3 right-3 bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
-                              {opp.opportunity_type}
+                              {opp.type}
                             </div>
                           )}
                         </div>
                       ) : (
                         <div className="relative h-44 bg-gradient-to-br from-navy-900 to-primary-900 flex items-center justify-center">
                           <TrendingUp className="w-10 h-10 text-white/40" />
-                          {opp.opportunity_type && (
+                          {opp.type && (
                             <div className="absolute top-3 right-3 bg-primary-500 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">
-                              {opp.opportunity_type}
+                              {opp.type}
                             </div>
                           )}
                         </div>

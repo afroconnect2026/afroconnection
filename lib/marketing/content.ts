@@ -573,7 +573,7 @@ export interface SampleOpportunity {
   id: string
   title: string
   description: string
-  opportunity_type: string
+  type: string
   location: string
   isSample: true
 }
@@ -644,7 +644,7 @@ export const SAMPLE_OPPORTUNITIES: SampleOpportunity[] = [
     title: 'Seed Investment — Agritech Supply Chain',
     description:
       'Investor seeking agritech companies digitising smallholder supply chains, with early revenue and a regional expansion plan.',
-    opportunity_type: 'investment',
+    type: 'investment',
     location: 'East Africa',
     isSample: true,
   },
@@ -653,7 +653,7 @@ export const SAMPLE_OPPORTUNITIES: SampleOpportunity[] = [
     title: 'Distribution Partner — Consumer Fintech',
     description:
       'Scale-up looking for a distribution partner with existing agent networks to launch in two new markets.',
-    opportunity_type: 'partnership',
+    type: 'partnership',
     location: 'West Africa',
     isSample: true,
   },
@@ -662,7 +662,7 @@ export const SAMPLE_OPPORTUNITIES: SampleOpportunity[] = [
     title: 'Technical Co-Founder — Health Logistics',
     description:
       'Commercial founder with pilot contracts in place seeking a technical co-founder to own the product build.',
-    opportunity_type: 'cofounder',
+    type: 'cofounder',
     location: 'Remote · Africa',
     isSample: true,
   },
@@ -671,7 +671,7 @@ export const SAMPLE_OPPORTUNITIES: SampleOpportunity[] = [
     title: 'Mentorship — Go-To-Market for B2B SaaS',
     description:
       'Operator offering structured mentorship to early-stage B2B SaaS founders selling into enterprise across the continent.',
-    opportunity_type: 'mentorship',
+    type: 'mentorship',
     location: 'Online',
     isSample: true,
   },

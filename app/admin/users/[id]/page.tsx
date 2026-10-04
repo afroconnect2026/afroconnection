@@ -376,8 +376,8 @@ export default function UserDetailPage() {
   )
 }
 
-function StatCard({ title, value, icon: Icon, color }: any) {
-  const colors = {
+function StatCard({ title, value, icon: Icon, color }: { title: string; value: number; icon: any; color: 'blue' | 'purple' | 'green' }) {
+  const colors: Record<'blue' | 'purple' | 'green', string> = {
     blue: 'bg-blue-50 text-blue-600',
     purple: 'bg-purple-50 text-purple-600',
     green: 'bg-green-50 text-green-600',

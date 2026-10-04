@@ -17,7 +17,8 @@ import {
   UserX,
   Clock,
   MessageCircle,
-  ArrowLeft
+  ArrowLeft,
+  CheckCircle
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { getConnectionStatus, sendConnectionRequest, acceptConnectionRequest, declineConnectionRequest, removeConnection } from '@/lib/connections'
@@ -262,8 +263,11 @@ export default function PublicProfilePage() {
 
               {/* Name and Type */}
               <div className="mb-6">
-                <h1 className="text-2xl sm:text-3xl font-bold text-navy-900 mb-2">
+                <h1 className="text-2xl sm:text-3xl font-bold text-navy-900 mb-2 flex items-center gap-2">
                   {profile.full_name || 'Anonymous User'}
+                  {profile.is_verified && (
+                    <CheckCircle className="w-6 h-6 text-blue-600 fill-blue-100" title="Verified Account" />
+                  )}
                 </h1>
                 <div className="flex items-center space-x-2 mb-3">
                   <Briefcase className="h-4 w-4 text-primary-600" />

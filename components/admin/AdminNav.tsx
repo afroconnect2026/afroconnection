@@ -35,6 +35,12 @@ export default function AdminNav({ admin }: AdminNavProps) {
       roles: ['super_admin', 'moderator', 'support']
     },
     {
+      name: 'Staff',
+      href: '/admin/staff',
+      icon: Shield,
+      roles: ['super_admin']
+    },
+    {
       name: 'Verifications',
       href: '/admin/verifications',
       icon: CheckCircle,

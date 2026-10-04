@@ -179,7 +179,7 @@ export default function UserDetailPage() {
               <div className="flex items-center gap-2">
                 <h2 className="text-2xl font-bold text-gray-900">{user.full_name}</h2>
                 {user.is_verified && (
-                  <CheckCircle className="w-6 h-6 text-blue-600" title="Verified" />
+                  <CheckCircle className="w-6 h-6 text-blue-600 fill-blue-100" />
                 )}
               </div>
               <p className="text-gray-600">{user.email}</p>

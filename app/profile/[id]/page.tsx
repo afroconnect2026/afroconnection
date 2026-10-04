@@ -266,7 +266,7 @@ export default function PublicProfilePage() {
                 <h1 className="text-2xl sm:text-3xl font-bold text-navy-900 mb-2 flex items-center gap-2">
                   {profile.full_name || 'Anonymous User'}
                   {profile.is_verified && (
-                    <CheckCircle className="w-6 h-6 text-blue-600 fill-blue-100" title="Verified Account" />
+                    <CheckCircle className="w-6 h-6 text-blue-600 fill-blue-100" />
                   )}
                 </h1>
                 <div className="flex items-center space-x-2 mb-3">

@@ -106,6 +106,7 @@ function EventsPageContent() {
           organizer:profiles!events_organizer_id_fkey(id, full_name, avatar_url, country)
         `)
         .eq('status', 'published')
+        .eq('moderation_status', 'approved') // PRE-APPROVAL: Only show approved events
 
       // Type filter
       if (selectedType) {

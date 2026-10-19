@@ -19,6 +19,7 @@ import {
   Zap
 } from 'lucide-react'
 import Image from 'next/image'
+import toast from 'react-hot-toast'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -208,8 +209,8 @@ export default function CreateEventPage() {
         throw new Error('End date must be after start date')
       }
 
-      // Insert event
-      const { data: event, error: insertError } = await supabase
+      // Insert event with PENDING moderation status (PRE-APPROVAL)
+      const { data: event, error: insertError} = await supabase
         .from('events')
         .insert({
           organizer_id: user.id,
@@ -239,15 +240,19 @@ export default function CreateEventPage() {
           thumbnail_url: formData.cover_image_url || null,
 
           tags: formData.tags.length > 0 ? formData.tags : null,
-          status
+          status,
+          moderation_status: 'pending' // PRE-APPROVAL: Requires admin approval before going live
         })
         .select()
         .single()
 
       if (insertError) throw insertError
 
-      // Redirect to event detail page
-      router.push(`/events/${event.id}`)
+      // Show success message and redirect
+      toast.success('Event submitted! Awaiting admin approval.')
+
+      // Redirect to events list (event won't be visible until approved)
+      router.push(`/events`)
     } catch (err: any) {
       console.error('Error creating event:', err)
       setError(err.message || 'Failed to create event')

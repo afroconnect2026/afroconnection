@@ -79,7 +79,7 @@ export default function OpportunitiesPage() {
 
   const loadOpportunities = async (currentUserId: string) => {
     try {
-      // Load opportunities
+      // Load opportunities - ONLY APPROVED ones (pre-approval system)
       const { data: opps, error } = await supabase
         .from('opportunities')
         .select(`
@@ -92,6 +92,7 @@ export default function OpportunitiesPage() {
           )
         `)
         .eq('status', 'active')
+        .eq('moderation_status', 'approved') // PRE-APPROVAL: Only show approved opportunities
         .order('created_at', { ascending: false })
 
       if (error) throw error

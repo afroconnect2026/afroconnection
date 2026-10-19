@@ -63,10 +63,10 @@ export default function ExplorePage() {
 
       setUser(user)
 
-      // Load current user's profile for AI matching
+      // Load current user's profile for AI matching - fetch MORE fields for better matching
       const { data: userProfile } = await supabase
         .from('profiles')
-        .select('bio, user_type, industry, country')
+        .select('bio, user_type, industry, country, city, skills, company_name, full_name')
         .eq('id', user.id)
         .single()
 
@@ -85,9 +85,10 @@ export default function ExplorePage() {
     if (!user) return
 
     // Only select public fields - NOT email or phone (PII protection)
+    // Include more fields for better AI matching
     let query = supabase
       .from('profiles')
-      .select('id, full_name, avatar_url, bio, user_type, country, city, website_url, linkedin_url, twitter_url, is_verified, created_at', { count: 'exact' })
+      .select('id, full_name, avatar_url, bio, user_type, country, city, industry, skills, company_name, website_url, linkedin_url, twitter_url, is_verified, created_at', { count: 'exact' })
       .neq('id', user.id) // Exclude current user
       .eq('is_active', true)
 
@@ -298,7 +299,10 @@ export default function ExplorePage() {
                         bio: profile.bio || '',
                         user_type: profile.user_type || 'professional',
                         industry: profile.industry,
-                        country: profile.country
+                        country: profile.country,
+                        city: profile.city,
+                        skills: profile.skills,
+                        company_name: profile.company_name
                       }}
                       currentUserProfile={currentUserProfile}
                     />

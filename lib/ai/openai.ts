@@ -243,6 +243,10 @@ export async function analyzeUserMatch(
     userType: string
     industry?: string
     country?: string
+    city?: string
+    skills?: string
+    company_name?: string
+    full_name?: string
   },
   targetUser: {
     fullName: string
@@ -250,6 +254,9 @@ export async function analyzeUserMatch(
     userType: string
     industry?: string
     country?: string
+    city?: string
+    skills?: string
+    company_name?: string
   }
 ): Promise<{
   score: number
@@ -260,27 +267,41 @@ export async function analyzeUserMatch(
 
   const prompt = `You are analyzing how well two users on AfroConnect would benefit from connecting.
 
-Current User:
+Current User ${currentUser.full_name ? `(${currentUser.full_name})` : ''}:
 - Type: ${currentUser.userType}
-- Bio: ${currentUser.bio}
+- Bio: ${currentUser.bio || 'No bio provided'}
 ${currentUser.industry ? `- Industry: ${currentUser.industry}` : ''}
-${currentUser.country ? `- Location: ${currentUser.country}` : ''}
+${currentUser.country ? `- Country: ${currentUser.country}` : ''}
+${currentUser.city ? `- City: ${currentUser.city}` : ''}
+${currentUser.skills ? `- Skills: ${currentUser.skills}` : ''}
+${currentUser.company_name ? `- Company: ${currentUser.company_name}` : ''}
 
 Potential Connection:
 - Name: ${targetUser.fullName}
 - Type: ${targetUser.userType}
-- Bio: ${targetUser.bio}
+- Bio: ${targetUser.bio || 'No bio provided'}
 ${targetUser.industry ? `- Industry: ${targetUser.industry}` : ''}
-${targetUser.country ? `- Location: ${targetUser.country}` : ''}
+${targetUser.country ? `- Country: ${targetUser.country}` : ''}
+${targetUser.city ? `- City: ${targetUser.city}` : ''}
+${targetUser.skills ? `- Skills: ${targetUser.skills}` : ''}
+${targetUser.company_name ? `- Company: ${targetUser.company_name}` : ''}
 
-Task: Analyze the potential for meaningful professional connection and return ONLY a JSON object with:
+Task: Analyze the potential for meaningful professional connection based on THEIR UNIQUE profiles.
+Consider:
+- Skills overlap or complementarity
+- Industry synergies
+- Geographic proximity or market knowledge
+- User type compatibility (e.g., entrepreneur + investor, professional + company)
+- Specific collaboration opportunities based on their actual data
+
+Return ONLY a JSON object:
 {
-  "score": <number 0-100>,
-  "reasons": ["reason1", "reason2"],
-  "recommendation": "one sentence on why they should connect"
+  "score": <number 0-100, based on ACTUAL compatibility from their profiles>,
+  "reasons": ["specific reason 1", "specific reason 2"],
+  "recommendation": "one sentence with SPECIFIC why they should connect based on their profiles"
 }
 
-Focus on: shared interests, complementary skills, collaboration potential, industry synergies.
+IMPORTANT: Give DIFFERENT scores and reasons for different user combinations. Use their ACTUAL profile data to differentiate matches.
 Return ONLY the JSON object, no markdown formatting, no explanations.`
 
   const completion = await openai.chat.completions.create({

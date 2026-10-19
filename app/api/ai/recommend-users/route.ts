@@ -44,20 +44,27 @@ export async function POST(request: NextRequest) {
     const currentProfile = currentUserProfile
     const targetProfile = targetUserProfile
 
-    // Analyze match
+    // Analyze match with enhanced profile data for better differentiation
     const analysis = await analyzeUserMatch(
       {
         bio: currentProfile.bio || '',
         userType: currentProfile.user_type || 'professional',
         industry: currentProfile.industry || undefined,
-        country: currentProfile.country || undefined
+        country: currentProfile.country || undefined,
+        city: currentProfile.city || undefined,
+        skills: currentProfile.skills || undefined,
+        company_name: currentProfile.company_name || undefined,
+        full_name: currentProfile.full_name || undefined
       },
       {
         fullName: targetProfile.full_name || 'User',
         bio: targetProfile.bio || '',
         userType: targetProfile.user_type || 'professional',
         industry: targetProfile.industry || undefined,
-        country: targetProfile.country || undefined
+        country: targetProfile.country || undefined,
+        city: targetProfile.city || undefined,
+        skills: targetProfile.skills || undefined,
+        company_name: targetProfile.company_name || undefined
       }
     )
 

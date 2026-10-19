@@ -12,12 +12,19 @@ interface SmartRecommendationBadgeProps {
     user_type: string
     industry?: string
     country?: string
+    city?: string
+    skills?: string
+    company_name?: string
   }
   currentUserProfile?: {
     bio: string
     user_type: string
     industry?: string
     country?: string
+    city?: string
+    skills?: string
+    company_name?: string
+    full_name?: string
   }
   compact?: boolean
 }

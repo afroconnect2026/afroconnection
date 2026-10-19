@@ -19,7 +19,9 @@ import {
   Edit,
   Camera,
   Briefcase,
-  GraduationCap
+  GraduationCap,
+  ToggleRight,
+  ToggleLeft
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import BioGenerator from '@/components/ai/BioGenerator'
@@ -37,6 +39,8 @@ export default function ProfilePage() {
   const [editMode, setEditMode] = useState(false)
   const [uploadingAvatar, setUploadingAvatar] = useState(false)
   const [uploadingCover, setUploadingCover] = useState(false)
+  const [isAvailable, setIsAvailable] = useState(true)
+  const [togglingAvailability, setTogglingAvailability] = useState(false)
 
   // Edit form state
   const [formData, setFormData] = useState({
@@ -109,6 +113,10 @@ export default function ProfilePage() {
 
             if (typeData) {
               setTypeSpecificData(typeData)
+              // Load availability status for professionals
+              if (userType === 'professional' && typeof typeData.is_available === 'boolean') {
+                setIsAvailable(typeData.is_available)
+              }
             }
           }
         }
@@ -314,6 +322,43 @@ export default function ProfilePage() {
     }
   }
 
+  const handleToggleAvailability = async () => {
+    if (!user || profile?.user_type !== 'professional') return
+
+    const newAvailability = !isAvailable
+    setTogglingAvailability(true)
+    setIsAvailable(newAvailability) // Optimistic update
+
+    try {
+      // Upsert to professional_profiles table
+      const { error } = await supabase
+        .from('professional_profiles')
+        .upsert({
+          user_id: user.id,
+          is_available: newAvailability,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'user_id'
+        })
+
+      if (error) throw error
+
+      // Update local state
+      setTypeSpecificData({
+        ...typeSpecificData,
+        is_available: newAvailability
+      })
+
+      toast.success(newAvailability ? 'You are now available for work' : 'You are now unavailable')
+    } catch (error: any) {
+      console.error('Toggle availability error:', error)
+      setIsAvailable(!newAvailability) // Revert on error
+      toast.error('Failed to update availability status')
+    } finally {
+      setTogglingAvailability(false)
+    }
+  }
+
   if (loading) {
     return (
       <AuthenticatedLayout>
@@ -424,14 +469,42 @@ export default function ProfilePage() {
                   </button>
                 </div>
 
-                {/* Edit Button */}
-                <button
-                  onClick={() => editMode ? handleCancel() : setEditMode(true)}
-                  className="mt-4 md:mt-0 bg-primary-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors flex items-center space-x-2"
-                >
-                  <Edit className="h-4 w-4" />
-                  <span>{editMode ? 'Cancel' : 'Edit Profile'}</span>
-                </button>
+                {/* Action Buttons */}
+                <div className="mt-4 md:mt-0 flex flex-wrap gap-3">
+                  {/* Quick Availability Toggle for Professionals */}
+                  {profile?.user_type === 'professional' && !editMode && (
+                    <button
+                      onClick={handleToggleAvailability}
+                      disabled={togglingAvailability}
+                      className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center space-x-2 border-2 ${
+                        isAvailable
+                          ? 'bg-green-50 border-green-500 text-green-700 hover:bg-green-100'
+                          : 'bg-gray-50 border-gray-300 text-gray-700 hover:bg-gray-100'
+                      } disabled:opacity-50 disabled:cursor-not-allowed`}
+                    >
+                      {togglingAvailability ? (
+                        <>
+                          <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
+                          <span>Updating...</span>
+                        </>
+                      ) : (
+                        <>
+                          {isAvailable ? <ToggleRight className="h-5 w-5" /> : <ToggleLeft className="h-5 w-5" />}
+                          <span>{isAvailable ? 'Available for Work' : 'Unavailable'}</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+
+                  {/* Edit Button */}
+                  <button
+                    onClick={() => editMode ? handleCancel() : setEditMode(true)}
+                    className="bg-primary-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors flex items-center space-x-2"
+                  >
+                    <Edit className="h-4 w-4" />
+                    <span>{editMode ? 'Cancel' : 'Edit Profile'}</span>
+                  </button>
+                </div>
               </div>
 
               {/* Edit Mode - Form */}

@@ -11,7 +11,9 @@ import {
   Flag,
   BarChart3,
   Settings,
-  Shield
+  Shield,
+  Sparkles,
+  Activity
 } from 'lucide-react'
 
 interface AdminNavProps {
@@ -68,6 +70,18 @@ export default function AdminNav({ admin }: AdminNavProps) {
       name: 'Analytics',
       href: '/admin/analytics',
       icon: BarChart3,
+      roles: ['super_admin', 'analytics']
+    },
+    {
+      name: 'AI Usage',
+      href: '/admin/ai-usage',
+      icon: Activity,
+      roles: ['super_admin', 'analytics']
+    },
+    {
+      name: 'AI Matches',
+      href: '/admin/ai-matches',
+      icon: Sparkles,
       roles: ['super_admin', 'analytics']
     },
     {

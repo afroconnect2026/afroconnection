@@ -33,8 +33,7 @@ export default function AIUsagePage() {
       const { count: bioCount } = await supabase
         .from('profiles')
         .select('*', { count: 'exact', head: true })
-        .not('bio', 'is', null)
-        .gte('bio', 'length', 100) // Assume longer bios might be AI-enhanced
+        .not('bio', 'is', null) // Users with bios (potential AI enhancement)
 
       // Get total users for Smart Match potential
       const { count: userCount } = await supabase

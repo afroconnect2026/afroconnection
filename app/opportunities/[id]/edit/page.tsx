@@ -63,13 +63,13 @@ export default function EditOpportunityPage() {
       if (error) throw error
 
       // Check ownership
-      if (opp.posted_by !== user.id) {
+      if (opp.creator_id !== user.id) {
         toast.error('You can only edit your own opportunities')
         router.push(`/opportunities/${opportunityId}`)
         return
       }
 
-      setOpportunityType(opp.opportunity_type)
+      setOpportunityType(opp.type)
       setCurrentThumbnail(opp.thumbnail_url || '')
       setFormData({
         title: opp.title || '',
@@ -134,7 +134,7 @@ export default function EditOpportunityPage() {
       const opportunityData: any = {
         title: formData.title,
         description: formData.description,
-        opportunity_type: opportunityType,
+        type: opportunityType,
         location: formData.location || null,
         is_remote: formData.is_remote,
         country: formData.country || null,

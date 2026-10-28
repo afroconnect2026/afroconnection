@@ -25,7 +25,7 @@ interface Opportunity {
   id: string
   title: string
   description: string
-  opportunity_type: string
+  type: string
   location: string
   is_remote: boolean
   country: string
@@ -43,7 +43,7 @@ interface Opportunity {
   created_at: string
   views_count: number
   applications_count: number
-  posted_by: string
+  creator_id: string
   thumbnail_url?: string
   poster?: {
     id: string
@@ -177,7 +177,7 @@ export default function OpportunitiesPage() {
 
   const filteredOpportunities = opportunities
     .filter(opp => {
-      const matchesFilter = filter === 'all' || opp.opportunity_type === filter
+      const matchesFilter = filter === 'all' || opp.type === filter
       const matchesSearch = searchQuery === '' ||
         opp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         opp.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -195,12 +195,12 @@ export default function OpportunitiesPage() {
         case 'most_applications':
           return (b.applications_count || 0) - (a.applications_count || 0)
         case 'salary_high':
-          if (a.opportunity_type === 'job' && b.opportunity_type === 'job') {
+          if (a.type === 'job' && b.type === 'job') {
             return (b.salary_max || b.salary_min || 0) - (a.salary_max || a.salary_min || 0)
           }
           return 0
         case 'salary_low':
-          if (a.opportunity_type === 'job' && b.opportunity_type === 'job') {
+          if (a.type === 'job' && b.type === 'job') {
             return (a.salary_min || a.salary_max || 0) - (b.salary_min || b.salary_max || 0)
           }
           return 0
@@ -371,7 +371,7 @@ export default function OpportunitiesPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredOpportunities.map((opportunity) => {
-              const Icon = getIcon(opportunity.opportunity_type)
+              const Icon = getIcon(opportunity.type)
               return (
                 <div
                   key={opportunity.id}
@@ -395,7 +395,7 @@ export default function OpportunitiesPage() {
                           />
                         </button>
                       </div>
-                      <div className={`absolute top-2 left-2 p-2 rounded-lg ${getTypeColor(opportunity.opportunity_type)}`}>
+                      <div className={`absolute top-2 left-2 p-2 rounded-lg ${getTypeColor(opportunity.type)}`}>
                         <Icon className="h-5 w-5" />
                       </div>
                     </div>
@@ -405,7 +405,7 @@ export default function OpportunitiesPage() {
                     {/* Header (only show if no image) */}
                     {!opportunity.thumbnail_url && (
                       <div className="flex items-start justify-between mb-4">
-                        <div className={`p-2 rounded-lg ${getTypeColor(opportunity.opportunity_type)}`}>
+                        <div className={`p-2 rounded-lg ${getTypeColor(opportunity.type)}`}>
                           <Icon className="h-5 w-5" />
                         </div>
                         <button
@@ -445,7 +445,7 @@ export default function OpportunitiesPage() {
                       )}
 
                       {/* Job Salary */}
-                      {opportunity.opportunity_type === 'job' && opportunity.salary_min && (
+                      {opportunity.type === 'job' && opportunity.salary_min && (
                         <div className="flex items-center text-sm text-gray-500">
                           <DollarSign className="h-4 w-4 mr-2 flex-shrink-0" />
                           <span>
@@ -456,7 +456,7 @@ export default function OpportunitiesPage() {
                       )}
 
                       {/* Investment Amount */}
-                      {opportunity.opportunity_type === 'investment' && opportunity.investment_amount_min && (
+                      {opportunity.type === 'investment' && opportunity.investment_amount_min && (
                         <div className="flex items-center text-sm text-gray-500">
                           <DollarSign className="h-4 w-4 mr-2 flex-shrink-0" />
                           <span>

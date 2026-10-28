@@ -26,7 +26,7 @@ interface Opportunity {
   id: string
   title: string
   description: string
-  opportunity_type: string
+  type: string
   status: string
   created_at: string
   views_count: number
@@ -64,7 +64,7 @@ export default function MyOpportunitiesPage() {
       const { data: opps, error } = await supabase
         .from('opportunities')
         .select('*')
-        .eq('posted_by', user.id)
+        .eq('creator_id', user.id)
         .order('created_at', { ascending: false })
 
       if (error) throw error
@@ -340,7 +340,7 @@ export default function MyOpportunitiesPage() {
         ) : (
           <div className="space-y-4">
             {filteredOpportunities.map((opportunity) => {
-              const Icon = getIcon(opportunity.opportunity_type)
+              const Icon = getIcon(opportunity.type)
               const StatusIcon = getStatusIcon(opportunity.status)
 
               return (

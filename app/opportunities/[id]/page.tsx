@@ -31,7 +31,7 @@ interface Opportunity {
   id: string
   title: string
   description: string
-  opportunity_type: string
+  type: string
   location: string
   is_remote: boolean
   country: string
@@ -52,7 +52,7 @@ interface Opportunity {
   created_at: string
   views_count: number
   applications_count: number
-  posted_by: string
+  creator_id: string
   status: string
   thumbnail_url?: string
   // Job-specific fields
@@ -163,7 +163,7 @@ export default function OpportunityDetailPage() {
         poster: Array.isArray(opp.poster) ? opp.poster[0] : opp.poster,
         is_saved: !!save,
         has_applied: !!application,
-        is_owner: opp.posted_by === currentUserId
+        is_owner: opp.creator_id === currentUserId
       })
       setLoading(false)
     } catch (error) {
@@ -359,7 +359,7 @@ export default function OpportunityDetailPage() {
     return null
   }
 
-  const Icon = getIcon(opportunity.opportunity_type)
+  const Icon = getIcon(opportunity.type)
 
   return (
     <AuthenticatedLayout>
@@ -386,7 +386,7 @@ export default function OpportunityDetailPage() {
                     alt={opportunity.title}
                     className="w-full h-full object-cover"
                   />
-                  <div className={`absolute top-4 left-4 p-3 rounded-lg ${getTypeColor(opportunity.opportunity_type)} shadow-lg`}>
+                  <div className={`absolute top-4 left-4 p-3 rounded-lg ${getTypeColor(opportunity.type)} shadow-lg`}>
                     <Icon className="h-6 w-6" />
                   </div>
                 </div>
@@ -395,7 +395,7 @@ export default function OpportunityDetailPage() {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   {!opportunity.thumbnail_url && (
-                    <div className={`p-3 rounded-lg ${getTypeColor(opportunity.opportunity_type)}`}>
+                    <div className={`p-3 rounded-lg ${getTypeColor(opportunity.type)}`}>
                       <Icon className="h-6 w-6" />
                     </div>
                   )}
@@ -463,7 +463,7 @@ export default function OpportunityDetailPage() {
               </div>
 
               {/* Salary/Investment Amount */}
-              {opportunity.opportunity_type === 'job' && opportunity.salary_min && (
+              {opportunity.type === 'job' && opportunity.salary_min && (
                 <div className="flex items-center text-lg font-semibold text-gray-900 mb-4">
                   <DollarSign className="h-5 w-5 mr-1 text-green-600" />
                   <span>
@@ -474,7 +474,7 @@ export default function OpportunityDetailPage() {
                 </div>
               )}
 
-              {opportunity.opportunity_type === 'investment' && opportunity.investment_amount_min && (
+              {opportunity.type === 'investment' && opportunity.investment_amount_min && (
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center text-lg font-semibold text-gray-900">
                     <DollarSign className="h-5 w-5 mr-1 text-green-600" />
@@ -493,8 +493,8 @@ export default function OpportunityDetailPage() {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                <span className={`px-3 py-1 rounded-full text-sm font-medium capitalize ${getTypeColor(opportunity.opportunity_type)}`}>
-                  {opportunity.opportunity_type}
+                <span className={`px-3 py-1 rounded-full text-sm font-medium capitalize ${getTypeColor(opportunity.type)}`}>
+                  {opportunity.type}
                 </span>
                 {opportunity.job_type && (
                   <span className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-700 capitalize">
@@ -541,7 +541,7 @@ export default function OpportunityDetailPage() {
             )}
 
             {/* Type-Specific Details */}
-            {opportunity.opportunity_type === 'job' && (
+            {opportunity.type === 'job' && (
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Job Details</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -600,7 +600,7 @@ export default function OpportunityDetailPage() {
               </div>
             )}
 
-            {opportunity.opportunity_type === 'investment' && (
+            {opportunity.type === 'investment' && (
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Investment Details</h2>
                 {opportunity.company_description && (
@@ -662,7 +662,7 @@ export default function OpportunityDetailPage() {
               </div>
             )}
 
-            {opportunity.opportunity_type === 'partnership' && (
+            {opportunity.type === 'partnership' && (
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Partnership Details</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -706,7 +706,7 @@ export default function OpportunityDetailPage() {
               </div>
             )}
 
-            {opportunity.opportunity_type === 'mentorship' && (
+            {opportunity.type === 'mentorship' && (
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Mentorship Details</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -863,7 +863,7 @@ export default function OpportunityDetailPage() {
               </div>
               {!opportunity.is_owner && (
                 <button
-                  onClick={() => router.push(`/messages?user=${opportunity.posted_by}`)}
+                  onClick={() => router.push(`/messages?user=${opportunity.creator_id}`)}
                   className="w-full mt-4 border-2 border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium"
                 >
                   Send Message

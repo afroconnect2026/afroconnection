@@ -27,9 +27,9 @@ interface Application {
 interface Opportunity {
   id: string
   title: string
-  opportunity_type: string
+  type: string
   status: string
-  posted_by: string
+  creator_id: string
 }
 
 export default function ApplicationsManagementPage() {
@@ -56,14 +56,14 @@ export default function ApplicationsManagementPage() {
       // Load opportunity
       const { data: opp, error: oppError } = await supabase
         .from('opportunities')
-        .select('id, title, opportunity_type, status, posted_by')
+        .select('id, title, type, status, creator_id')
         .eq('id', params.id)
         .single()
 
       if (oppError) throw oppError
 
       // Check ownership
-      if (opp.posted_by !== user.id) {
+      if (opp.creator_id !== user.id) {
         toast.error('You do not have permission to view these applications')
         router.push('/opportunities')
         return

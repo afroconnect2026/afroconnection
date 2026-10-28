@@ -46,19 +46,25 @@ export default function AdminLoginPage() {
         throw new Error('You do not have admin access')
       }
 
-      // Log admin login
-      const ipResponse = await fetch('https://api.ipify.org?format=json')
-      const ipData = await ipResponse.json()
+      // Log admin login (best effort - never block login on logging)
+      let ip: string | null = null
+      try {
+        const ipResponse = await fetch('https://api.ipify.org?format=json')
+        ip = (await ipResponse.json()).ip
+      } catch {
+        ip = null
+      }
 
-      await supabase.from('admin_activity_log').insert({
+      const { error: logError } = await supabase.from('admin_activity_log').insert({
         admin_id: adminData.id,
         action: 'login',
         target_type: 'admin',
         target_id: adminData.id,
         details: { email: adminData.email },
-        ip_address: ipData.ip,
+        ip_address: ip,
         user_agent: navigator.userAgent,
       })
+      if (logError) console.warn('Failed to log admin login:', logError.message)
 
       // Redirect to admin dashboard
       router.push('/admin/dashboard')

@@ -1,10 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import AdminNav from '@/components/admin/AdminNav'
 import AdminHeader from '@/components/admin/AdminHeader'
+import {
+  AdminContext,
+  AdminCountsContext,
+  AdminPendingCounts,
+  EMPTY_COUNTS,
+} from '@/components/admin/AdminContext'
 
 export default function AdminLayout({
   children,
@@ -13,9 +19,10 @@ export default function AdminLayout({
 }) {
   const [admin, setAdmin] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [counts, setCounts] = useState<AdminPendingCounts>(EMPTY_COUNTS)
   const router = useRouter()
   const pathname = usePathname()
-  const supabase = createClient()
+  const [supabase] = useState(() => createClient())
 
   useEffect(() => {
     const checkAdminAuth = async () => {
@@ -45,18 +52,53 @@ export default function AdminLayout({
         return
       }
 
-      setAdmin(adminData)
+      setAdmin((prev: any) => (prev?.id === adminData.id && prev?.role === adminData.role ? prev : adminData))
       setLoading(false)
-
-      // Update last login
-      await supabase
-        .from('admin_users')
-        .update({ last_login: new Date().toISOString() })
-        .eq('id', user.id)
     }
 
     checkAdminAuth()
   }, [pathname, router, supabase])
+
+  // Update last login once per session (RPC: admins cannot write admin_users directly)
+  useEffect(() => {
+    if (!admin?.id) return
+    supabase.rpc('admin_touch_login').then(({ error }) => {
+      if (error) console.warn('admin_touch_login failed:', error.message)
+    })
+  }, [admin?.id, supabase])
+
+  const refreshCounts = useCallback(async () => {
+    const { data, error } = await supabase.rpc('admin_pending_counts')
+    if (!error && data) {
+      setCounts({ ...EMPTY_COUNTS, ...(data as any) })
+      return
+    }
+    // Fallback when sql/VERIFICATION-NOTIFICATIONS-FIX.sql has not been run yet
+    const { data: stats } = await supabase.rpc('admin_platform_stats')
+    if (stats) {
+      const s = stats as any
+      setCounts({
+        verifications: s.pending_verifications || 0,
+        verifications_info: 0,
+        opportunities: s.pending_opportunities || 0,
+        events: s.pending_events || 0,
+        reports: s.pending_reports || 0,
+      })
+    }
+  }, [supabase])
+
+  // Keep pending counts fresh: on load, every 60s, when the tab regains focus
+  useEffect(() => {
+    if (!admin?.id) return
+    refreshCounts()
+    const interval = setInterval(refreshCounts, 60000)
+    const onFocus = () => refreshCounts()
+    window.addEventListener('focus', onFocus)
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener('focus', onFocus)
+    }
+  }, [admin?.id, refreshCounts])
 
   // Show login page without layout
   if (pathname === '/admin/login') {
@@ -79,16 +121,20 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AdminHeader admin={admin} />
-      <div className="flex">
-        <AdminNav admin={admin} />
-        <main className="flex-1 ml-64 pt-16">
-          <div className="p-6">
-            {children}
+    <AdminContext.Provider value={admin}>
+      <AdminCountsContext.Provider value={{ counts, refresh: refreshCounts }}>
+        <div className="min-h-screen bg-gray-50">
+          <AdminHeader admin={admin} />
+          <div className="flex">
+            <AdminNav admin={admin} />
+            <main className="flex-1 ml-64 pt-16">
+              <div className="p-6">
+                {children}
+              </div>
+            </main>
           </div>
-        </main>
-      </div>
-    </div>
+        </div>
+      </AdminCountsContext.Provider>
+    </AdminContext.Provider>
   )
 }

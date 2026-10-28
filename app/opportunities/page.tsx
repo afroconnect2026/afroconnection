@@ -92,7 +92,8 @@ export default function OpportunitiesPage() {
           )
         `)
         .eq('status', 'active')
-        .eq('moderation_status', 'approved') // PRE-APPROVAL: Only show approved opportunities
+        // PRE-APPROVAL: only approved (NULL = legacy rows created before moderation existed)
+        .or('moderation_status.eq.approved,moderation_status.is.null')
         .order('created_at', { ascending: false })
 
       if (error) throw error
@@ -126,19 +127,21 @@ export default function OpportunitiesPage() {
     try {
       if (isSaved) {
         // Unsave
-        await supabase
+        const { error } = await supabase
           .from('opportunity_saves')
           .delete()
           .eq('opportunity_id', opportunityId)
           .eq('user_id', userId)
+        if (error) throw error
       } else {
         // Save
-        await supabase
+        const { error } = await supabase
           .from('opportunity_saves')
           .insert({
             opportunity_id: opportunityId,
             user_id: userId
           })
+        if (error && error.code !== '23505') throw error
       }
 
       // Update local state
@@ -179,8 +182,8 @@ export default function OpportunitiesPage() {
     .filter(opp => {
       const matchesFilter = filter === 'all' || opp.type === filter
       const matchesSearch = searchQuery === '' ||
-        opp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        opp.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        opp.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        opp.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         opp.industry?.toLowerCase().includes(searchQuery.toLowerCase())
       return matchesFilter && matchesSearch
     })
@@ -344,6 +347,16 @@ export default function OpportunitiesPage() {
                 }`}
               >
                 Partnerships
+              </button>
+              <button
+                onClick={() => setFilter('mentorship')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
+                  filter === 'mentorship'
+                    ? 'bg-gold-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Mentorship
               </button>
             </div>
           </div>

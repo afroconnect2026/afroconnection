@@ -66,7 +66,7 @@ export default function ExplorePage() {
       // Load current user's profile for AI matching - fetch MORE fields for better matching
       const { data: userProfile } = await supabase
         .from('profiles')
-        .select('bio, user_type, industry, country, city, skills, company_name, full_name')
+        .select('bio, user_type, industry, country, city, full_name')
         .eq('id', user.id)
         .single()
 
@@ -88,7 +88,7 @@ export default function ExplorePage() {
     // Include more fields for better AI matching
     let query = supabase
       .from('profiles')
-      .select('id, full_name, avatar_url, bio, user_type, country, city, industry, skills, company_name, website_url, linkedin_url, twitter_url, is_verified, created_at', { count: 'exact' })
+      .select('id, full_name, avatar_url, bio, user_type, country, city, industry, website_url, linkedin_url, twitter_url, is_verified, created_at', { count: 'exact' })
       .neq('id', user.id) // Exclude current user
       .eq('is_active', true)
 
@@ -113,6 +113,7 @@ export default function ExplorePage() {
 
     if (error) {
       console.error('Search failed:', error)
+      toast.error('Search failed. Please try again.')
       return
     }
 
@@ -124,9 +125,11 @@ export default function ExplorePage() {
 
   // Reload when search or filter changes
   useEffect(() => {
-    if (user) {
-      loadProfiles(searchQuery, selectedType)
-    }
+    if (!user) return
+    // debounce typing so each keystroke doesn't fire a query
+    const t = setTimeout(() => loadProfiles(searchQuery, selectedType), searchQuery ? 300 : 0)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, selectedType, user])
 
   const getUserTypeColor = (type: string) => {

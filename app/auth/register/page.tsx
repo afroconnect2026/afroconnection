@@ -71,10 +71,17 @@ function RegisterPageContent() {
     setLoading(true)
 
     try {
+      // Respect the admin "User Registration" toggle (ignored if the setting RPC is unavailable)
+      const { data: publicSettings } = await supabase.rpc('get_public_settings')
+      if ((publicSettings as any)?.userRegistration === false) {
+        throw new Error('New registrations are temporarily closed. Please check back soon.')
+      }
+
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
           data: {
             full_name: fullName,
             user_type: userType,

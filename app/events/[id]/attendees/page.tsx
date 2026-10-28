@@ -1,5 +1,6 @@
 'use client'
 
+import toast from 'react-hot-toast'
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -111,20 +112,25 @@ export default function EventAttendeesPage() {
 
   const handleCheckIn = async (rsvpId: string, currentStatus: boolean) => {
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('event_rsvps')
         .update({
           checked_in: !currentStatus,
           checked_in_at: !currentStatus ? new Date().toISOString() : null
         })
         .eq('id', rsvpId)
+        .select('id')
 
       if (error) throw error
+      if (!data || data.length === 0) {
+        throw new Error('Check-in was blocked. Run sql/VERIFICATION-NOTIFICATIONS-FIX.sql to allow organizers to check attendees in.')
+      }
 
+      toast.success(currentStatus ? 'Check-in undone' : 'Attendee checked in')
       await loadEventAndAttendees()
     } catch (err: any) {
       console.error('Error updating check-in:', err)
-      alert(err.message || 'Failed to update check-in status')
+      toast.error(err.message || 'Failed to update check-in status')
     }
   }
 

@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import {
   Users,
   TrendingUp,
@@ -9,80 +8,94 @@ import {
   Calendar,
   MessageCircle,
   UserCheck,
-  Download
+  Download,
+  RefreshCw
 } from 'lucide-react'
 import StatCard from '@/components/admin/StatCard'
+import { rpc } from '@/lib/admin'
 
 export default function AdminAnalyticsPage() {
   const [analytics, setAnalytics] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  const supabase = createClient()
+  const [loadError, setLoadError] = useState<string | null>(null)
+  const [refreshing, setRefreshing] = useState(false)
 
   useEffect(() => {
     fetchAnalytics()
   }, [])
 
   const fetchAnalytics = async () => {
+    setRefreshing(true)
+    setLoadError(null)
     try {
-      // Fetch comprehensive analytics
-      const [
-        totalUsers,
-        activeUsers,
-        verifiedUsers,
-        totalOpps,
-        totalEvents,
-        totalConnections,
-        usersByType,
-        usersByCountry
-      ] = await Promise.all([
-        supabase.from('profiles').select('*', { count: 'exact', head: true }),
-        supabase.from('profiles').select('*', { count: 'exact', head: true })
-          .gte('last_active_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
-        supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_verified', true),
-        supabase.from('opportunities').select('*', { count: 'exact', head: true }),
-        supabase.from('events').select('*', { count: 'exact', head: true }),
-        supabase.from('connections').select('*', { count: 'exact', head: true }).eq('status', 'accepted'),
-        supabase.from('profiles').select('user_type'),
-        supabase.from('profiles').select('location')
-      ])
-
-      // Process user type distribution
-      const typeDistribution = usersByType.data?.reduce((acc: any, user: any) => {
-        acc[user.user_type] = (acc[user.user_type] || 0) + 1
-        return acc
-      }, {})
-
-      // Process country distribution
-      const countryDistribution = usersByCountry.data?.reduce((acc: any, user: any) => {
-        const country = user.location?.split(',').pop()?.trim() || 'Unknown'
-        acc[country] = (acc[country] || 0) + 1
-        return acc
-      }, {})
-
+      const data = await rpc<any>('admin_platform_stats')
       setAnalytics({
-        totalUsers: totalUsers.count || 0,
-        activeUsers: activeUsers.count || 0,
-        verifiedUsers: verifiedUsers.count || 0,
-        totalOpportunities: totalOpps.count || 0,
-        totalEvents: totalEvents.count || 0,
-        totalConnections: totalConnections.count || 0,
-        typeDistribution,
-        countryDistribution
+        totalUsers: data.total_users || 0,
+        activeUsers: data.active_users_7d || 0,
+        newUsers: data.new_users_30d || 0,
+        verifiedUsers: data.verified_users || 0,
+        bannedUsers: data.banned_users || 0,
+        totalOpportunities: data.total_opportunities || 0,
+        activeOpportunities: data.active_opportunities || 0,
+        totalEvents: data.total_events || 0,
+        upcomingEvents: data.upcoming_events || 0,
+        totalConnections: data.total_connections || 0,
+        typeDistribution: data.users_by_type || {},
+        countryDistribution: data.users_by_country || {}
       })
-
-      setLoading(false)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching analytics:', error)
+      setLoadError(error.message)
+    } finally {
       setLoading(false)
+      setRefreshing(false)
     }
   }
 
-  const exportData = async () => {
-    alert('Export functionality coming soon!')
+  const exportData = () => {
+    if (!analytics) return
+    const rows: (string | number)[][] = [
+      ['Metric', 'Value'],
+      ['Total users', analytics.totalUsers],
+      ['Active users (7d)', analytics.activeUsers],
+      ['New users (30d)', analytics.newUsers],
+      ['Verified users', analytics.verifiedUsers],
+      ['Banned users', analytics.bannedUsers],
+      ['Total opportunities', analytics.totalOpportunities],
+      ['Live opportunities', analytics.activeOpportunities],
+      ['Total events', analytics.totalEvents],
+      ['Upcoming events', analytics.upcomingEvents],
+      ['Accepted connections', analytics.totalConnections],
+      [],
+      ['User type', 'Count'],
+      ...Object.entries(analytics.typeDistribution).map(([k, v]) => [k, v as number]),
+      [],
+      ['Country', 'Count'],
+      ...Object.entries(analytics.countryDistribution).map(([k, v]) => [k, v as number])
+    ]
+    const csv = rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `afroconnect-analytics-${new Date().toISOString().slice(0, 10)}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
   }
+
+  const pct = (n: number) => (analytics?.totalUsers ? Math.round((n / analytics.totalUsers) * 100) : 0)
+  const ratio = (n: number) => (analytics?.totalUsers ? Math.round((n / analytics.totalUsers) * 10) / 10 : 0)
 
   if (loading) {
     return <div className="text-center py-12">Loading analytics...</div>
+  }
+
+  if (!analytics) {
+    return (
+      <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4 text-sm">
+        {loadError || 'Failed to load analytics'}
+      </div>
+    )
   }
 
   return (
@@ -92,6 +105,16 @@ export default function AdminAnalyticsPage() {
           <h1 className="text-3xl font-bold text-gray-900">Analytics</h1>
           <p className="text-gray-600 mt-1">Platform insights and statistics</p>
         </div>
+        <div className="flex items-center gap-3">
+        <span className="text-xs text-gray-500">All-time totals • live data</span>
+        <button
+          onClick={fetchAnalytics}
+          disabled={refreshing}
+          className="flex items-center gap-2 border border-gray-300 bg-white px-4 py-2 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+        >
+          <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+          Refresh
+        </button>
         <button
           onClick={exportData}
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
@@ -99,6 +122,7 @@ export default function AdminAnalyticsPage() {
           <Download className="w-4 h-4" />
           Export Report
         </button>
+        </div>
       </div>
 
       {/* Overview Stats */}
@@ -113,21 +137,21 @@ export default function AdminAnalyticsPage() {
         <StatCard
           title="Verified Users"
           value={analytics.verifiedUsers}
-          subtitle={`${Math.round((analytics.verifiedUsers / analytics.totalUsers) * 100)}% verified`}
+          subtitle={`${pct(analytics.verifiedUsers)}% verified`}
           icon={UserCheck}
           color="green"
         />
         <StatCard
           title="Opportunities"
           value={analytics.totalOpportunities}
-          subtitle="Posted on platform"
+          subtitle={`${analytics.activeOpportunities} live`}
           icon={FileText}
           color="purple"
         />
         <StatCard
           title="Events"
           value={analytics.totalEvents}
-          subtitle="Created"
+          subtitle={`${analytics.upcomingEvents} upcoming`}
           icon={Calendar}
           color="orange"
         />
@@ -140,9 +164,9 @@ export default function AdminAnalyticsPage() {
           {Object.entries(analytics.typeDistribution || {}).map(([type, count]: [string, any]) => (
             <div key={type} className="bg-gray-50 rounded-lg p-4">
               <p className="text-2xl font-bold text-gray-900">{count}</p>
-              <p className="text-sm text-gray-600 capitalize">{type}s</p>
+              <p className="text-sm text-gray-600 capitalize">{type}</p>
               <p className="text-xs text-gray-500 mt-1">
-                {Math.round((count / analytics.totalUsers) * 100)}%
+                {pct(count)}%
               </p>
             </div>
           ))}
@@ -163,7 +187,7 @@ export default function AdminAnalyticsPage() {
                   <div className="w-48 bg-gray-200 rounded-full h-2">
                     <div
                       className="bg-blue-600 h-2 rounded-full"
-                      style={{ width: `${(count / analytics.totalUsers) * 100}%` }}
+                      style={{ width: `${pct(count)}%` }}
                     />
                   </div>
                   <span className="text-gray-900 font-semibold w-12 text-right">{count}</span>
@@ -189,7 +213,7 @@ export default function AdminAnalyticsPage() {
               <FileText className="w-8 h-8 text-purple-600" />
             </div>
             <p className="text-3xl font-bold text-gray-900">
-              {Math.round(analytics.totalOpportunities / analytics.totalUsers * 10) / 10}
+              {ratio(analytics.totalOpportunities)}
             </p>
             <p className="text-gray-600">Avg Opportunities/User</p>
           </div>
@@ -198,7 +222,7 @@ export default function AdminAnalyticsPage() {
               <Calendar className="w-8 h-8 text-orange-600" />
             </div>
             <p className="text-3xl font-bold text-gray-900">
-              {Math.round(analytics.totalEvents / analytics.totalUsers * 10) / 10}
+              {ratio(analytics.totalEvents)}
             </p>
             <p className="text-gray-600">Avg Events/User</p>
           </div>

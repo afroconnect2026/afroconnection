@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Sparkles, Users, TrendingUp, Filter, Search, Eye } from 'lucide-react'
+import { Sparkles, Users, TrendingUp, Filter, Search, Eye, RefreshCw } from 'lucide-react'
+import { describeError } from '@/lib/admin'
 import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
 
@@ -11,6 +12,8 @@ export default function AIMatchesPage() {
   const [users, setUsers] = useState<any[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [filterType, setFilterType] = useState('all')
+  const [loadError, setLoadError] = useState<string | null>(null)
+  const [refreshing, setRefreshing] = useState(false)
   const supabase = createClient()
 
   useEffect(() => {
@@ -18,21 +21,19 @@ export default function AIMatchesPage() {
   }, [])
 
   const fetchUsers = async () => {
+    setRefreshing(true)
+    setLoadError(null)
     try {
-      // Get all active users to show potential matches
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('id, full_name, user_type, bio, industry, country, city, skills, company_name, created_at, is_verified')
-        .eq('is_active', true)
-        .order('created_at', { ascending: false })
-        .limit(100)
-
+      // Admin RPC: bypasses PII column grants, returns only existing profile columns
+      const { data, error } = await supabase.rpc('admin_list_users')
       if (error) throw error
-      setUsers(data || [])
+      setUsers(((data as any[]) || []).filter((u) => u.is_active !== false).slice(0, 200))
     } catch (error) {
       console.error('Error fetching users:', error)
+      setLoadError(describeError(error))
     } finally {
       setLoading(false)
+      setRefreshing(false)
     }
   }
 
@@ -80,8 +81,22 @@ export default function AIMatchesPage() {
           </div>
           <h1 className="text-3xl font-bold text-gray-900">AI Matches Overview</h1>
         </div>
-        <p className="text-gray-600">View all users and their AI matching potential</p>
+        <div className="flex items-center justify-between">
+          <p className="text-gray-600">View all users and their AI matching potential</p>
+          <button
+            onClick={fetchUsers}
+            disabled={refreshing}
+            className="flex items-center gap-2 border border-gray-300 bg-white px-4 py-2 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
+        </div>
       </div>
+
+      {loadError && (
+        <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4 text-sm">{loadError}</div>
+      )}
 
       {/* Info Banner */}
       <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
@@ -209,9 +224,9 @@ export default function AIMatchesPage() {
                         📍 {user.country}
                       </span>
                     )}
-                    {user.skills && (
+                    {user.city && (
                       <span className="bg-gray-100 px-2 py-1 rounded">
-                        Skills: {user.skills}
+                        {user.city}
                       </span>
                     )}
                     <span className="text-gray-400">

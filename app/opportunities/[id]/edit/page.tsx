@@ -181,14 +181,20 @@ export default function EditOpportunityPage() {
         }
       }
 
-      const { error } = await supabase
+      const { data: updated, error } = await supabase
         .from('opportunities')
         .update(opportunityData)
         .eq('id', opportunityId)
+        .select('id, moderation_status')
 
       if (error) throw error
+      if (!updated || updated.length === 0) throw new Error('You do not have permission to edit this opportunity')
 
-      toast.success('Opportunity updated successfully!')
+      toast.success(
+        updated[0].moderation_status === 'pending'
+          ? 'Opportunity updated and sent for review'
+          : 'Opportunity updated successfully!'
+      )
       router.push(`/opportunities/${opportunityId}`)
     } catch (error: any) {
       console.error('Error updating opportunity:', error)

@@ -94,7 +94,16 @@ export default function SmartRecommendationBadge({ userId, userProfile, currentU
     return 'bg-gray-100 text-gray-800 border-gray-300'
   }
 
-  if (error) return null
+  if (error) {
+    return (
+      <div className="mt-2 flex items-center gap-2 text-xs">
+        <span className="text-red-600">AI Match unavailable: {error}</span>
+        <button onClick={analyzeMatch} disabled={loading} className="text-purple-700 font-medium hover:underline disabled:opacity-50">
+          {loading ? 'Retrying...' : 'Retry'}
+        </button>
+      </div>
+    )
+  }
 
   return (
     <div className="mt-2">

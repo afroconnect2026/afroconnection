@@ -8,43 +8,82 @@ import {
   Mail,
   Shield,
   Database,
-  Save
+  Save,
+  RotateCcw
 } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { describeError } from '@/lib/admin'
+import { useAdmin } from '@/components/admin/AdminContext'
+
+const DEFAULT_SETTINGS = {
+  platformName: 'AfroConnect',
+  contactEmail: 'support@afroconnect.io',
+  maintenanceMode: false,
+  userRegistration: true,
+  autoApproveOpportunities: false,
+  autoApproveEvents: false,
+}
 
 export default function AdminSettingsPage() {
-  const [settings, setSettings] = useState<any>({
-    platformName: 'AfroConnect',
-    contactEmail: 'support@afroconnect.io',
-    maintenanceMode: false,
-    userRegistration: true,
-    autoApproveOpportunities: false,
-    autoApproveEvents: false,
-  })
+  const [settings, setSettings] = useState<any>(DEFAULT_SETTINGS)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const supabase = createClient()
+  const admin = useAdmin()
+  const isSuperAdmin = admin?.role === 'super_admin'
+
+  // Load persisted settings
+  useEffect(() => {
+    const load = async () => {
+      const { data, error } = await supabase
+        .from('system_settings')
+        .select('value')
+        .eq('key', 'platform')
+        .maybeSingle()
+      if (error) {
+        console.error('Error loading settings:', error)
+        return
+      }
+      if (data?.value) setSettings((s: any) => ({ ...s, ...(data.value as any) }))
+    }
+    load()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSave = async () => {
+    if (!isSuperAdmin) {
+      toast.error('Only Super Admins can change platform settings')
+      return
+    }
     setLoading(true)
     setSuccess(false)
 
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
+      const { error } = await supabase.from('system_settings').upsert(
+        {
+          key: 'platform',
+          value: settings,
+          description: 'Platform configuration',
+          updated_by: admin?.id,
+          updated_at: new Date().toISOString()
+        },
+        { onConflict: 'key' }
+      )
+      if (error) throw error
 
-      // Log settings update
       await supabase.from('admin_activity_log').insert({
-        admin_id: user.id,
+        admin_id: admin?.id,
         action: 'update_settings',
         target_type: 'system',
         details: settings
       })
 
       setSuccess(true)
+      toast.success('Settings saved')
       setTimeout(() => setSuccess(false), 3000)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving settings:', error)
-      alert('Failed to save settings')
+      toast.error(describeError(error))
     } finally {
       setLoading(false)
     }
@@ -195,11 +234,29 @@ export default function AdminSettingsPage() {
         </div>
       </div>
 
+      {!isSuperAdmin && (
+        <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg p-4 text-sm">
+          Only Super Admins can change platform settings.
+        </div>
+      )}
+
       {/* Save Button */}
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={() => {
+            if (!confirm('Reset all settings to their defaults? Click Save to apply.')) return
+            setSettings(DEFAULT_SETTINGS)
+            toast('Defaults restored - click Save Settings to apply', { icon: '↩️' })
+          }}
+          disabled={loading || !isSuperAdmin}
+          className="flex items-center gap-2 border border-gray-300 bg-white text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+        >
+          <RotateCcw className="w-5 h-5" />
+          Reset to Defaults
+        </button>
         <button
           onClick={handleSave}
-          disabled={loading}
+          disabled={loading || !isSuperAdmin}
           className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
         >
           <Save className="w-5 h-5" />

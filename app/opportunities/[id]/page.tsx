@@ -26,6 +26,7 @@ import {
 } from 'lucide-react'
 import { formatDistanceToNow, format } from 'date-fns'
 import toast from 'react-hot-toast'
+import ReportButton from '@/components/ReportButton'
 
 interface Opportunity {
   id: string
@@ -175,19 +176,8 @@ export default function OpportunityDetailPage() {
 
   const incrementViewCount = async () => {
     try {
-      // Get current count and increment
-      const { data } = await supabase
-        .from('opportunities')
-        .select('views_count')
-        .eq('id', opportunityId)
-        .single()
-
-      if (data) {
-        await supabase
-          .from('opportunities')
-          .update({ views_count: (data.views_count || 0) + 1 })
-          .eq('id', opportunityId)
-      }
+      // Server-side increment (direct UPDATEs by non-owners are blocked by RLS)
+      await supabase.rpc('increment_content_views', { p_content_type: 'opportunity', p_content_id: opportunityId })
     } catch (error) {
       // Silent fail - view count is not critical
       console.error('Error incrementing view count:', error)
@@ -199,21 +189,23 @@ export default function OpportunityDetailPage() {
 
     try {
       if (opportunity.is_saved) {
-        await supabase
+        const { error } = await supabase
           .from('opportunity_saves')
           .delete()
           .eq('opportunity_id', opportunityId)
           .eq('user_id', userId)
+        if (error) throw error
 
         setOpportunity(prev => prev ? { ...prev, is_saved: false } : null)
         toast.success('Removed from saved')
       } else {
-        await supabase
+        const { error } = await supabase
           .from('opportunity_saves')
           .insert({
             opportunity_id: opportunityId,
             user_id: userId
           })
+        if (error && error.code !== '23505') throw error
 
         setOpportunity(prev => prev ? { ...prev, is_saved: true } : null)
         toast.success('Saved!')
@@ -246,11 +238,8 @@ export default function OpportunityDetailPage() {
         return
       }
 
-      // Update applications count
-      await supabase
-        .from('opportunities')
-        .update({ applications_count: (opportunity.applications_count || 0) + 1 })
-        .eq('id', opportunityId)
+      // applications_count is maintained by a database trigger
+      // (sql/VERIFICATION-NOTIFICATIONS-FIX.sql); applicants cannot update the row directly.
 
       setOpportunity(prev => prev ? { ...prev, has_applied: true, applications_count: (prev.applications_count || 0) + 1 } : null)
       setShowApplyModal(false)
@@ -268,25 +257,36 @@ export default function OpportunityDetailPage() {
     if (!confirm('Are you sure you want to delete this opportunity?')) return
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('opportunities')
         .delete()
         .eq('id', opportunityId)
+        .select('id')
 
       if (error) throw error
+      if (!data || data.length === 0) throw new Error('You do not have permission to delete this opportunity')
 
       toast.success('Opportunity deleted')
       router.push('/opportunities')
     } catch (error) {
       console.error('Error deleting:', error)
-      toast.error('Failed to delete')
+      toast.error((error as any)?.message || 'Failed to delete')
     }
   }
 
-  const handleShare = () => {
+  const handleShare = async () => {
     const url = `${window.location.origin}/opportunities/${opportunityId}`
-    navigator.clipboard.writeText(url)
-    toast.success('Link copied to clipboard!')
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: opportunity?.title || 'AfroConnect opportunity', url })
+        return
+      }
+      await navigator.clipboard.writeText(url)
+      toast.success('Link copied to clipboard!')
+    } catch (error: any) {
+      if (error?.name === 'AbortError') return // user closed the share sheet
+      toast.error('Could not copy link')
+    }
   }
 
   const getIcon = (type: string) => {
@@ -414,6 +414,15 @@ export default function OpportunityDetailPage() {
                   >
                     <Share2 className="h-5 w-5" />
                   </button>
+                  {!opportunity.is_owner && (
+                    <ReportButton
+                      contentType="opportunity"
+                      contentId={opportunity.id}
+                      reportedUserId={opportunity.creator_id}
+                      label=""
+                      className="p-2 text-gray-400 hover:text-red-600 rounded-lg hover:bg-gray-100 transition-colors"
+                    />
+                  )}
                   {opportunity.is_owner && (
                     <>
                       <button

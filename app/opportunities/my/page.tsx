@@ -1,5 +1,6 @@
 'use client'
 
+import ModerationStatusBadge from '@/components/ModerationStatusBadge'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -32,6 +33,8 @@ interface Opportunity {
   views_count: number
   applications_count: number
   thumbnail_url?: string
+  moderation_status?: string
+  moderation_notes?: string
 }
 
 export default function MyOpportunitiesPage() {
@@ -97,29 +100,33 @@ export default function MyOpportunitiesPage() {
     if (!confirm(`Are you sure you want to delete "${title}"?`)) return
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('opportunities')
         .delete()
         .eq('id', id)
+        .select('id')
 
       if (error) throw error
+      if (!data || data.length === 0) throw new Error('You do not have permission to delete this opportunity')
 
       toast.success('Opportunity deleted')
       loadMyOpportunities()
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting:', error)
-      toast.error('Failed to delete')
+      toast.error(error?.message || 'Failed to delete')
     }
   }
 
   const handleStatusChange = async (id: string, newStatus: string) => {
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('opportunities')
         .update({ status: newStatus })
         .eq('id', id)
+        .select('id')
 
       if (error) throw error
+      if (!data || data.length === 0) throw new Error('Update was blocked')
 
       toast.success(`Opportunity ${newStatus}`)
       loadMyOpportunities()
@@ -379,7 +386,13 @@ export default function MyOpportunitiesPage() {
                             <StatusIcon className="h-3 w-3" />
                             <span className="capitalize">{opportunity.status}</span>
                           </span>
+                          <ModerationStatusBadge status={opportunity.moderation_status} notes={opportunity.moderation_notes} />
                         </div>
+                        {opportunity.moderation_status === 'rejected' && opportunity.moderation_notes && (
+                          <p className="text-xs text-red-700 mb-2">
+                            Not approved: {opportunity.moderation_notes}. Edit this opportunity to resubmit it for review.
+                          </p>
+                        )}
 
                         <p className="text-sm text-gray-600 line-clamp-2 mb-3">
                           {opportunity.description}

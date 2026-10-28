@@ -1,5 +1,7 @@
 'use client'
 
+import toast from 'react-hot-toast'
+import ModerationStatusBadge from '@/components/ModerationStatusBadge'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -119,17 +121,20 @@ export default function MyEventsPage() {
     }
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('events')
         .delete()
         .eq('id', eventId)
+        .select('id')
 
       if (error) throw error
+      if (!data || data.length === 0) throw new Error('You do not have permission to delete this event')
 
+      toast.success('Event deleted')
       await loadEvents()
     } catch (err: any) {
       console.error('Error deleting event:', err)
-      alert(err.message || 'Failed to delete event')
+      toast.error(err.message || 'Failed to delete event')
     }
   }
 
@@ -160,6 +165,9 @@ export default function MyEventsPage() {
               </div>
             )}
             {/* Status Badge */}
+            <div className="absolute top-3 right-3">
+              <ModerationStatusBadge status={event.moderation_status} notes={event.moderation_notes} />
+            </div>
             <div className="absolute top-3 left-3">
               {isDraft && (
                 <span className="px-3 py-1 bg-gray-500 text-white rounded-full text-xs font-bold">

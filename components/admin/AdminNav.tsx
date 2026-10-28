@@ -15,6 +15,7 @@ import {
   Sparkles,
   Activity
 } from 'lucide-react'
+import { useAdminCounts } from '@/components/admin/AdminContext'
 
 interface AdminNavProps {
   admin: any
@@ -22,6 +23,13 @@ interface AdminNavProps {
 
 export default function AdminNav({ admin }: AdminNavProps) {
   const pathname = usePathname()
+  const { counts } = useAdminCounts()
+  const badges: Record<string, number> = {
+    '/admin/verifications': counts.verifications,
+    '/admin/opportunities': counts.opportunities,
+    '/admin/events': counts.events,
+    '/admin/reports': counts.reports,
+  }
 
   const navItems = [
     {
@@ -113,7 +121,8 @@ export default function AdminNav({ admin }: AdminNavProps) {
         <div className="space-y-1">
           {filteredNavItems.map((item) => {
             const Icon = item.icon
-            const isActive = pathname === item.href
+            const isActive = pathname === item.href || pathname?.startsWith(item.href + '/')
+            const badge = badges[item.href] || 0
 
             return (
               <Link
@@ -126,7 +135,12 @@ export default function AdminNav({ admin }: AdminNavProps) {
                 }`}
               >
                 <Icon className={`w-5 h-5 ${isActive ? 'text-blue-600' : 'text-gray-400'}`} />
-                {item.name}
+                <span className="flex-1">{item.name}</span>
+                {badge > 0 && (
+                  <span className="text-xs font-bold bg-red-500 text-white rounded-full px-2 py-0.5">
+                    {badge > 99 ? '99+' : badge}
+                  </span>
+                )}
               </Link>
             )
           })}

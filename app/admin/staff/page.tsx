@@ -2,32 +2,22 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Shield, UserPlus, Trash2, Edit, Check, X } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { rpc, describeError } from '@/lib/admin'
+import { useAdmin } from '@/components/admin/AdminContext'
+import { Shield, UserPlus, Trash2, Check, X } from 'lucide-react'
 
 export default function AdminStaffPage() {
   const [staff, setStaff] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showAddModal, setShowAddModal] = useState(false)
-  const [currentAdmin, setCurrentAdmin] = useState<any>(null)
+  const [busyId, setBusyId] = useState<string | null>(null)
+  const currentAdmin = useAdmin()
   const supabase = createClient()
 
   useEffect(() => {
-    checkAdminAccess()
     fetchStaff()
   }, [])
-
-  const checkAdminAccess = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
-
-    const { data: adminData } = await supabase
-      .from('admin_users')
-      .select('*')
-      .eq('id', user.id)
-      .single()
-
-    setCurrentAdmin(adminData)
-  }
 
   const fetchStaff = async () => {
     try {
@@ -38,53 +28,40 @@ export default function AdminStaffPage() {
 
       if (error) throw error
       setStaff(data || [])
-      setLoading(false)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching staff:', error)
+      toast.error(describeError(error))
+    } finally {
       setLoading(false)
     }
   }
 
-  const toggleStaffStatus = async (staffId: string, currentStatus: boolean) => {
+  const withBusy = async (id: string, fn: () => Promise<any>, success: string) => {
+    setBusyId(id)
     try {
-      await supabase
-        .from('admin_users')
-        .update({ is_active: !currentStatus })
-        .eq('id', staffId)
-
-      await supabase.from('admin_activity_log').insert({
-        admin_id: currentAdmin?.id,
-        action: currentStatus ? 'deactivate_staff' : 'activate_staff',
-        target_type: 'admin',
-        target_id: staffId
-      })
-
-      fetchStaff()
-    } catch (error) {
-      console.error('Error toggling staff status:', error)
+      await fn()
+      toast.success(success)
+      await fetchStaff()
+    } catch (error: any) {
+      toast.error(error.message)
+    } finally {
+      setBusyId(null)
     }
   }
 
-  const deleteStaff = async (staffId: string) => {
-    if (!confirm('Are you sure you want to delete this staff member?')) return
+  const toggleStaffStatus = (staffId: string, currentStatus: boolean) =>
+    withBusy(
+      staffId,
+      () => rpc('admin_update_staff', { p_admin_id: staffId, p_is_active: !currentStatus, p_role: null }),
+      currentStatus ? 'Staff member deactivated' : 'Staff member activated'
+    )
 
-    try {
-      await supabase
-        .from('admin_users')
-        .delete()
-        .eq('id', staffId)
+  const changeRole = (staffId: string, role: string) =>
+    withBusy(staffId, () => rpc('admin_update_staff', { p_admin_id: staffId, p_is_active: null, p_role: role }), 'Role updated')
 
-      await supabase.from('admin_activity_log').insert({
-        admin_id: currentAdmin?.id,
-        action: 'delete_staff',
-        target_type: 'admin',
-        target_id: staffId
-      })
-
-      fetchStaff()
-    } catch (error) {
-      console.error('Error deleting staff:', error)
-    }
+  const deleteStaff = (staffId: string) => {
+    if (!confirm('Remove this staff member? They will lose all admin access.')) return
+    withBusy(staffId, () => rpc('admin_remove_staff', { p_admin_id: staffId }), 'Staff member removed')
   }
 
   if (loading) {
@@ -140,14 +117,23 @@ export default function AdminStaffPage() {
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    member.role === 'super_admin' ? 'bg-purple-100 text-purple-700' :
-                    member.role === 'moderator' ? 'bg-blue-100 text-blue-700' :
-                    member.role === 'support' ? 'bg-green-100 text-green-700' :
-                    'bg-gray-100 text-gray-700'
-                  }`}>
-                    {member.role.replace('_', ' ').toUpperCase()}
-                  </span>
+                  {member.id === currentAdmin?.id ? (
+                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                      {member.role.replace('_', ' ').toUpperCase()} (you)
+                    </span>
+                  ) : (
+                    <select
+                      value={member.role}
+                      disabled={busyId === member.id}
+                      onChange={(e) => changeRole(member.id, e.target.value)}
+                      className="px-2 py-1 border border-gray-300 rounded text-sm"
+                    >
+                      <option value="super_admin">Super Admin</option>
+                      <option value="moderator">Moderator</option>
+                      <option value="support">Support</option>
+                      <option value="analytics">Analytics</option>
+                    </select>
+                  )}
                 </td>
                 <td className="px-6 py-4">
                   {member.is_active ? (
@@ -167,8 +153,10 @@ export default function AdminStaffPage() {
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
+                    {member.id !== currentAdmin?.id && (
                     <button
                       onClick={() => toggleStaffStatus(member.id, member.is_active)}
+                      disabled={busyId === member.id}
                       className={`px-3 py-1 rounded text-sm ${
                         member.is_active
                           ? 'bg-red-100 text-red-700 hover:bg-red-200'
@@ -177,9 +165,11 @@ export default function AdminStaffPage() {
                     >
                       {member.is_active ? 'Deactivate' : 'Activate'}
                     </button>
+                    )}
                     {member.id !== currentAdmin?.id && (
                       <button
                         onClick={() => deleteStaff(member.id)}
+                        disabled={busyId === member.id}
                         className="p-2 text-red-600 hover:bg-red-50 rounded"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -201,7 +191,6 @@ export default function AdminStaffPage() {
             setShowAddModal(false)
             fetchStaff()
           }}
-          currentAdminId={currentAdmin?.id}
         />
       )}
     </div>
@@ -209,13 +198,12 @@ export default function AdminStaffPage() {
 }
 
 // Add Staff Modal Component
-function AddStaffModal({ onClose, onSuccess, currentAdminId }: any) {
+function AddStaffModal({ onClose, onSuccess }: any) {
   const [email, setEmail] = useState('')
   const [fullName, setFullName] = useState('')
   const [role, setRole] = useState('moderator')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const supabase = createClient()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -223,42 +211,8 @@ function AddStaffModal({ onClose, onSuccess, currentAdminId }: any) {
     setError('')
 
     try {
-      // Check if user exists
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('email', email)
-        .single()
-
-      if (!profileData) {
-        setError('User not found. They must register on AfroConnect first.')
-        setLoading(false)
-        return
-      }
-
-      // Add to admin_users
-      const { error: insertError } = await supabase
-        .from('admin_users')
-        .insert({
-          id: profileData.id,
-          email,
-          full_name: fullName,
-          role,
-          is_active: true,
-          created_by: currentAdminId
-        })
-
-      if (insertError) throw insertError
-
-      // Log activity
-      await supabase.from('admin_activity_log').insert({
-        admin_id: currentAdminId,
-        action: 'create_staff',
-        target_type: 'admin',
-        target_id: profileData.id,
-        details: { email, role }
-      })
-
+      await rpc('admin_add_staff', { p_email: email.trim(), p_full_name: fullName.trim(), p_role: role })
+      toast.success('Staff member added')
       onSuccess()
     } catch (err: any) {
       setError(err.message || 'Failed to add staff member')

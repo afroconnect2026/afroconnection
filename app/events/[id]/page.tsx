@@ -1,5 +1,6 @@
 'use client'
 
+import toast from 'react-hot-toast'
 import { useEffect, useState, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -44,6 +45,7 @@ const QRCodeSVG = dynamic(() => import('qrcode.react').then(mod => mod.QRCodeSVG
   loading: () => <div className="w-48 h-48 bg-gray-100 animate-pulse rounded-lg"></div>
 })
 import Link from 'next/link'
+import ReportButton from '@/components/ReportButton'
 import Image from 'next/image'
 
 const fadeIn = {
@@ -128,11 +130,8 @@ export default function EventDetailPage() {
 
       setEvent(eventData)
 
-      // Increment view count
-      await supabase
-        .from('events')
-        .update({ views_count: (eventData.views_count || 0) + 1 })
-        .eq('id', params.id)
+      // Increment view count (server-side; direct UPDATEs by non-organizers are blocked by RLS)
+      supabase.rpc('increment_content_views', { p_content_type: 'event', p_content_id: params.id }).then(() => {})
 
       // Check if user has RSVP'd
       if (user) {
@@ -253,7 +252,7 @@ export default function EventDetailPage() {
 
   const handleRSVP = async (status: 'going' | 'interested') => {
     if (!user) {
-      router.push('/login')
+      router.push('/auth/login')
       return
     }
 
@@ -293,6 +292,7 @@ export default function EventDetailPage() {
         setRsvp(data)
       }
 
+      toast.success(status === 'going' ? "You're going! See you there." : 'Marked as interested')
       // Reload event to get updated RSVP count
       await loadEvent()
     } catch (err: any) {
@@ -318,6 +318,7 @@ export default function EventDetailPage() {
       if (error) throw error
 
       setRsvp(null)
+      toast.success('RSVP cancelled')
       await loadEvent()
     } catch (err: any) {
       console.error('Error canceling RSVP:', err)
@@ -329,7 +330,7 @@ export default function EventDetailPage() {
 
   const handleToggleSave = async () => {
     if (!user) {
-      router.push('/login')
+      router.push('/auth/login')
       return
     }
 
@@ -347,6 +348,7 @@ export default function EventDetailPage() {
 
         if (error) throw error
         setIsSaved(false)
+        toast.success('Removed from saved events')
       } else {
         // Save event
         const { error } = await supabase
@@ -358,6 +360,7 @@ export default function EventDetailPage() {
 
         if (error) throw error
         setIsSaved(true)
+        toast.success('Event saved')
       }
     } catch (err: any) {
       console.error('Error toggling save:', err)
@@ -415,10 +418,15 @@ END:VCALENDAR`
     document.body.removeChild(link)
   }
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href)
-    setLinkCopied(true)
-    setTimeout(() => setLinkCopied(false), 2000)
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setLinkCopied(true)
+      toast.success('Link copied')
+      setTimeout(() => setLinkCopied(false), 2000)
+    } catch {
+      toast.error('Could not copy link')
+    }
   }
 
   const handleShareTwitter = () => {
@@ -449,7 +457,7 @@ END:VCALENDAR`
 
   const handleJoinWaitlist = async () => {
     if (!user) {
-      router.push('/login')
+      router.push('/auth/login')
       return
     }
 
@@ -466,6 +474,7 @@ END:VCALENDAR`
 
       if (error) throw error
 
+      toast.success("You're on the waitlist - we'll notify you if a spot opens")
       await loadEvent()
     } catch (err: any) {
       console.error('Error joining waitlist:', err)
@@ -489,6 +498,7 @@ END:VCALENDAR`
       if (error) throw error
 
       setWaitlistEntry(null)
+      toast.success('Left the waitlist')
     } catch (err: any) {
       console.error('Error leaving waitlist:', err)
       setError(err.message || 'Failed to leave waitlist')
@@ -499,7 +509,7 @@ END:VCALENDAR`
 
   const handleSubmitReview = async () => {
     if (!user) {
-      router.push('/login')
+      router.push('/auth/login')
       return
     }
 
@@ -519,6 +529,7 @@ END:VCALENDAR`
 
       if (error) throw error
 
+      toast.success('Thanks for your review!')
       // Reset form
       setShowReviewForm(false)
       setReviewRating(5)
@@ -683,13 +694,16 @@ END:VCALENDAR`
 
     try {
       setDeleting(true)
-      const { error } = await supabase
+      const { data: deleted, error } = await supabase
         .from('events')
         .delete()
         .eq('id', params.id)
+        .select('id')
 
       if (error) throw error
+      if (!deleted || deleted.length === 0) throw new Error('You do not have permission to delete this event')
 
+      toast.success('Event deleted')
       router.push('/events')
     } catch (err: any) {
       console.error('Error deleting event:', err)
@@ -1628,6 +1642,12 @@ END:VCALENDAR`
                 <Download className="h-5 w-5" />
                 Add to Calendar
               </button>
+
+              {!isOrganizer && event?.id && (
+                <div className="flex justify-center">
+                  <ReportButton contentType="event" contentId={event.id} reportedUserId={event.organizer_id} label="Report this event" />
+                </div>
+              )}
 
               {/* Share Event */}
               <div className="bg-white rounded-xl p-6 border border-gray-200">

@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Bell } from 'lucide-react'
+import { Bell, CheckCheck } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
+import toast from 'react-hot-toast'
 
 interface Notification {
   id: string
@@ -16,108 +17,156 @@ interface Notification {
   created_at: string
 }
 
+export const NOTIFICATION_ICONS: { [key: string]: string } = {
+  message: '💬',
+  application: '📝',
+  opportunity: '💼',
+  connection: '🤝',
+  event: '📅',
+  verification: '✅',
+  admin_verification: '🛡️',
+  admin_opportunity: '💼',
+  admin_event: '📅',
+  admin_report: '🚩',
+  report: '🚩'
+}
+
 export default function NotificationBell() {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [showDropdown, setShowDropdown] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [userId, setUserId] = useState<string | null>(null)
   const router = useRouter()
-  const supabase = createClient()
+  const [supabase] = useState(() => createClient())
 
-  useEffect(() => {
-    loadNotifications()
-
-    // Subscribe to new notifications
-    const channel = supabase
-      .channel('notifications')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${supabase.auth.getUser().then(u => u.data.user?.id)}`
-        },
-        (payload) => {
-          setNotifications(prev => [payload.new as Notification, ...prev])
-          setUnreadCount(prev => prev + 1)
-        }
-      )
-      .subscribe()
-
-    return () => {
-      supabase.removeChannel(channel)
-    }
-  }, [])
-
-  const loadNotifications = async () => {
+  const loadNotifications = useCallback(async (uid: string) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
-
-      // Load recent notifications
-      const { data: notifs } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(10)
-
-      if (notifs) {
-        setNotifications(notifs)
-        setUnreadCount(notifs.filter(n => !n.read).length)
-      }
-
-      setLoading(false)
+      const [{ data: notifs, error }, { count }] = await Promise.all([
+        supabase
+          .from('notifications')
+          .select('*')
+          .eq('user_id', uid)
+          .order('created_at', { ascending: false })
+          .limit(10),
+        // true unread total (not just among the latest 10)
+        supabase
+          .from('notifications')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', uid)
+          .eq('read', false)
+      ])
+      if (error) throw error
+      setNotifications(notifs || [])
+      setUnreadCount(count ?? (notifs || []).filter(n => !n.read).length)
     } catch (error) {
       console.error('Error loading notifications:', error)
+    } finally {
       setLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    let channel: ReturnType<typeof supabase.channel> | null = null
+    let cancelled = false
+
+    const init = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user || cancelled) {
+        setLoading(false)
+        return
+      }
+      setUserId(user.id)
+      loadNotifications(user.id)
+
+      // Real-time: subscribe to this user's new notifications.
+      // (Previously the filter interpolated a Promise, so it never matched.)
+      channel = supabase
+        .channel(`notifications-${user.id}`)
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${user.id}`
+          },
+          (payload) => {
+            const n = payload.new as Notification
+            setNotifications(prev => [n, ...prev.filter(p => p.id !== n.id)].slice(0, 10))
+            setUnreadCount(prev => prev + 1)
+            toast(n.title, { icon: NOTIFICATION_ICONS[n.type] || '🔔' })
+          }
+        )
+        .subscribe()
+    }
+    init()
+
+    return () => {
+      cancelled = true
+      if (channel) supabase.removeChannel(channel)
+    }
+  }, [supabase, loadNotifications])
+
+  // Refresh when the tab regains focus (covers environments without realtime)
+  useEffect(() => {
+    if (!userId) return
+    const onFocus = () => loadNotifications(userId)
+    window.addEventListener('focus', onFocus)
+    return () => window.removeEventListener('focus', onFocus)
+  }, [userId, loadNotifications])
 
   const markAsRead = async (notificationId: string) => {
-    try {
-      await supabase
-        .from('notifications')
-        .update({ read: true })
-        .eq('id', notificationId)
-
-      setNotifications(prev =>
-        prev.map(n => n.id === notificationId ? { ...n, read: true } : n)
-      )
-      setUnreadCount(prev => Math.max(0, prev - 1))
-    } catch (error) {
+    const { error } = await supabase
+      .from('notifications')
+      .update({ read: true })
+      .eq('id', notificationId)
+    if (error) {
       console.error('Error marking notification as read:', error)
+      return
     }
+    setNotifications(prev =>
+      prev.map(n => n.id === notificationId ? { ...n, read: true } : n)
+    )
+    setUnreadCount(prev => Math.max(0, prev - 1))
+  }
+
+  const markAllAsRead = async () => {
+    if (!userId) return
+    const { error } = await supabase
+      .from('notifications')
+      .update({ read: true })
+      .eq('user_id', userId)
+      .eq('read', false)
+    if (error) {
+      toast.error('Failed to mark notifications as read')
+      return
+    }
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+    setUnreadCount(0)
   }
 
   const handleNotificationClick = async (notification: Notification) => {
     if (!notification.read) {
       await markAsRead(notification.id)
     }
+    setShowDropdown(false)
     if (notification.link) {
       router.push(notification.link)
     }
-    setShowDropdown(false)
-  }
-
-  const getNotificationIcon = (type: string) => {
-    const icons: { [key: string]: string } = {
-      message: '💬',
-      application: '📝',
-      opportunity: '💼',
-      connection: '🤝',
-      event: '📅'
-    }
-    return icons[type] || '🔔'
   }
 
   return (
     <div className="relative">
       {/* Bell Icon */}
       <button
-        onClick={() => setShowDropdown(!showDropdown)}
+        onClick={() => {
+          const next = !showDropdown
+          setShowDropdown(next)
+          if (next && userId) loadNotifications(userId)
+        }}
         className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full transition-colors"
+        aria-label={`Notifications${unreadCount ? ` (${unreadCount} unread)` : ''}`}
       >
         <Bell className="h-6 w-6" />
         {unreadCount > 0 && (
@@ -137,19 +186,30 @@ export default function NotificationBell() {
           ></div>
 
           {/* Dropdown Content */}
-          <div className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg border border-gray-200 z-20 max-h-[500px] overflow-hidden flex flex-col">
+          <div className="absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-96 bg-white rounded-lg shadow-lg border border-gray-200 z-20 max-h-[500px] overflow-hidden flex flex-col">
             {/* Header */}
-            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+            <div className="p-4 border-b border-gray-200 flex items-center justify-between gap-2">
               <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
-              <button
-                onClick={() => {
-                  router.push('/notifications')
-                  setShowDropdown(false)
-                }}
-                className="text-sm text-primary-600 hover:text-primary-700"
-              >
-                View All
-              </button>
+              <div className="flex items-center gap-3">
+                {unreadCount > 0 && (
+                  <button
+                    onClick={markAllAsRead}
+                    className="text-xs text-gray-600 hover:text-gray-900 flex items-center gap-1"
+                  >
+                    <CheckCheck className="h-4 w-4" />
+                    Mark all read
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    router.push('/notifications')
+                    setShowDropdown(false)
+                  }}
+                  className="text-sm text-primary-600 hover:text-primary-700"
+                >
+                  View All
+                </button>
+              </div>
             </div>
 
             {/* Notifications List */}
@@ -183,7 +243,7 @@ export default function NotificationBell() {
                     >
                       <div className="flex gap-3">
                         <div className="text-2xl flex-shrink-0">
-                          {getNotificationIcon(notification.type)}
+                          {NOTIFICATION_ICONS[notification.type] || '🔔'}
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className={`text-sm ${!notification.read ? 'font-semibold' : 'font-medium'} text-gray-900 mb-1`}>

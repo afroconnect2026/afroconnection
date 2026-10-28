@@ -90,6 +90,14 @@ function EventsPageContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, selectedType, selectedFormat, selectedCity, timeFilter, dateFrom, dateTo, priceMin, priceMax, freeOnly])
 
+  // Search box: re-run (debounced) when the query changes - it previously only applied on the next filter change
+  useEffect(() => {
+    if (!user) return
+    const t = setTimeout(() => loadEvents(), 300)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery])
+
   const loadUser = async () => {
     const { data: { user } } = await supabase.auth.getUser()
     setUser(user)
@@ -106,7 +114,8 @@ function EventsPageContent() {
           organizer:profiles!events_organizer_id_fkey(id, full_name, avatar_url, country)
         `)
         .eq('status', 'published')
-        .eq('moderation_status', 'approved') // PRE-APPROVAL: Only show approved events
+        // PRE-APPROVAL: only approved (NULL = legacy rows created before moderation existed)
+        .or('moderation_status.eq.approved,moderation_status.is.null')
 
       // Type filter
       if (selectedType) {

@@ -184,7 +184,8 @@ export default function CreateOpportunityPage() {
       if (error) throw error
 
       toast.success('Opportunity submitted! Awaiting admin approval.')
-      router.push('/opportunities')
+      // Pending items are not public yet - show them in "My Opportunities"
+      router.push('/opportunities/my')
     } catch (error: any) {
       console.error('Error creating opportunity:', error)
       toast.error(error.message || 'Failed to create opportunity')

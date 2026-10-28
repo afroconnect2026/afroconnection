@@ -21,8 +21,11 @@ import {
   Briefcase,
   GraduationCap,
   ToggleRight,
-  ToggleLeft
+  ToggleLeft,
+  ShieldCheck,
+  Share2
 } from 'lucide-react'
+import Link from 'next/link'
 import toast from 'react-hot-toast'
 import BioGenerator from '@/components/ai/BioGenerator'
 
@@ -493,6 +496,38 @@ export default function ProfilePage() {
                           <span>{isAvailable ? 'Available for Work' : 'Unavailable'}</span>
                         </>
                       )}
+                    </button>
+                  )}
+
+                  {!editMode && !profile?.is_verified && (
+                    <Link
+                      href="/settings/verification"
+                      className="px-4 py-2 rounded-lg font-medium border-2 border-blue-300 text-blue-700 hover:bg-blue-50 flex items-center space-x-2"
+                    >
+                      <ShieldCheck className="h-4 w-4" />
+                      <span>Get Verified</span>
+                    </Link>
+                  )}
+
+                  {!editMode && user?.id && (
+                    <button
+                      onClick={async () => {
+                        const url = `${window.location.origin}/profile/${user.id}`
+                        try {
+                          if (navigator.share) {
+                            await navigator.share({ title: profile?.full_name || 'AfroConnect profile', url })
+                            return
+                          }
+                          await navigator.clipboard.writeText(url)
+                          toast.success('Profile link copied!')
+                        } catch (err: any) {
+                          if (err?.name !== 'AbortError') toast.error('Could not copy link')
+                        }
+                      }}
+                      className="px-4 py-2 rounded-lg font-medium border-2 border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center space-x-2"
+                    >
+                      <Share2 className="h-4 w-4" />
+                      <span>Share Profile</span>
                     </button>
                   )}
 

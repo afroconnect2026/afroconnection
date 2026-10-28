@@ -44,6 +44,7 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
   const [userId, setUserId] = useState<string | null>(null)
+  const [maintenance, setMaintenance] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
@@ -54,6 +55,35 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
     const initUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
+        // Enforce admin bans: banned users are signed out
+        const { data: bans } = await supabase
+          .from('user_bans')
+          .select('reason, expires_at')
+          .eq('user_id', user.id)
+          .eq('is_active', true)
+        const activeBan = (bans || []).find(
+          (b: any) => !b.expires_at || new Date(b.expires_at) > new Date()
+        )
+        if (activeBan) {
+          await supabase.auth.signOut()
+          toast.error(
+            `Your account has been suspended${activeBan.expires_at ? ` until ${new Date(activeBan.expires_at).toLocaleDateString()}` : ''}. Reason: ${activeBan.reason}`,
+            { duration: 10000 }
+          )
+          router.push('/')
+          return
+        }
+
+        // Admin "Maintenance Mode": non-admin users see a maintenance screen
+        const { data: publicSettings } = await supabase.rpc('get_public_settings')
+        if ((publicSettings as any)?.maintenanceMode) {
+          const { data: isAdmin } = await supabase.rpc('is_admin')
+          if (!isAdmin) {
+            setMaintenance(true)
+            return
+          }
+        }
+
         setUserId(user.id)
         loadUnreadCount(user.id)
         cleanup = subscribeToMessages(user.id)
@@ -131,6 +161,26 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
   const handleLogout = async () => {
     await supabase.auth.signOut()
     router.push('/')
+  }
+
+  if (maintenance) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+        <div className="max-w-md text-center bg-white rounded-xl shadow p-8">
+          <Settings className="w-12 h-12 text-primary-600 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">We&apos;ll be right back</h1>
+          <p className="text-gray-600 mb-6">
+            AfroConnect is undergoing scheduled maintenance. Please check back shortly.
+          </p>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+          >
+            Sign out
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (

@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { LogOut, Bell, User } from 'lucide-react'
+import { LogOut, User } from 'lucide-react'
+import AdminNotificationBell from '@/components/admin/AdminNotificationBell'
 
 interface AdminHeaderProps {
   admin: any
@@ -17,14 +18,18 @@ export default function AdminHeader({ admin }: AdminHeaderProps) {
   const handleLogout = async () => {
     setLoading(true)
 
-    // Log admin logout
-    await supabase.from('admin_activity_log').insert({
-      admin_id: admin.id,
-      action: 'logout',
-      target_type: 'admin',
-      target_id: admin.id,
-      details: { email: admin.email },
-    })
+    // Log admin logout (best effort - never block logout on logging)
+    try {
+      await supabase.from('admin_activity_log').insert({
+        admin_id: admin.id,
+        action: 'logout',
+        target_type: 'admin',
+        target_id: admin.id,
+        details: { email: admin.email },
+      })
+    } catch {
+      /* ignore */
+    }
 
     await supabase.auth.signOut()
     router.push('/admin/login')
@@ -47,10 +52,7 @@ export default function AdminHeader({ admin }: AdminHeaderProps) {
         {/* Right Side */}
         <div className="flex items-center gap-4">
           {/* Notifications */}
-          <button className="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
+          <AdminNotificationBell admin={admin} />
 
           {/* Admin Info */}
           <div className="flex items-center gap-3 pl-4 border-l border-gray-200">

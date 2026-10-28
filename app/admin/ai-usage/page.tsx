@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Sparkles, TrendingUp, DollarSign, Users, Zap, Activity, Info } from 'lucide-react'
-import { format } from 'date-fns'
+import { Sparkles, TrendingUp, DollarSign, Users, Zap, Activity, Info, RefreshCw } from 'lucide-react'
 
 export default function AIUsagePage() {
   const [loading, setLoading] = useState(true)
@@ -15,6 +14,7 @@ export default function AIUsagePage() {
     activeUsers: 0,
     estimatedCost: 0
   })
+  const [refreshing, setRefreshing] = useState(false)
   const supabase = createClient()
 
   useEffect(() => {
@@ -22,6 +22,7 @@ export default function AIUsagePage() {
   }, [])
 
   const fetchAIStats = async () => {
+    setRefreshing(true)
     try {
       // In a real implementation, you would track AI API calls in a dedicated table
       // For now, we'll show the structure and calculate estimates based on user activity
@@ -32,18 +33,18 @@ export default function AIUsagePage() {
       // Get users who have enhanced bios (indicator of AI usage)
       const { count: bioCount } = await supabase
         .from('profiles')
-        .select('*', { count: 'exact', head: true })
+        .select('id', { count: 'exact', head: true })
         .not('bio', 'is', null) // Users with bios (potential AI enhancement)
 
       // Get total users for Smart Match potential
       const { count: userCount } = await supabase
         .from('profiles')
-        .select('*', { count: 'exact', head: true })
+        .select('id', { count: 'exact', head: true })
 
       // Get opportunities (for AI analysis feature)
       const { count: oppCount } = await supabase
         .from('opportunities')
-        .select('*', { count: 'exact', head: true })
+        .select('id', { count: 'exact', head: true })
 
       // Estimate costs (GPT-4o-mini pricing: ~$0.15 per 1M input tokens, ~$0.60 per 1M output tokens)
       // Average AI call: ~500 input tokens, ~200 output tokens
@@ -67,6 +68,7 @@ export default function AIUsagePage() {
       console.error('Error fetching AI stats:', error)
     } finally {
       setLoading(false)
+      setRefreshing(false)
     }
   }
 
@@ -112,9 +114,19 @@ export default function AIUsagePage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">AI Usage Analytics</h1>
-        <p className="text-gray-600 mt-1">Monitor AI feature usage and costs across the platform</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">AI Usage Analytics</h1>
+          <p className="text-gray-600 mt-1">Monitor AI feature usage and costs across the platform</p>
+        </div>
+        <button
+          onClick={fetchAIStats}
+          disabled={refreshing}
+          className="flex items-center gap-2 border border-gray-300 bg-white px-4 py-2 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+        >
+          <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+          Refresh
+        </button>
       </div>
 
       {/* Info Banner */}

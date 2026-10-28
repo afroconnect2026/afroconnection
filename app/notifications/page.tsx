@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import AuthenticatedLayout from '@/components/AuthenticatedLayout'
+import { NOTIFICATION_ICONS } from '@/components/NotificationBell'
 import { Bell, Check, CheckCheck, Trash2, Settings as SettingsIcon } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import toast from 'react-hot-toast'
@@ -113,23 +114,16 @@ export default function NotificationsPage() {
 
   const handleNotificationClick = async (notification: Notification) => {
     if (!notification.read) {
-      await markAsRead(notification.id)
+      // silent mark-as-read when opening a notification
+      await supabase.from('notifications').update({ read: true }).eq('id', notification.id)
+      setNotifications(prev => prev.map(n => n.id === notification.id ? { ...n, read: true } : n))
     }
     if (notification.link) {
       router.push(notification.link)
     }
   }
 
-  const getNotificationIcon = (type: string) => {
-    const icons: { [key: string]: string } = {
-      message: '💬',
-      application: '📝',
-      opportunity: '💼',
-      connection: '🤝',
-      event: '📅'
-    }
-    return icons[type] || '🔔'
-  }
+  const getNotificationIcon = (type: string) => NOTIFICATION_ICONS[type] || '🔔'
 
   const filteredNotifications = filter === 'all'
     ? notifications

@@ -23,6 +23,7 @@ import {
 import toast from 'react-hot-toast'
 import { getConnectionStatus, sendConnectionRequest, acceptConnectionRequest, declineConnectionRequest, removeConnection } from '@/lib/connections'
 import Link from 'next/link'
+import ReportButton from '@/components/ReportButton'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -337,6 +338,10 @@ export default function PublicProfilePage() {
                       <span>Remove Connection</span>
                     </button>
                   </>
+                )}
+
+                {currentUser && currentUser.id !== profile.id && (
+                  <ReportButton contentType="user" contentId={profile.id} reportedUserId={profile.id} />
                 )}
               </div>
 

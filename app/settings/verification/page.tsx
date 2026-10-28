@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import AuthenticatedLayout from '@/components/AuthenticatedLayout'
@@ -14,9 +14,17 @@ import {
   CheckCircle,
   Clock,
   XCircle,
-  AlertCircle
+  AlertCircle,
+  Paperclip,
+  Trash2
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import {
+  ALLOWED_DOC_TYPES,
+  MAX_DOC_SIZE,
+  VERIFICATION_BUCKET,
+  VerificationDocument
+} from '@/lib/verification'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -29,6 +37,9 @@ export default function VerificationPage() {
   const [profile, setProfile] = useState<any>(null)
   const [verificationRequest, setVerificationRequest] = useState<any>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [documents, setDocuments] = useState<VerificationDocument[]>([])
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -75,9 +86,10 @@ export default function VerificationPage() {
 
       if (requestData) {
         setVerificationRequest(requestData)
+        setDocuments(Array.isArray(requestData.documents) ? requestData.documents : [])
         setFormData({
           linkedin_url: requestData.linkedin_url || '',
-          company_registration_number: requestData.company_registration_number || '',
+          company_registration_number: requestData.company_registration || '',
           website_url: requestData.website_url || '',
           additional_notes: requestData.notes || ''
         })
@@ -98,35 +110,98 @@ export default function VerificationPage() {
     }
   }
 
+  const handleFiles = async (files: FileList | null) => {
+    if (!files || files.length === 0 || !user) return
+    setUploading(true)
+    const added: VerificationDocument[] = []
+    try {
+      for (const file of Array.from(files)) {
+        if (!ALLOWED_DOC_TYPES.includes(file.type)) {
+          toast.error(`${file.name}: only PDF, JPG, PNG or WEBP files are accepted`)
+          continue
+        }
+        if (file.size > MAX_DOC_SIZE) {
+          toast.error(`${file.name}: file is larger than 10 MB`)
+          continue
+        }
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(-80)
+        const path = `${user.id}/${Date.now()}-${safeName}`
+        const { error } = await supabase.storage.from(VERIFICATION_BUCKET).upload(path, file, {
+          contentType: file.type,
+          upsert: false,
+        })
+        if (error) {
+          const msg = /bucket not found/i.test(error.message)
+            ? 'Document uploads are not enabled yet. Please contact support or use the fields below.'
+            : `${file.name}: ${error.message}`
+          toast.error(msg)
+          if (/bucket not found/i.test(error.message)) break
+          continue
+        }
+        added.push({ path, name: file.name, type: file.type, size: file.size, uploaded_at: new Date().toISOString() })
+      }
+      if (added.length) {
+        setDocuments((prev) => [...prev, ...added])
+        toast.success(`${added.length} document${added.length > 1 ? 's' : ''} attached - remember to submit`)
+      }
+    } finally {
+      setUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
+
+  const removeDocument = async (doc: VerificationDocument) => {
+    setDocuments((prev) => prev.filter((d) => d.path !== doc.path))
+    // Best effort: remove the file only if it was never part of a submitted request
+    const submitted = Array.isArray(verificationRequest?.documents)
+      ? verificationRequest.documents.some((d: any) => d.path === doc.path)
+      : false
+    if (!submitted) {
+      await supabase.storage.from(VERIFICATION_BUCKET).remove([doc.path])
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     // Validation
-    if (!formData.linkedin_url && !formData.company_registration_number && !formData.website_url) {
+    if (!formData.linkedin_url && !formData.company_registration_number && !formData.website_url && documents.length === 0) {
       toast.error('Please provide at least one verification document')
       return
     }
 
     setSubmitting(true)
     try {
-      // Create or update verification request
-      const { error } = await supabase
-        .from('verification_requests')
-        .upsert({
-          user_id: user.id,
-          linkedin_url: formData.linkedin_url || null,
-          company_registration_number: formData.company_registration_number || null,
-          website_url: formData.website_url || null,
-          notes: formData.additional_notes || null,
-          status: 'pending',
-          created_at: new Date().toISOString()
-        }, {
-          onConflict: 'user_id'
-        })
+      // Create or update verification request (server-side function handles
+      // insert vs. resubmission and notifies the moderation team)
+      const base = {
+        p_linkedin_url: formData.linkedin_url || null,
+        p_company_registration: formData.company_registration_number || null,
+        p_website_url: formData.website_url || null,
+        p_notes: formData.additional_notes || null
+      }
+      let { error } = await supabase.rpc('submit_verification_request', { ...base, p_documents: documents })
 
-      if (error) throw error
+      // Older database without document support: retry without documents
+      if (error?.code === 'PGRST202' && documents.length === 0) {
+        ;({ error } = await supabase.rpc('submit_verification_request', base))
+      }
 
-      toast.success('Verification request submitted successfully!')
+      if (error) {
+        if (error.code === 'PGRST202') {
+          throw new Error('Verification is temporarily unavailable. Please try again later.')
+        }
+        throw error
+      }
+
+      const wasResubmission = verificationRequest && verificationRequest.status !== 'pending'
+      toast.success(
+        verificationRequest?.status === 'pending'
+          ? 'Verification request updated'
+          : wasResubmission
+          ? 'Resubmitted! Our team has been notified and will review it again.'
+          : 'Verification request submitted! Our team has been notified.'
+      )
       await loadData() // Reload to show updated status
     } catch (error: any) {
       console.error('Submit error:', error)
@@ -180,7 +255,8 @@ export default function VerificationPage() {
 
   // Show status if request exists
   const getStatusBadge = () => {
-    if (!verificationRequest) return null
+    // An old approved request whose badge was later removed: treat as a fresh start
+    if (!verificationRequest || verificationRequest.status === 'approved') return null
 
     const statusConfig: any = {
       pending: {
@@ -197,6 +273,11 @@ export default function VerificationPage() {
         icon: XCircle,
         text: 'Rejected',
         color: 'bg-red-100 text-red-800 border-red-300'
+      },
+      info_needed: {
+        icon: AlertCircle,
+        text: 'More Information Needed',
+        color: 'bg-blue-100 text-blue-800 border-blue-300'
       }
     }
 
@@ -235,17 +316,49 @@ export default function VerificationPage() {
             {verificationRequest && (
               <div className="mb-6">
                 {getStatusBadge()}
-                {verificationRequest.status === 'rejected' && verificationRequest.rejection_reason && (
+                {verificationRequest.status === 'rejected' && (
                   <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
                     <div className="flex items-start space-x-3">
                       <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
                       <div>
                         <p className="font-semibold text-red-900">Rejection Reason:</p>
-                        <p className="text-red-700 text-sm">{verificationRequest.rejection_reason}</p>
-                        <p className="text-red-600 text-sm mt-2">Please update your information and resubmit.</p>
+                        <p className="text-red-700 text-sm">{verificationRequest.rejection_reason || 'No reason provided.'}</p>
+                        <p className="text-red-600 text-sm mt-2">Update your information below and click Resubmit.</p>
                       </div>
                     </div>
                   </div>
+                )}
+                {verificationRequest.status === 'info_needed' && (
+                  <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div className="flex items-start space-x-3">
+                      <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-blue-900">Our team needs more information</p>
+                        {verificationRequest.rejection_reason && (
+                          <p className="text-blue-800 text-sm mt-1 whitespace-pre-line">{verificationRequest.rejection_reason}</p>
+                        )}
+                        {Array.isArray(verificationRequest.requested_documents) && verificationRequest.requested_documents.length > 0 && (
+                          <>
+                            <p className="text-blue-900 text-sm font-medium mt-3">Please provide:</p>
+                            <ul className="list-disc list-inside text-sm text-blue-800 mt-1 space-y-0.5">
+                              {verificationRequest.requested_documents.map((d: string) => (
+                                <li key={d}>{d}</li>
+                              ))}
+                            </ul>
+                          </>
+                        )}
+                        <p className="text-blue-700 text-sm mt-3">
+                          Upload the documents below (or update your links), then click Resubmit.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {verificationRequest.status === 'pending' && (
+                  <p className="mt-3 text-sm text-gray-600">
+                    Submitted {new Date(verificationRequest.updated_at || verificationRequest.created_at).toLocaleDateString()}.
+                    You can still add documents or edit your details while it is under review.
+                  </p>
                 )}
               </div>
             )}
@@ -342,6 +455,54 @@ export default function VerificationPage() {
                 <p className="text-xs text-gray-500 mt-1">Your professional or company website</p>
               </div>
 
+              {/* Document Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center space-x-2">
+                  <Paperclip className="w-4 h-4 text-gray-600" />
+                  <span>Supporting Documents</span>
+                  <span className="text-xs text-gray-500">(ID, registration certificate, etc. - PDF/JPG/PNG, max 10 MB)</span>
+                </label>
+                {documents.length > 0 && (
+                  <ul className="mb-3 divide-y divide-gray-100 border border-gray-200 rounded-lg">
+                    {documents.map((doc) => (
+                      <li key={doc.path} className="flex items-center justify-between px-4 py-2 text-sm">
+                        <span className="flex items-center gap-2 min-w-0">
+                          <FileText className="w-4 h-4 text-gray-500 flex-shrink-0" />
+                          <span className="truncate">{doc.name}</span>
+                          {doc.size ? <span className="text-xs text-gray-400">({Math.round(doc.size / 1024)} KB)</span> : null}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => removeDocument(doc)}
+                          className="p-1 text-gray-400 hover:text-red-600"
+                          aria-label={`Remove ${doc.name}`}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp"
+                  onChange={(e) => handleFiles(e.target.files)}
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="w-full border-2 border-dashed border-gray-300 rounded-lg py-4 text-sm text-gray-600 hover:border-primary-400 hover:text-primary-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  <Upload className="w-4 h-4" />
+                  {uploading ? 'Uploading...' : 'Upload documents'}
+                </button>
+                <p className="text-xs text-gray-500 mt-1">Documents are private and only visible to you and the AfroConnect verification team.</p>
+              </div>
+
               {/* Additional Notes */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -366,7 +527,7 @@ export default function VerificationPage() {
                 </p>
                 <button
                   type="submit"
-                  disabled={submitting || verificationRequest?.status === 'pending'}
+                  disabled={submitting || uploading}
                   className="bg-primary-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
                 >
                   {submitting ? (
@@ -377,7 +538,13 @@ export default function VerificationPage() {
                   ) : (
                     <>
                       <Upload className="w-5 h-5" />
-                      <span>{verificationRequest ? 'Update Request' : 'Submit Request'}</span>
+                      <span>
+                        {!verificationRequest || verificationRequest.status === 'approved'
+                          ? 'Submit Request'
+                          : verificationRequest.status === 'pending'
+                          ? 'Update Request'
+                          : 'Resubmit for Review'}
+                      </span>
                     </>
                   )}
                 </button>

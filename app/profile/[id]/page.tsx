@@ -24,6 +24,7 @@ import toast from 'react-hot-toast'
 import { getConnectionStatus, sendConnectionRequest, acceptConnectionRequest, declineConnectionRequest, removeConnection } from '@/lib/connections'
 import Link from 'next/link'
 import ReportButton from '@/components/ReportButton'
+import ProfileCompatibility from '@/components/ai/ProfileCompatibility'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -350,6 +351,17 @@ export default function PublicProfilePage() {
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold text-navy-900 mb-2">About</h3>
                   <p className="text-gray-600 leading-relaxed">{profile.bio}</p>
+                </div>
+              )}
+
+              {/* AI Profile Compatibility Analysis */}
+              {currentUser && currentUser.id !== profile.id && (
+                <div className="mb-6">
+                  <ProfileCompatibility
+                    currentUserId={currentUser.id}
+                    targetUserId={profile.id}
+                    targetUserName={profile.full_name || 'this person'}
+                  />
                 </div>
               )}
 

@@ -116,10 +116,10 @@ export default function CreateOpportunityPage() {
       }
 
       const opportunityData: any = {
-        posted_by: user.id,
+        creator_id: user.id,
         title: formData.title,
         description: formData.description,
-        opportunity_type: opportunityType,
+        type: opportunityType,
         location: formData.location || null,
         is_remote: formData.is_remote,
         country: formData.country || null,
@@ -129,7 +129,8 @@ export default function CreateOpportunityPage() {
         application_url: formData.application_url || null,
         application_deadline: formData.application_deadline || null,
         thumbnail_url: thumbnailUrl,
-        status: 'active'
+        status: 'active',
+        moderation_status: 'pending'
       }
 
       if (opportunityType === 'job') {
@@ -182,8 +183,8 @@ export default function CreateOpportunityPage() {
 
       if (error) throw error
 
-      toast.success('Opportunity posted successfully!')
-      router.push(`/opportunities/${data.id}`)
+      toast.success('Opportunity submitted! Awaiting admin approval.')
+      router.push('/opportunities')
     } catch (error: any) {
       console.error('Error creating opportunity:', error)
       toast.error(error.message || 'Failed to create opportunity')

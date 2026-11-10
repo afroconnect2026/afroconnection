@@ -529,7 +529,7 @@ export const TEAM: TeamMember[] = [
 export const SOCIAL_LINKS: SocialLink[] = [
   {
     name: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/afro-connect-796376437',
+    href: 'https://www.linkedin.com/in/afroconnect-inc-796376437',
     icon: 'Linkedin',
     primary: true,
   },

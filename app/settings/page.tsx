@@ -16,10 +16,12 @@ import {
   Clock,
   AlertCircle,
   XCircle,
+  Globe,
 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
-type Tab = 'account' | 'verification' | 'notifications'
+type Tab = 'account' | 'verification' | 'notifications' | 'language'
 
 export default function SettingsPage() {
   const [loading, setLoading] = useState(true)
@@ -98,6 +100,7 @@ export default function SettingsPage() {
     { id: 'account', label: 'Account', icon: User },
     { id: 'verification', label: 'Verification', icon: ShieldCheck },
     { id: 'notifications', label: 'Notifications', icon: Bell },
+    { id: 'language', label: 'Language', icon: Globe },
   ]
 
   const vStatus = profile?.is_verified ? 'verified' : verification?.status && verification.status !== 'approved' ? verification.status : 'none'
@@ -241,6 +244,16 @@ export default function SettingsPage() {
                 View all notifications
               </Link>
             </div>
+          </div>
+        )}
+
+        {tab === 'language' && (
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h2 className="text-lg font-bold text-navy-900 mb-2">Language & Region</h2>
+            <p className="text-sm text-gray-600 mb-6">
+              Choose your preferred language for the platform interface.
+            </p>
+            <LanguageSwitcher variant="inline" showIcon />
           </div>
         )}
       </div>

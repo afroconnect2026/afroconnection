@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
+import { LanguageProvider } from '@/lib/i18n/LanguageContext'
 
 const APP_NAME = 'AfroConnect'
 const APP_DESCRIPTION = 'Building Bridges. Creating Futures. - Global networking platform connecting worldwide investors, companies, and professionals with African opportunities'
@@ -89,8 +90,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="antialiased">
-        {children}
-        <Toaster
+        <LanguageProvider>
+          {children}
+          <Toaster
           position="top-right"
           toastOptions={{
             duration: 4000,
@@ -112,6 +114,7 @@ export default function RootLayout({
             },
           }}
         />
+        </LanguageProvider>
       </body>
     </html>
   )

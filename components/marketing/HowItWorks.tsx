@@ -16,19 +16,19 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import {
-  HOW_IT_WORKS_STEPS,
   PLATFORM_FOCUS,
   PLATFORM_PILLARS,
 } from '@/lib/marketing/content'
-import type { HowItWorksStep, PlatformPillar } from '@/lib/marketing/content'
+import type { PlatformPillar } from '@/lib/marketing/content'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
-const stepIcons: Record<HowItWorksStep['icon'], LucideIcon> = {
+const stepIcons: LucideIcon[] = [
   UserPlus,
   FileText,
   Sparkles,
   Handshake,
   Rocket,
-}
+]
 
 const pillarIcons: Record<PlatformPillar['icon'], LucideIcon> = {
   Users,
@@ -42,6 +42,8 @@ interface HowItWorksProps {
 }
 
 export default function HowItWorks({ variant = 'full' }: HowItWorksProps) {
+  const { t } = useTranslation()
+
   return (
     <section
       id="how-it-works"
@@ -50,11 +52,10 @@ export default function HowItWorks({ variant = 'full' }: HowItWorksProps) {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
-            From sign up to signed deal
+            {t('howItWorks.title')}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-            Five steps. No cold outreach, no gatekeeping — just the introduction that
-            moves your work forward.
+            {t('howItWorks.subtitle')}
           </p>
         </div>
 
@@ -67,12 +68,12 @@ export default function HowItWorks({ variant = 'full' }: HowItWorksProps) {
           />
 
           <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5 relative">
-            {HOW_IT_WORKS_STEPS.map((step, i) => {
-              const Icon = stepIcons[step.icon]
+            {[1, 2, 3, 4, 5].map((stepNum, i) => {
+              const Icon = stepIcons[i]
 
               return (
                 <motion.li
-                  key={step.step}
+                  key={stepNum}
                   className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center hover:bg-white/10 hover:border-gold-500/40 transition-all"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -82,13 +83,13 @@ export default function HowItWorks({ variant = 'full' }: HowItWorksProps) {
                   <div className="relative z-10 w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg shadow-primary-900/40">
                     <Icon className="w-8 h-8 text-white" />
                     <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-gold-500 text-navy-900 text-sm font-bold flex items-center justify-center shadow">
-                      {step.step}
+                      {stepNum}
                     </span>
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{step.title}</h3>
-                  <p className="text-sm text-gray-300 leading-relaxed">{step.description}</p>
+                  <h3 className="text-lg font-bold text-white mb-2">{t(`howItWorks.steps.${stepNum}.title`)}</h3>
+                  <p className="text-sm text-gray-300 leading-relaxed">{t(`howItWorks.steps.${stepNum}.description`)}</p>
 
-                  {i < HOW_IT_WORKS_STEPS.length - 1 && (
+                  {i < 4 && (
                     <ArrowRight
                       aria-hidden="true"
                       className="hidden lg:block absolute top-[3rem] -right-4 w-6 h-6 text-gold-500/70"

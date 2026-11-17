@@ -68,6 +68,33 @@
     "browsePreview": "Parcourir l'aperçu"
   },
 
+  "howItWorks": {
+    "title": "De l'inscription à l'accord signé",
+    "subtitle": "Cinq étapes. Pas de démarchage à froid, pas de barrières — juste l'introduction qui fait avancer votre travail.",
+    "steps": {
+      "1": {
+        "title": "S'inscrire",
+        "description": "Créez un compte gratuit en moins de deux minutes. Dites-nous si vous investissez, construisez, recrutez ou levez des fonds."
+      },
+      "2": {
+        "title": "Créez votre profil",
+        "description": "Ajoutez votre secteur, votre stade, la taille de votre ticket ou votre expertise. Plus vous êtes précis, plus vos correspondances sont ciblées."
+      },
+      "3": {
+        "title": "Obtenez des correspondances par IA",
+        "description": "Notre IA vous associe aux personnes dont les objectifs, le stade et la géographie correspondent aux vôtres — pas de démarchage à l'aveugle."
+      },
+      "4": {
+        "title": "Connectez-vous et discutez",
+        "description": "Commencez une conversation dans une salle de négociation privée. Voyez avec qui vous parlez, vérifiez la crédibilité et faites avancer la conversation."
+      },
+      "5": {
+        "title": "Concluez l'affaire",
+        "description": "Convenez des conditions, transférez les fonds, signez le contrat. Concluez votre première affaire sur AfroConnect — puis revenez pour la suivante."
+      }
+    }
+  },
+
   "footer": {
     "connectingAfricaToOpportunity": "Connecter l'Afrique à l'opportunité",
     "inOneNetwork": "dans un réseau vérifié",

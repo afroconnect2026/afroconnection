@@ -68,6 +68,33 @@
     "browsePreview": "Browse the Preview"
   },
 
+  "howItWorks": {
+    "title": "From sign up to signed deal",
+    "subtitle": "Five steps. No cold outreach, no gatekeeping — just the introduction that moves your work forward.",
+    "steps": {
+      "1": {
+        "title": "Sign Up",
+        "description": "Create a free account in under two minutes. Tell us whether you are investing, building, hiring or raising."
+      },
+      "2": {
+        "title": "Create Your Profile",
+        "description": "Add your sector, stage, ticket size or expertise. The more specific you are, the sharper your matches."
+      },
+      "3": {
+        "title": "Get Matched by AI",
+        "description": "Our AI pairs you with the people whose goals, stage and geography align with yours — no spray-and-pray outreach."
+      },
+      "4": {
+        "title": "Connect & Chat",
+        "description": "Start a conversation inside a private dealroom. See who you're talking to, verify credibility, and move the conversation forward."
+      },
+      "5": {
+        "title": "Close the Deal",
+        "description": "Agree on terms, wire the funds, sign the contract. Close your first deal on AfroConnect — then come back for the next one."
+      }
+    }
+  },
+
   "footer": {
     "connectingAfricaToOpportunity": "Connecting Africa to Opportunity",
     "inOneNetwork": "in one verified network",

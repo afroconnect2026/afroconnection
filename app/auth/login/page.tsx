@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import { motion } from 'framer-motion'
 import { Mail, Lock, ArrowRight } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
@@ -16,6 +17,7 @@ function LoginForm() {
   const searchParams = useSearchParams()
   const supabase = createClient()
   const [oauthLoading, setOauthLoading] = useState(false)
+  const { t } = useTranslation()
 
   // Errors forwarded from /auth/callback (expired link, OAuth failure)
   useEffect(() => {
@@ -35,7 +37,7 @@ function LoginForm() {
     if (error) {
       toast.error(
         /not enabled|unsupported provider/i.test(error.message)
-          ? 'Google sign-in is not enabled yet. Please use email and password.'
+          ? t('auth.googleNotEnabled')
           : error.message
       )
       setOauthLoading(false)
@@ -46,7 +48,7 @@ function LoginForm() {
     e.preventDefault()
 
     if (!email || !password) {
-      toast.error('Please fill all fields')
+      toast.error(t('auth.pleaseFillAllFields'))
       return
     }
 
@@ -61,7 +63,7 @@ function LoginForm() {
       if (error) throw error
 
       if (data.user) {
-        toast.success('Welcome back!')
+        toast.success(t('auth.welcomeBackToast'))
         router.refresh() // Sync auth cookies with middleware/server
 
         // Redirect to original destination or dashboard
@@ -74,7 +76,7 @@ function LoginForm() {
       }
     } catch (error: any) {
       console.error('Login error:', error)
-      toast.error(error.message || 'Invalid credentials')
+      toast.error(error.message || t('auth.invalidCredentials'))
     } finally {
       setLoading(false)
     }
@@ -101,24 +103,24 @@ function LoginForm() {
       >
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-3">
-            Welcome Back
+            {t('auth.welcomeBack')}
           </h1>
           <p className="text-gray-300 text-lg">
-            Sign in to access global opportunities
+            {t('auth.signInToAccess')}
           </p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">Email Address</label>
+              <label className="block text-gray-700 font-semibold mb-2">{t('auth.emailAddress')}</label>
               <div className="relative">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
+                  placeholder={t('auth.emailPlaceholder')}
                   className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl pl-12 pr-4 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors"
                   required
                 />
@@ -127,9 +129,9 @@ function LoginForm() {
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-gray-700 font-semibold">Password</label>
+                <label className="block text-gray-700 font-semibold">{t('auth.password')}</label>
                 <Link href="/auth/forgot-password" className="text-sm text-primary-600 hover:text-primary-700 hover:underline">
-                  Forgot password?
+                  {t('auth.forgotPassword')}
                 </Link>
               </div>
               <div className="relative">
@@ -138,7 +140,7 @@ function LoginForm() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder={t('auth.passwordPlaceholder')}
                   className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl pl-12 pr-4 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors"
                   required
                 />
@@ -150,7 +152,7 @@ function LoginForm() {
               disabled={loading}
               className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-4 rounded-xl font-bold text-lg hover:from-primary-700 hover:to-primary-800 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 mt-8"
             >
-              <span>{loading ? 'Signing in...' : 'Sign In'}</span>
+              <span>{loading ? t('auth.signingIn') : t('auth.signIn')}</span>
               {!loading && <ArrowRight className="w-5 h-5" />}
             </button>
           </form>
@@ -160,7 +162,7 @@ function LoginForm() {
               <div className="w-full border-t border-gray-200"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500 font-medium">Or continue with</span>
+              <span className="px-4 bg-white text-gray-500 font-medium">{t('auth.orContinueWith')}</span>
             </div>
           </div>
 
@@ -178,46 +180,46 @@ function LoginForm() {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                <span>{oauthLoading ? 'Redirecting...' : 'Continue with Google'}</span>
+                <span>{oauthLoading ? t('auth.redirecting') : t('auth.continueWithGoogle')}</span>
               </div>
             </button>
           </div>
 
           <div className="mt-8 pt-6 border-t-2 border-gray-100">
             <p className="text-center text-gray-700 font-semibold mb-4">
-              New to AfroConnect?
+              {t('auth.newToAfroConnect')}
             </p>
             <div className="grid grid-cols-2 gap-2 mb-4">
               <Link
                 href="/auth/register?role=investor"
                 className="text-center py-2.5 px-3 bg-gradient-to-br from-gold-50 to-gold-100 border-2 border-gold-200 text-gold-800 rounded-lg hover:from-gold-100 hover:to-gold-200 hover:border-gold-300 transition-all text-sm font-semibold"
               >
-                I'm an Investor
+                {t('auth.imAnInvestor')}
               </Link>
               <Link
                 href="/auth/register?role=founder"
                 className="text-center py-2.5 px-3 bg-gradient-to-br from-primary-50 to-primary-100 border-2 border-primary-200 text-primary-800 rounded-lg hover:from-primary-100 hover:to-primary-200 hover:border-primary-300 transition-all text-sm font-semibold"
               >
-                I'm a Founder
+                {t('auth.imAFounder')}
               </Link>
               <Link
                 href="/auth/register?role=opportunities"
                 className="text-center py-2.5 px-3 bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 text-blue-800 rounded-lg hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 transition-all text-sm font-semibold"
               >
-                Looking for Work
+                {t('auth.lookingForWork')}
               </Link>
               <Link
                 href="/auth/register?role=funding"
                 className="text-center py-2.5 px-3 bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 text-purple-800 rounded-lg hover:from-purple-100 hover:to-purple-200 hover:border-purple-300 transition-all text-sm font-semibold"
               >
-                Need Funding
+                {t('auth.needFunding')}
               </Link>
             </div>
             <Link
               href="/auth/register"
               className="block text-center text-primary-600 hover:text-primary-700 font-semibold hover:underline text-sm"
             >
-              Or choose your path →
+              {t('auth.orChoosePath')}
             </Link>
           </div>
         </div>

@@ -160,21 +160,23 @@ Provide a detailed match analysis focusing on how USER B can help USER A and vic
     // Cache the result for 1 hour to reduce AI costs
     const expiresAt = new Date(Date.now() + 3600000).toISOString()
 
-    await supabase
-      .from('ai_match_cache')
-      .upsert({
-        user_pair: cacheKey,
-        user_a_id: user.id,
-        user_b_id: targetUserId,
-        analysis,
-        expires_at: expiresAt
-      }, {
-        onConflict: 'user_pair'
-      })
-      .catch(err => {
-        // Don't fail the request if caching fails
-        console.warn('Failed to cache AI analysis:', err)
-      })
+    // Try to cache, but don't fail the request if caching fails (table might not exist yet)
+    try {
+      await supabase
+        .from('ai_match_cache')
+        .upsert({
+          user_pair: cacheKey,
+          user_a_id: user.id,
+          user_b_id: targetUserId,
+          analysis,
+          expires_at: expiresAt
+        }, {
+          onConflict: 'user_pair'
+        })
+    } catch (cacheError) {
+      // Silently log caching errors - the AI result is still returned
+      console.warn('Failed to cache AI analysis:', cacheError)
+    }
 
     return NextResponse.json({
       success: true,

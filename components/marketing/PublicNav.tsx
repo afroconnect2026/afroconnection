@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import SocialLinks from './SocialLinks'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 const navItems: { label: string; href: string }[] = [
   { label: 'Home', href: '/' },
@@ -51,6 +52,9 @@ export default function PublicNav({ active }: PublicNavProps) {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-4">
+            <div className="hidden lg:block">
+              <LanguageSwitcher variant="dropdown" showIcon />
+            </div>
             <div className="hidden xl:block">
               <SocialLinks primaryOnly size="sm" />
             </div>
@@ -99,7 +103,11 @@ export default function PublicNav({ active }: PublicNavProps) {
           >
             Get Started
           </Link>
-          <div className="pt-4">
+          <div className="pt-4 space-y-3">
+            <div className="pb-3 border-b border-white/10">
+              <p className="text-xs text-gray-400 mb-2 px-3">Language</p>
+              <LanguageSwitcher variant="inline" showIcon={false} />
+            </div>
             <SocialLinks size="sm" />
           </div>
         </div>

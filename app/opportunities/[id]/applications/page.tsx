@@ -83,10 +83,11 @@ export default function ApplicationsManagementPage() {
           applicant:profiles!opportunity_applications_applicant_id_fkey (
             id,
             full_name,
-            email,
-            phone_number,
             avatar_url,
-            user_type
+            user_type,
+            bio,
+            city,
+            country
           )
         `)
         .eq('opportunity_id', params.id)

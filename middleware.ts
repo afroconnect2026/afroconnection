@@ -11,6 +11,16 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession()
 
+  // Public paths that don't require authentication
+  const publicPaths = [
+    '/events/browse',
+    '/preview',
+    '/about',
+    '/support',
+    '/legal',
+  ]
+  const isPublicPath = publicPaths.some(path => req.nextUrl.pathname.startsWith(path))
+
   // Protected routes that require authentication
   const protectedPaths = [
     '/dashboard',
@@ -25,7 +35,7 @@ export async function middleware(req: NextRequest) {
     '/deals',
     '/applicants'
   ]
-  const isProtectedPath = protectedPaths.some(path => req.nextUrl.pathname.startsWith(path))
+  const isProtectedPath = !isPublicPath && protectedPaths.some(path => req.nextUrl.pathname.startsWith(path))
 
   // Redirect to login if accessing protected route without session
   if (isProtectedPath && !session) {

@@ -1,0 +1,222 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "login": "Log In",
+    "logout": "Log Out",
+    "signup": "Sign Up",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "search": "Search",
+    "filter": "Filter",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "confirm": "Confirm",
+    "viewProfile": "View Profile",
+    "sendMessage": "Send Message",
+    "connect": "Connect",
+    "connected": "Connected",
+    "pending": "Pending",
+    "accept": "Accept",
+    "decline": "Decline"
+  },
+
+  "nav": {
+    "dashboard": "Dashboard",
+    "explore": "Explore",
+    "connections": "Connections",
+    "messages": "Dealrooms",
+    "opportunities": "Opportunities",
+    "events": "Events",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "settings": "Settings",
+    "admin": "Admin",
+    "logout": "Logout"
+  },
+
+  "auth": {
+    "loginTitle": "Welcome Back",
+    "loginSubtitle": "Sign in to your AfroConnect account",
+    "signupTitle": "Join AfroConnect",
+    "signupSubtitle": "Connect with Africa's brightest minds",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full Name",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInHere": "Sign in here",
+    "signUpHere": "Sign up here",
+    "orContinueWith": "Or continue with",
+    "googleSignIn": "Continue with Google",
+    "resetPassword": "Reset Password",
+    "sendResetLink": "Send Reset Link",
+    "backToLogin": "Back to Login"
+  },
+
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back",
+    "stats": {
+      "connections": "Connections",
+      "opportunities": "Opportunities",
+      "events": "Events",
+      "messages": "Messages"
+    },
+    "quickActions": "Quick Actions",
+    "recentActivity": "Recent Activity",
+    "suggestedConnections": "Suggested Connections",
+    "upcomingEvents": "Upcoming Events"
+  },
+
+  "explore": {
+    "title": "Explore Network",
+    "subtitle": "Discover and connect with entrepreneurs, investors, and professionals worldwide",
+    "searchPlaceholder": "Search by name, location, or keywords...",
+    "filters": {
+      "all": "All",
+      "entrepreneurs": "Entrepreneurs",
+      "investors": "Investors",
+      "professionals": "Professionals",
+      "companies": "Companies"
+    },
+    "resultsCount": "Found {count} {count, plural, one {member} other {members}}",
+    "noMembers": "No members found",
+    "tryAdjusting": "Try adjusting your search or filters"
+  },
+
+  "connections": {
+    "title": "My Connections",
+    "tabs": {
+      "all": "All Connections",
+      "pending": "Pending Requests",
+      "sent": "Sent Requests"
+    },
+    "requestSent": "Connection request sent!",
+    "requestAccepted": "Connection accepted!",
+    "requestDeclined": "Connection declined",
+    "connectionRemoved": "Connection removed",
+    "removeConfirm": "Are you sure you want to remove this connection?",
+    "noConnections": "No connections yet",
+    "noPending": "No pending requests",
+    "noSent": "No sent requests"
+  },
+
+  "opportunities": {
+    "title": "Opportunities",
+    "create": "Post Opportunity",
+    "myOpportunities": "My Opportunities",
+    "types": {
+      "job": "Job Opening",
+      "investment": "Investment",
+      "partnership": "Partnership",
+      "mentorship": "Mentorship"
+    },
+    "status": {
+      "pending": "Pending Review",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "apply": "Apply",
+    "save": "Save",
+    "share": "Share",
+    "applications": "Applications",
+    "noOpportunities": "No opportunities found"
+  },
+
+  "events": {
+    "title": "Events",
+    "create": "Create Event",
+    "myEvents": "My Events",
+    "types": {
+      "networking": "Networking",
+      "workshop": "Workshop",
+      "conference": "Conference",
+      "webinar": "Webinar",
+      "meetup": "Meetup"
+    },
+    "rsvp": "RSVP",
+    "attending": "Attending",
+    "checkIn": "Check In",
+    "viewAttendees": "View Attendees",
+    "noEvents": "No events found"
+  },
+
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark All as Read",
+    "noNotifications": "No notifications",
+    "types": {
+      "connection_request": "Connection Request",
+      "connection_accepted": "Connection Accepted",
+      "opportunity_approved": "Opportunity Approved",
+      "event_reminder": "Event Reminder",
+      "new_message": "New Message"
+    }
+  },
+
+  "profile": {
+    "title": "Profile",
+    "edit": "Edit Profile",
+    "about": "About",
+    "location": "Location",
+    "industry": "Industry",
+    "skills": "Skills",
+    "experience": "Experience",
+    "education": "Education",
+    "verification": "Verification",
+    "requestVerification": "Request Verification",
+    "verified": "Verified",
+    "unverified": "Not Verified"
+  },
+
+  "settings": {
+    "title": "Settings",
+    "tabs": {
+      "account": "Account",
+      "profile": "Profile",
+      "privacy": "Privacy",
+      "notifications": "Notifications",
+      "language": "Language & Region",
+      "verification": "Verification"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose your preferred language",
+      "current": "Current Language"
+    },
+    "saveChanges": "Save Changes",
+    "changesSaved": "Changes saved successfully"
+  },
+
+  "admin": {
+    "title": "Admin Dashboard",
+    "tabs": {
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "opportunities": "Opportunities",
+      "events": "Events",
+      "verifications": "Verifications",
+      "reports": "Reports",
+      "settings": "Settings"
+    }
+  },
+
+  "ai": {
+    "smartMatch": "AI Smart Match",
+    "compatibility": "Compatibility Analysis",
+    "matchScore": "Match Score",
+    "analyzing": "Analyzing compatibility...",
+    "strongMatch": "Strong Match",
+    "moderateMatch": "Moderate Match",
+    "weakMatch": "Weak Match"
+  }
+}

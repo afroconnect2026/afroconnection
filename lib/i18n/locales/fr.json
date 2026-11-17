@@ -1,0 +1,222 @@
+{
+  "common": {
+    "welcome": "Bienvenue",
+    "login": "Se connecter",
+    "logout": "Se déconnecter",
+    "signup": "S'inscrire",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "submit": "Soumettre",
+    "back": "Retour",
+    "next": "Suivant",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "viewProfile": "Voir le profil",
+    "sendMessage": "Envoyer un message",
+    "connect": "Se connecter",
+    "connected": "Connecté",
+    "pending": "En attente",
+    "accept": "Accepter",
+    "decline": "Refuser"
+  },
+
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "explore": "Explorer",
+    "connections": "Connexions",
+    "messages": "Dealrooms",
+    "opportunities": "Opportunités",
+    "events": "Événements",
+    "notifications": "Notifications",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "admin": "Administration",
+    "logout": "Déconnexion"
+  },
+
+  "auth": {
+    "loginTitle": "Bon retour",
+    "loginSubtitle": "Connectez-vous à votre compte AfroConnect",
+    "signupTitle": "Rejoignez AfroConnect",
+    "signupSubtitle": "Connectez-vous avec les esprits les plus brillants d'Afrique",
+    "email": "Email",
+    "password": "Mot de passe",
+    "fullName": "Nom complet",
+    "confirmPassword": "Confirmer le mot de passe",
+    "forgotPassword": "Mot de passe oublié?",
+    "dontHaveAccount": "Vous n'avez pas de compte?",
+    "alreadyHaveAccount": "Vous avez déjà un compte?",
+    "signInHere": "Connectez-vous ici",
+    "signUpHere": "Inscrivez-vous ici",
+    "orContinueWith": "Ou continuez avec",
+    "googleSignIn": "Continuer avec Google",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "sendResetLink": "Envoyer le lien de réinitialisation",
+    "backToLogin": "Retour à la connexion"
+  },
+
+  "dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bon retour",
+    "stats": {
+      "connections": "Connexions",
+      "opportunities": "Opportunités",
+      "events": "Événements",
+      "messages": "Messages"
+    },
+    "quickActions": "Actions rapides",
+    "recentActivity": "Activité récente",
+    "suggestedConnections": "Connexions suggérées",
+    "upcomingEvents": "Événements à venir"
+  },
+
+  "explore": {
+    "title": "Explorer le réseau",
+    "subtitle": "Découvrez et connectez-vous avec des entrepreneurs, investisseurs et professionnels du monde entier",
+    "searchPlaceholder": "Rechercher par nom, lieu ou mots-clés...",
+    "filters": {
+      "all": "Tous",
+      "entrepreneurs": "Entrepreneurs",
+      "investors": "Investisseurs",
+      "professionals": "Professionnels",
+      "companies": "Entreprises"
+    },
+    "resultsCount": "Trouvé {count} {count, plural, one {membre} other {membres}}",
+    "noMembers": "Aucun membre trouvé",
+    "tryAdjusting": "Essayez d'ajuster votre recherche ou vos filtres"
+  },
+
+  "connections": {
+    "title": "Mes connexions",
+    "tabs": {
+      "all": "Toutes les connexions",
+      "pending": "Demandes en attente",
+      "sent": "Demandes envoyées"
+    },
+    "requestSent": "Demande de connexion envoyée!",
+    "requestAccepted": "Connexion acceptée!",
+    "requestDeclined": "Connexion refusée",
+    "connectionRemoved": "Connexion supprimée",
+    "removeConfirm": "Êtes-vous sûr de vouloir supprimer cette connexion?",
+    "noConnections": "Aucune connexion pour le moment",
+    "noPending": "Aucune demande en attente",
+    "noSent": "Aucune demande envoyée"
+  },
+
+  "opportunities": {
+    "title": "Opportunités",
+    "create": "Publier une opportunité",
+    "myOpportunities": "Mes opportunités",
+    "types": {
+      "job": "Offre d'emploi",
+      "investment": "Investissement",
+      "partnership": "Partenariat",
+      "mentorship": "Mentorat"
+    },
+    "status": {
+      "pending": "En attente d'examen",
+      "approved": "Approuvé",
+      "rejected": "Rejeté"
+    },
+    "apply": "Postuler",
+    "save": "Enregistrer",
+    "share": "Partager",
+    "applications": "Candidatures",
+    "noOpportunities": "Aucune opportunité trouvée"
+  },
+
+  "events": {
+    "title": "Événements",
+    "create": "Créer un événement",
+    "myEvents": "Mes événements",
+    "types": {
+      "networking": "Réseautage",
+      "workshop": "Atelier",
+      "conference": "Conférence",
+      "webinar": "Webinaire",
+      "meetup": "Rencontre"
+    },
+    "rsvp": "RSVP",
+    "attending": "Participe",
+    "checkIn": "Enregistrement",
+    "viewAttendees": "Voir les participants",
+    "noEvents": "Aucun événement trouvé"
+  },
+
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Tout marquer comme lu",
+    "noNotifications": "Aucune notification",
+    "types": {
+      "connection_request": "Demande de connexion",
+      "connection_accepted": "Connexion acceptée",
+      "opportunity_approved": "Opportunité approuvée",
+      "event_reminder": "Rappel d'événement",
+      "new_message": "Nouveau message"
+    }
+  },
+
+  "profile": {
+    "title": "Profil",
+    "edit": "Modifier le profil",
+    "about": "À propos",
+    "location": "Localisation",
+    "industry": "Industrie",
+    "skills": "Compétences",
+    "experience": "Expérience",
+    "education": "Éducation",
+    "verification": "Vérification",
+    "requestVerification": "Demander la vérification",
+    "verified": "Vérifié",
+    "unverified": "Non vérifié"
+  },
+
+  "settings": {
+    "title": "Paramètres",
+    "tabs": {
+      "account": "Compte",
+      "profile": "Profil",
+      "privacy": "Confidentialité",
+      "notifications": "Notifications",
+      "language": "Langue et région",
+      "verification": "Vérification"
+    },
+    "language": {
+      "title": "Langue",
+      "description": "Choisissez votre langue préférée",
+      "current": "Langue actuelle"
+    },
+    "saveChanges": "Enregistrer les modifications",
+    "changesSaved": "Modifications enregistrées avec succès"
+  },
+
+  "admin": {
+    "title": "Tableau de bord administrateur",
+    "tabs": {
+      "dashboard": "Tableau de bord",
+      "users": "Utilisateurs",
+      "opportunities": "Opportunités",
+      "events": "Événements",
+      "verifications": "Vérifications",
+      "reports": "Rapports",
+      "settings": "Paramètres"
+    }
+  },
+
+  "ai": {
+    "smartMatch": "Correspondance intelligente IA",
+    "compatibility": "Analyse de compatibilité",
+    "matchScore": "Score de compatibilité",
+    "analyzing": "Analyse de la compatibilité...",
+    "strongMatch": "Forte compatibilité",
+    "moderateMatch": "Compatibilité modérée",
+    "weakMatch": "Faible compatibilité"
+  }
+}

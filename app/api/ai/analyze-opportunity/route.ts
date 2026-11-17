@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     // Fetch opportunity details
     const { data: opportunity, error: oppError } = await supabase
       .from('opportunities')
-      .select('title, description, type, requirements')
+      .select('title, description, type, skills_required, industry, experience_level, location')
       .eq('id', opportunityId)
       .single()
 

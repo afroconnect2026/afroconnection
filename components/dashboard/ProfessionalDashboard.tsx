@@ -148,8 +148,12 @@ export default function ProfessionalDashboard({ user, profile }: ProfessionalDas
 
     const { error: updateError } = await supabase
       .from('professional_profiles')
-      .update({ is_available: next })
-      .eq('user_id', user.id)
+      .upsert({
+        user_id: user.id,
+        is_available: next
+      }, {
+        onConflict: 'user_id'
+      })
 
     if (updateError) {
       console.error('Failed to update availability:', updateError)

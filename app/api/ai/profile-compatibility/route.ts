@@ -9,30 +9,58 @@ const openai = new OpenAI({
 
 export async function POST(request: Request) {
   try {
-    const { currentUserId, targetUserId } = await request.json()
+    const supabase = createRouteHandlerClient({ cookies })
 
-    if (!currentUserId || !targetUserId) {
+    // SECURITY FIX: Get current user from session, not request body
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+    if (authError || !user) {
       return NextResponse.json(
-        { error: 'Both user IDs are required' },
+        { error: 'Unauthorized - Please log in' },
+        { status: 401 }
+      )
+    }
+
+    const { targetUserId } = await request.json()
+
+    if (!targetUserId) {
+      return NextResponse.json(
+        { error: 'Target user ID is required' },
         { status: 400 }
       )
     }
 
-    if (currentUserId === targetUserId) {
+    if (user.id === targetUserId) {
       return NextResponse.json(
         { error: 'Cannot compare a profile with itself' },
         { status: 400 }
       )
     }
 
-    const supabase = createRouteHandlerClient({ cookies })
+    // Check cache first to avoid unnecessary AI calls
+    const cacheKey = [user.id, targetUserId].sort().join(':')
+    const { data: cached } = await supabase
+      .from('ai_match_cache')
+      .select('*')
+      .eq('user_pair', cacheKey)
+      .gte('expires_at', new Date().toISOString())
+      .maybeSingle()
+
+    if (cached) {
+      return NextResponse.json({
+        success: true,
+        analysis: cached.analysis,
+        cachedUntil: cached.expires_at,
+        fromCache: true
+      })
+    }
 
     // Fetch both user profiles
     const [currentUserResult, targetUserResult] = await Promise.all([
       supabase
         .from('profiles')
         .select('*')
-        .eq('id', currentUserId)
+        .eq('id', user.id)
         .single(),
       supabase
         .from('profiles')
@@ -129,10 +157,30 @@ Provide a detailed match analysis focusing on how USER B can help USER A and vic
 
     const analysis = JSON.parse(completion.choices[0].message.content || '{}')
 
+    // Cache the result for 1 hour to reduce AI costs
+    const expiresAt = new Date(Date.now() + 3600000).toISOString()
+
+    await supabase
+      .from('ai_match_cache')
+      .upsert({
+        user_pair: cacheKey,
+        user_a_id: user.id,
+        user_b_id: targetUserId,
+        analysis,
+        expires_at: expiresAt
+      }, {
+        onConflict: 'user_pair'
+      })
+      .catch(err => {
+        // Don't fail the request if caching fails
+        console.warn('Failed to cache AI analysis:', err)
+      })
+
     return NextResponse.json({
       success: true,
       analysis,
-      cachedUntil: Date.now() + 3600000, // Cache for 1 hour
+      cachedUntil: expiresAt,
+      fromCache: false
     })
   } catch (error) {
     console.error('Profile compatibility error:', error)

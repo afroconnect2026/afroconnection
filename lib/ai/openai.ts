@@ -163,6 +163,10 @@ export async function analyzeOpportunityMatch(
     description: string
     type: string
     requirements?: string
+    skills_required?: string[]
+    industry?: string
+    experience_level?: string
+    location?: string
   }
 ): Promise<{
   score: number
@@ -185,6 +189,10 @@ Opportunity:
 - Type: ${opportunity.type}
 - Description: ${opportunity.description}
 ${opportunity.requirements ? `- Requirements: ${opportunity.requirements}` : ''}
+${opportunity.skills_required ? `- Skills Required: ${Array.isArray(opportunity.skills_required) ? opportunity.skills_required.join(', ') : opportunity.skills_required}` : ''}
+${opportunity.industry ? `- Industry: ${opportunity.industry}` : ''}
+${opportunity.experience_level ? `- Experience Level: ${opportunity.experience_level}` : ''}
+${opportunity.location ? `- Location: ${opportunity.location}` : ''}
 
 Task: Analyze the match and return ONLY a JSON object with:
 {

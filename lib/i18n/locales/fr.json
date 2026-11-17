@@ -38,7 +38,34 @@
     "profile": "Profil",
     "settings": "Paramètres",
     "admin": "Administration",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "home": "Accueil",
+    "howItWorks": "Comment ça marche",
+    "about": "À propos"
+  },
+
+  "home": {
+    "platformFocus": "Connecter les investisseurs mondiaux avec les opportunités africaines",
+    "heroTitle": "Connecter l'Afrique à",
+    "heroTitleHighlight": "l'Opportunité",
+    "taglineSupport": "Construire des ponts. Créer des avenirs.",
+    "heroSubtext": "Inscrivez-vous, créez un profil, trouvez des correspondances, connectez-vous — et construisez de vraies opportunités.",
+    "getStartedAs": "Commencer en tant que",
+    "previewLink": "Ou voir le réseau d'abord — aucun compte nécessaire",
+    "stats": {
+      "worldwide": "Mondial",
+      "globalNetwork": "Réseau mondial",
+      "memberCount": "4",
+      "memberTypes": "Types de membres",
+      "free": "Gratuit",
+      "toJoin": "Pour rejoindre",
+      "verified": "100%",
+      "verifiedMembers": "Membres vérifiés"
+    },
+    "closingTitle": "Prêt à connecter l'Afrique à l'opportunité?",
+    "closingSubtitle": "Rejoignez les entrepreneurs, investisseurs et professionnels qui construisent l'avenir des affaires africaines.",
+    "createAccount": "Créer un compte gratuit",
+    "browsePreview": "Parcourir l'aperçu"
   },
 
   "auth": {

@@ -38,7 +38,34 @@
     "profile": "Profile",
     "settings": "Settings",
     "admin": "Admin",
-    "logout": "Logout"
+    "logout": "Logout",
+    "home": "Home",
+    "howItWorks": "How It Works",
+    "about": "About"
+  },
+
+  "home": {
+    "platformFocus": "Connecting Global Investors with African Opportunities",
+    "heroTitle": "Connecting Africa to",
+    "heroTitleHighlight": "Opportunity",
+    "taglineSupport": "Building Bridges. Creating Futures.",
+    "heroSubtext": "Sign up, build a profile, get matched, connect — and build real opportunities.",
+    "getStartedAs": "Get started as",
+    "previewLink": "Or see the network first — no account needed",
+    "stats": {
+      "worldwide": "Worldwide",
+      "globalNetwork": "Global Network",
+      "memberCount": "4",
+      "memberTypes": "Member Types",
+      "free": "Free",
+      "toJoin": "To Join",
+      "verified": "100%",
+      "verifiedMembers": "Verified Members"
+    },
+    "closingTitle": "Ready to Connect Africa to Opportunity?",
+    "closingSubtitle": "Join the entrepreneurs, investors and professionals building the future of African business.",
+    "createAccount": "Create Free Account",
+    "browsePreview": "Browse the Preview"
   },
 
   "auth": {

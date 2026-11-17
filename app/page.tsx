@@ -24,7 +24,7 @@ import HowItWorks from '@/components/marketing/HowItWorks'
 import RoleCtas from '@/components/marketing/RoleCtas'
 import Testimonials from '@/components/marketing/Testimonials'
 import PreviewShowcase from '@/components/marketing/PreviewShowcase'
-import { PLATFORM_FOCUS, TAGLINE_SUPPORT } from '@/lib/marketing/content'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -43,6 +43,7 @@ const heroImages = ['/hero-1.png', '/hero-2.png', '/hero-3.png']
 
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const { t } = useTranslation()
 
   // Auto-advance hero slides every 5 seconds
   useEffect(() => {
@@ -114,16 +115,16 @@ export default function HomePage() {
             variants={fadeIn}
           >
             <Sparkles className="w-4 h-4 text-gold-500" />
-            <span className="text-white text-sm font-medium">{PLATFORM_FOCUS}</span>
+            <span className="text-white text-sm font-medium">{t('home.platformFocus')}</span>
           </motion.div>
 
           <motion.h1
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight text-center px-4"
             variants={fadeIn}
           >
-            Connecting Africa to{' '}
+            {t('home.heroTitle')}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">
-              Opportunity
+              {t('home.heroTitleHighlight')}
             </span>
           </motion.h1>
 
@@ -131,20 +132,20 @@ export default function HomePage() {
             className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 mb-4 max-w-3xl mx-auto leading-relaxed px-4"
             variants={fadeIn}
           >
-            {TAGLINE_SUPPORT}
+            {t('home.taglineSupport')}
           </motion.p>
 
           <motion.p
             className="text-sm sm:text-base text-gray-300 mb-10 max-w-2xl mx-auto px-4"
             variants={fadeIn}
           >
-            Sign up, build a profile, get matched, connect — and build real opportunities.
+            {t('home.heroSubtext')}
           </motion.p>
 
           {/* Role specific calls to action */}
           <motion.div variants={fadeIn} className="mb-6 px-2">
             <p className="text-white/70 text-sm font-medium mb-4 uppercase tracking-wider">
-              Get started as
+              {t('home.getStartedAs')}
             </p>
             <RoleCtas variant="compact" />
           </motion.div>
@@ -157,7 +158,7 @@ export default function HomePage() {
               href="/preview"
               className="inline-flex items-center justify-center gap-2 text-white/90 hover:text-gold-400 font-medium transition-colors text-sm sm:text-base"
             >
-              Or see the network first — no account needed
+              {t('home.previewLink')}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
@@ -167,10 +168,10 @@ export default function HomePage() {
             variants={stagger}
           >
             {[
-              { icon: Globe2, label: 'Worldwide', desc: 'Global Network' },
-              { icon: Users, label: '4', desc: 'Member Types' },
-              { icon: Building2, label: 'Free', desc: 'To Join' },
-              { icon: DollarSign, label: '100%', desc: 'Verified Members' },
+              { icon: Globe2, label: t('home.stats.worldwide'), desc: t('home.stats.globalNetwork') },
+              { icon: Users, label: t('home.stats.memberCount'), desc: t('home.stats.memberTypes') },
+              { icon: Building2, label: t('home.stats.free'), desc: t('home.stats.toJoin') },
+              { icon: DollarSign, label: t('home.stats.verified'), desc: t('home.stats.verifiedMembers') },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -204,11 +205,10 @@ export default function HomePage() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-600 to-primary-700">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6">
-            Ready to Connect Africa to Opportunity?
+            {t('home.closingTitle')}
           </h2>
           <p className="text-lg sm:text-xl text-white/90 mb-10">
-            Join the entrepreneurs, investors and professionals building the future of
-            African business.
+            {t('home.closingSubtitle')}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -216,14 +216,14 @@ export default function HomePage() {
               className="bg-gradient-to-r from-gold-400 to-gold-500 text-navy-900 px-10 py-5 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-gold-500/50 hover:scale-105 transition-all flex items-center space-x-2 group shadow-xl"
             >
               <UserPlus className="w-5 h-5" />
-              <span>Create Free Account</span>
+              <span>{t('home.createAccount')}</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/preview"
               className="bg-white text-navy-900 px-8 py-5 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-xl"
             >
-              Browse the Preview
+              {t('home.browsePreview')}
             </Link>
           </div>
         </div>

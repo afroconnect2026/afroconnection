@@ -69,7 +69,10 @@ export async function POST(request: NextRequest) {
         title: opportunity.title,
         description: opportunity.description || '',
         type: opportunity.type,
-        requirements: opportunity.requirements || undefined
+        skills_required: opportunity.skills_required || undefined,
+        industry: opportunity.industry || undefined,
+        experience_level: opportunity.experience_level || undefined,
+        location: opportunity.location || undefined
       }
     )
 

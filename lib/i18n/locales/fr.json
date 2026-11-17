@@ -68,6 +68,29 @@
     "browsePreview": "Parcourir l'aperçu"
   },
 
+  "footer": {
+    "connectingAfricaToOpportunity": "Connecter l'Afrique à l'opportunité",
+    "inOneNetwork": "dans un réseau vérifié",
+    "platform": "Plateforme",
+    "howItWorks": "Comment ça marche",
+    "publicPreview": "Aperçu public",
+    "events": "Événements",
+    "whatOurAIDoes": "Ce que fait notre IA",
+    "company": "Entreprise",
+    "aboutAndTeam": "À propos et équipe",
+    "support": "Support",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfService": "Conditions d'utilisation",
+    "getStarted": "Commencer",
+    "imAnInvestor": "Je suis investisseur",
+    "imAFounder": "Je suis fondateur",
+    "imLookingForOpportunities": "Je cherche des opportunités",
+    "imLookingForFunding": "Je cherche un financement",
+    "signIn": "Se connecter",
+    "allRightsReserved": "Tous droits réservés",
+    "followUs": "Suivez-nous"
+  },
+
   "auth": {
     "signIn": "Se Connecter",
     "signingIn": "Connexion en cours...",

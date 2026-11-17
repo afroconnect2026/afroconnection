@@ -42,6 +42,8 @@
   },
 
   "auth": {
+    "signIn": "Sign In",
+    "getStarted": "Get Started",
     "loginTitle": "Welcome Back",
     "loginSubtitle": "Sign in to your AfroConnect account",
     "signupTitle": "Join AfroConnect",

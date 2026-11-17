@@ -5,13 +5,14 @@ import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import SocialLinks from './SocialLinks'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
-const navItems: { label: string; href: string }[] = [
-  { label: 'Home', href: '/' },
-  { label: 'How It Works', href: '/how-it-works' },
-  { label: 'Explore', href: '/explore' },
-  { label: 'Events', href: '/events/browse' },
-  { label: 'About', href: '/about' },
+const navItems: { label: string; labelKey?: string; href: string }[] = [
+  { label: 'Home', labelKey: 'nav.home', href: '/' },
+  { label: 'How It Works', labelKey: 'nav.howItWorks', href: '/how-it-works' },
+  { label: 'Explore', labelKey: 'nav.explore', href: '/explore' },
+  { label: 'Events', labelKey: 'nav.events', href: '/events/browse' },
+  { label: 'About', labelKey: 'nav.about', href: '/about' },
 ]
 
 interface PublicNavProps {
@@ -21,6 +22,7 @@ interface PublicNavProps {
 
 export default function PublicNav({ active }: PublicNavProps) {
   const [open, setOpen] = useState(false)
+  const { t } = useTranslation()
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-white/10">
@@ -46,7 +48,7 @@ export default function PublicNav({ active }: PublicNavProps) {
                     : 'text-gray-200 hover:text-gold-400'
                 }`}
               >
-                {item.label}
+                {item.labelKey ? t(item.labelKey) : item.label}
               </Link>
             ))}
           </div>
@@ -62,13 +64,13 @@ export default function PublicNav({ active }: PublicNavProps) {
               href="/auth/login"
               className="text-white hover:text-gold-400 transition-colors text-sm sm:text-base font-medium px-2 py-2"
             >
-              Sign In
+              {t('auth.signIn')}
             </Link>
             <Link
               href="/auth/register"
               className="hidden sm:inline-flex bg-gradient-to-r from-gold-400 to-gold-500 text-navy-900 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold hover:shadow-xl hover:shadow-gold-500/60 hover:scale-105 transition-all text-sm sm:text-base shadow-lg"
             >
-              Get Started
+              {t('auth.getStarted')}
             </Link>
             <button
               type="button"
@@ -93,7 +95,7 @@ export default function PublicNav({ active }: PublicNavProps) {
               onClick={() => setOpen(false)}
               className="block px-3 py-3 rounded-lg text-gray-200 hover:text-gold-400 hover:bg-white/5 transition-colors font-medium"
             >
-              {item.label}
+              {item.labelKey ? t(item.labelKey) : item.label}
             </Link>
           ))}
           <Link
@@ -101,7 +103,7 @@ export default function PublicNav({ active }: PublicNavProps) {
             onClick={() => setOpen(false)}
             className="block text-center bg-gradient-to-r from-gold-400 to-gold-500 text-navy-900 px-6 py-3 rounded-lg font-bold mt-3"
           >
-            Get Started
+            {t('auth.getStarted')}
           </Link>
           <div className="pt-4 space-y-3">
             <div className="pb-3 border-b border-white/10">

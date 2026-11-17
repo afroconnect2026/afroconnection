@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import AuthenticatedLayout from '@/components/AuthenticatedLayout'
-import { ArrowLeft, Mail, Phone, FileText, Calendar, User, CheckCircle, XCircle, Clock } from 'lucide-react'
+import { ArrowLeft, MapPin, FileText, Calendar, User, CheckCircle, XCircle, Clock } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import toast from 'react-hot-toast'
 
@@ -364,31 +364,23 @@ export default function ApplicationsManagementPage() {
                     </div>
                   </div>
 
-                  {/* Contact Info */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    {application.applicant?.email && (
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Mail className="h-4 w-4 mr-2 text-gray-400" />
-                        <a
-                          href={`mailto:${application.applicant.email}`}
-                          className="text-primary-600 hover:text-primary-700"
-                        >
-                          {application.applicant.email}
-                        </a>
-                      </div>
-                    )}
-                    {application.applicant?.phone_number && (
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Phone className="h-4 w-4 mr-2 text-gray-400" />
-                        <a
-                          href={`tel:${application.applicant.phone_number}`}
-                          className="text-primary-600 hover:text-primary-700"
-                        >
-                          {application.applicant.phone_number}
-                        </a>
-                      </div>
-                    )}
-                  </div>
+                  {/* Applicant Info (no PII - contact via in-app messaging) */}
+                  {(application.applicant?.city || application.applicant?.country || application.applicant?.user_type) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      {(application.applicant?.city || application.applicant?.country) && (
+                        <div className="flex items-center text-sm text-gray-600">
+                          <MapPin className="h-4 w-4 mr-2 text-gray-400" />
+                          {[application.applicant.city, application.applicant.country].filter(Boolean).join(', ')}
+                        </div>
+                      )}
+                      {application.applicant?.user_type && (
+                        <div className="flex items-center text-sm text-gray-600 capitalize">
+                          <User className="h-4 w-4 mr-2 text-gray-400" />
+                          {application.applicant.user_type}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {/* Cover Letter */}
                   <div className="mb-4">

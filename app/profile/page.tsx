@@ -258,10 +258,10 @@ export default function ProfilePage() {
       if (updateError) throw updateError
 
       setProfile({ ...profile, avatar_url: publicUrl })
-      toast.success('Avatar updated!')
+      toast.success(t('profile.toast.avatarUpdated'))
     } catch (error: any) {
       console.error('Avatar upload error:', error)
-      toast.error(error.message || 'Failed to upload avatar')
+      toast.error(error.message || t('profile.toast.avatarUploadFailed'))
     } finally {
       setUploadingAvatar(false)
     }
@@ -273,13 +273,13 @@ export default function ProfilePage() {
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('profile.toast.selectImage'))
       return
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image must be smaller than 5MB')
+      toast.error(t('profile.toast.imageTooLarge', { size: '5' }))
       return
     }
 
@@ -318,10 +318,10 @@ export default function ProfilePage() {
       if (updateError) throw updateError
 
       setProfile({ ...profile, cover_url: publicUrl })
-      toast.success('Cover photo updated!')
+      toast.success(t('profile.toast.coverUpdated'))
     } catch (error: any) {
       console.error('Cover upload error:', error)
-      toast.error(error.message || 'Failed to upload cover photo')
+      toast.error(error.message || t('profile.toast.coverUploadFailed'))
     } finally {
       setUploadingCover(false)
     }
@@ -354,11 +354,11 @@ export default function ProfilePage() {
         is_available: newAvailability
       })
 
-      toast.success(newAvailability ? 'You are now available for work' : 'You are now unavailable')
+      toast.success(newAvailability ? t('profile.availability.nowAvailable') : t('profile.availability.nowUnavailable'))
     } catch (error: any) {
       console.error('Toggle availability error:', error)
       setIsAvailable(!newAvailability) // Revert on error
-      toast.error('Failed to update availability status')
+      toast.error(t('profile.availability.updateFailed'))
     } finally {
       setTogglingAvailability(false)
     }
@@ -385,8 +385,9 @@ export default function ProfilePage() {
   }
 
   const getUserTypeLabel = () => {
-    if (!profile?.user_type) return 'Member'
-    return profile.user_type.charAt(0).toUpperCase() + profile.user_type.slice(1)
+    if (!profile?.user_type) return t('dashboard.userType.member')
+    const userType = profile.user_type as 'entrepreneur' | 'investor' | 'professional' | 'company'
+    return t(`dashboard.userType.${userType}`)
   }
 
   return (
@@ -424,12 +425,12 @@ export default function ProfilePage() {
                 {uploadingCover ? (
                   <>
                     <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                    <span>Uploading...</span>
+                    <span>{t('profile.cover.uploading')}</span>
                   </>
                 ) : (
                   <>
                     <Camera className="h-4 w-4" />
-                    <span>Edit Cover</span>
+                    <span>{t('profile.cover.editCover')}</span>
                   </>
                 )}
               </button>
@@ -490,12 +491,12 @@ export default function ProfilePage() {
                       {togglingAvailability ? (
                         <>
                           <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
-                          <span>Updating...</span>
+                          <span>{t('profile.availability.updating')}</span>
                         </>
                       ) : (
                         <>
                           {isAvailable ? <ToggleRight className="h-5 w-5" /> : <ToggleLeft className="h-5 w-5" />}
-                          <span>{isAvailable ? 'Available for Work' : 'Unavailable'}</span>
+                          <span>{isAvailable ? t('profile.availability.available') : t('profile.availability.unavailable')}</span>
                         </>
                       )}
                     </button>
@@ -507,7 +508,7 @@ export default function ProfilePage() {
                       className="px-4 py-2 rounded-lg font-medium border-2 border-blue-300 text-blue-700 hover:bg-blue-50 flex items-center space-x-2"
                     >
                       <ShieldCheck className="h-4 w-4" />
-                      <span>Get Verified</span>
+                      <span>{t('profile.actions.getVerified')}</span>
                     </Link>
                   )}
 
@@ -521,15 +522,15 @@ export default function ProfilePage() {
                             return
                           }
                           await navigator.clipboard.writeText(url)
-                          toast.success('Profile link copied!')
+                          toast.success(t('profile.actions.profileLinkCopied'))
                         } catch (err: any) {
-                          if (err?.name !== 'AbortError') toast.error('Could not copy link')
+                          if (err?.name !== 'AbortError') toast.error(t('profile.actions.couldNotCopyLink'))
                         }
                       }}
                       className="px-4 py-2 rounded-lg font-medium border-2 border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center space-x-2"
                     >
                       <Share2 className="h-4 w-4" />
-                      <span>Share Profile</span>
+                      <span>{t('profile.actions.shareProfile')}</span>
                     </button>
                   )}
 
@@ -539,7 +540,7 @@ export default function ProfilePage() {
                     className="bg-primary-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors flex items-center space-x-2"
                   >
                     <Edit className="h-4 w-4" />
-                    <span>{editMode ? 'Cancel' : 'Edit Profile'}</span>
+                    <span>{editMode ? t('profile.cancel') : t('profile.edit')}</span>
                   </button>
                 </div>
               </div>
@@ -547,29 +548,29 @@ export default function ProfilePage() {
               {/* Edit Mode - Form */}
               {editMode ? (
                 <div className="space-y-6">
-                  <h2 className="text-2xl font-bold text-navy-900 mb-6">Edit Your Profile</h2>
+                  <h2 className="text-2xl font-bold text-navy-900 mb-6">{t('profile.editYourProfile')}</h2>
 
                   {/* Full Name */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">Full Name *</label>
+                    <label className="block text-gray-700 font-semibold mb-2">{t('profile.form.fullName')}</label>
                     <input
                       type="text"
                       value={formData.full_name}
                       onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none"
-                      placeholder="Your full name"
+                      placeholder={t('profile.form.fullNamePlaceholder')}
                     />
                   </div>
 
                   {/* Bio */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">Bio</label>
+                    <label className="block text-gray-700 font-semibold mb-2">{t('profile.form.bio')}</label>
                     <textarea
                       value={formData.bio}
                       onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                       rows={4}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none resize-none"
-                      placeholder="Tell others about yourself, your experience, and what you're looking for..."
+                      placeholder={t('profile.form.bioPlaceholder')}
                     />
                     {/* AI Bio Generator */}
                     <div className="mt-3">
@@ -585,73 +586,73 @@ export default function ProfilePage() {
                   {/* Location */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-2">Country</label>
+                      <label className="block text-gray-700 font-semibold mb-2">{t('profile.form.country')}</label>
                       <input
                         type="text"
                         value={formData.country}
                         onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none"
-                        placeholder="e.g., Nigeria"
+                        placeholder={t('profile.form.countryPlaceholder')}
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-2">City</label>
+                      <label className="block text-gray-700 font-semibold mb-2">{t('profile.form.city')}</label>
                       <input
                         type="text"
                         value={formData.city}
                         onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none"
-                        placeholder="e.g., Lagos"
+                        placeholder={t('profile.form.cityPlaceholder')}
                       />
                     </div>
                   </div>
 
                   {/* Phone */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">Phone (Optional)</label>
+                    <label className="block text-gray-700 font-semibold mb-2">{t('profile.form.phone')}</label>
                     <input
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none"
-                      placeholder="+234 xxx xxx xxxx"
+                      placeholder={t('profile.form.phonePlaceholder')}
                     />
                   </div>
 
                   {/* Social Links */}
                   <div className="space-y-4">
-                    <h3 className="font-semibold text-gray-900">Social & Professional Links</h3>
+                    <h3 className="font-semibold text-gray-900">{t('profile.form.socialLinks')}</h3>
 
                     <div>
-                      <label className="block text-gray-700 font-medium mb-2">Website</label>
+                      <label className="block text-gray-700 font-medium mb-2">{t('profile.form.website')}</label>
                       <input
                         type="url"
                         value={formData.website_url}
                         onChange={(e) => setFormData({ ...formData, website_url: e.target.value })}
                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none"
-                        placeholder="https://yourwebsite.com"
+                        placeholder={t('profile.form.websitePlaceholder')}
                       />
                     </div>
 
                     <div>
-                      <label className="block text-gray-700 font-medium mb-2">LinkedIn Profile</label>
+                      <label className="block text-gray-700 font-medium mb-2">{t('profile.form.linkedin')}</label>
                       <input
                         type="url"
                         value={formData.linkedin_url}
                         onChange={(e) => setFormData({ ...formData, linkedin_url: e.target.value })}
                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none"
-                        placeholder="https://linkedin.com/in/yourprofile"
+                        placeholder={t('profile.form.linkedinPlaceholder')}
                       />
                     </div>
 
                     <div>
-                      <label className="block text-gray-700 font-medium mb-2">Twitter Profile</label>
+                      <label className="block text-gray-700 font-medium mb-2">{t('profile.form.twitter')}</label>
                       <input
                         type="url"
                         value={formData.twitter_url}
                         onChange={(e) => setFormData({ ...formData, twitter_url: e.target.value })}
                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none"
-                        placeholder="https://twitter.com/yourhandle"
+                        placeholder={t('profile.form.twitterPlaceholder')}
                       />
                     </div>
                   </div>
@@ -697,14 +698,14 @@ export default function ProfilePage() {
                       disabled={saving}
                       className="flex-1 bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {saving ? 'Saving...' : 'Save Changes'}
+                      {saving ? t('profile.saving') : t('profile.saveChanges')}
                     </button>
                     <button
                       onClick={handleCancel}
                       disabled={saving}
                       className="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
                     >
-                      Cancel
+                      {t('profile.cancel')}
                     </button>
                   </div>
                 </div>
@@ -713,7 +714,7 @@ export default function ProfilePage() {
                   {/* Name & Title */}
                   <div className="mb-6">
                 <h1 className="text-3xl font-display font-bold text-navy-900 mb-2">
-                  {profile?.full_name || 'Add your name'}
+                  {profile?.full_name || t('profile.view.addYourName')}
                 </h1>
                 <div className="flex flex-wrap gap-2 mb-4">
                   <span className={`px-3 py-1 rounded-full bg-gradient-to-r ${getUserTypeColor()} text-white text-sm font-medium`}>
@@ -727,7 +728,7 @@ export default function ProfilePage() {
                   )}
                 </div>
                 <p className="text-gray-600 text-lg">
-                  {profile?.bio || 'Add a bio to tell others about yourself'}
+                  {profile?.bio || t('profile.view.addBio')}
                 </p>
               </div>
 
@@ -749,7 +750,7 @@ export default function ProfilePage() {
                   <div className="flex items-center space-x-3 text-gray-700">
                     <Linkedin className="h-5 w-5 text-gray-400" />
                     <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">
-                      LinkedIn Profile
+                      {t('profile.view.linkedinProfile')}
                     </a>
                   </div>
                 )}
@@ -757,7 +758,7 @@ export default function ProfilePage() {
                   <div className="flex items-center space-x-3 text-gray-700">
                     <Twitter className="h-5 w-5 text-gray-400" />
                     <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">
-                      Twitter Profile
+                      {t('profile.view.twitterProfile')}
                     </a>
                   </div>
                 )}
@@ -768,14 +769,14 @@ export default function ProfilePage() {
                 <div className="flex items-start space-x-3">
                   <Briefcase className="h-5 w-5 text-blue-600 mt-0.5" />
                   <div className="flex-1">
-                    <h3 className="font-semibold text-blue-900 mb-1">Complete Your Profile</h3>
+                    <h3 className="font-semibold text-blue-900 mb-1">{t('profile.completion.title')}</h3>
                     <p className="text-sm text-blue-700 mb-3">
-                      Add more information to increase your visibility and connect with the right opportunities
+                      {t('profile.completion.description')}
                     </p>
                     <div className="w-full bg-blue-200 rounded-full h-2 mb-2">
                       <div className="bg-blue-600 h-2 rounded-full" style={{ width: '30%' }}></div>
                     </div>
-                    <p className="text-xs text-blue-600 font-medium">30% Complete</p>
+                    <p className="text-xs text-blue-600 font-medium">{t('profile.completion.percentComplete', { percent: '30' })}</p>
                   </div>
                 </div>
               </div>
@@ -790,10 +791,10 @@ export default function ProfilePage() {
             <div className="bg-white rounded-xl p-6 border border-gray-200">
               <h2 className="text-xl font-bold text-navy-900 mb-4 flex items-center space-x-2">
                 <User className="h-5 w-5 text-primary-600" />
-                <span>About</span>
+                <span>{t('profile.sections.about')}</span>
               </h2>
               <p className="text-gray-600">
-                {profile?.bio || 'Add a detailed description about yourself, your experience, and what you\'re looking for on AfroConnect.'}
+                {profile?.bio || t('profile.sections.aboutDefault')}
               </p>
             </div>
 
@@ -801,10 +802,10 @@ export default function ProfilePage() {
             <div className="bg-white rounded-xl p-6 border border-gray-200">
               <h2 className="text-xl font-bold text-navy-900 mb-4 flex items-center space-x-2">
                 <GraduationCap className="h-5 w-5 text-primary-600" />
-                <span>Skills & Interests</span>
+                <span>{t('profile.sections.skillsInterests')}</span>
               </h2>
               <p className="text-gray-600">
-                Add your skills and interests to help others find you
+                {t('profile.sections.skillsDefault')}
               </p>
             </div>
           </div>

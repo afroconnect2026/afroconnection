@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import AuthenticatedLayout from '@/components/AuthenticatedLayout'
 import { motion } from 'framer-motion'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 import {
   Calendar,
   MapPin,
@@ -39,6 +40,7 @@ const stagger = {
 }
 
 function EventsPageContent() {
+  const { t } = useTranslation()
   const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClient()
@@ -66,17 +68,17 @@ function EventsPageContent() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
   const eventTypes = [
-    { value: 'conference', label: 'Conference', icon: Building2 },
-    { value: 'meetup', label: 'Meetup', icon: Users },
-    { value: 'webinar', label: 'Webinar', icon: Video },
-    { value: 'workshop', label: 'Workshop', icon: Zap },
-    { value: 'networking', label: 'Networking', icon: Globe }
+    { value: 'conference', label: t('events.types.conference'), icon: Building2 },
+    { value: 'meetup', label: t('events.types.meetup'), icon: Users },
+    { value: 'webinar', label: t('events.types.webinar'), icon: Video },
+    { value: 'workshop', label: t('events.types.workshop'), icon: Zap },
+    { value: 'networking', label: t('events.types.networking'), icon: Globe }
   ]
 
   const formatOptions = [
-    { value: 'in-person', label: 'In-Person', icon: MapPin },
-    { value: 'virtual', label: 'Virtual', icon: Video },
-    { value: 'hybrid', label: 'Hybrid', icon: Globe }
+    { value: 'in-person', label: t('events.formats.inPerson'), icon: MapPin },
+    { value: 'virtual', label: t('events.formats.virtual'), icon: Video },
+    { value: 'hybrid', label: t('events.formats.hybrid'), icon: Globe }
   ]
 
   useEffect(() => {
@@ -252,7 +254,7 @@ function EventsPageContent() {
             {/* Featured Badge */}
             {event.is_featured && (
               <div className="absolute top-4 right-4 bg-gold-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                Featured
+                {t('events.featured')}
               </div>
             )}
           </div>
@@ -269,7 +271,7 @@ function EventsPageContent() {
               </span>
               {event.is_free && (
                 <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">
-                  FREE
+                  {t('events.free')}
                 </span>
               )}
             </div>
@@ -302,7 +304,7 @@ function EventsPageContent() {
                     minute: '2-digit'
                   })}
                   {isMultiDay && (
-                    <span className="text-gray-500 ml-1">(Multi-day)</span>
+                    <span className="text-gray-500 ml-1">({t('events.multiDay')})</span>
                   )}
                 </span>
               </div>
@@ -316,9 +318,9 @@ function EventsPageContent() {
                 )}
                 <span className="line-clamp-1">
                   {event.format === 'virtual'
-                    ? 'Online Event'
+                    ? t('events.onlineEvent')
                     : event.format === 'hybrid'
-                    ? `${event.city || 'TBD'} + Online`
+                    ? `${event.city || 'TBD'} + ${t('events.onlineEvent')}`
                     : `${event.city || 'TBD'}${event.country ? `, ${event.country}` : ''}`}
                 </span>
               </div>
@@ -327,8 +329,8 @@ function EventsPageContent() {
               <div className="flex items-center text-sm text-gray-700">
                 <Users className="h-4 w-4 mr-2 text-green-600 flex-shrink-0" />
                 <span>
-                  {event.rsvp_count || 0} attending
-                  {event.max_attendees && ` • ${event.max_attendees - (event.rsvp_count || 0)} spots left`}
+                  {event.rsvp_count || 0} {t('events.attending')}
+                  {event.max_attendees && ` • ${event.max_attendees - (event.rsvp_count || 0)} ${t('events.spotsLeft')}`}
                 </span>
               </div>
             </div>
@@ -345,7 +347,7 @@ function EventsPageContent() {
                   {event.organizer?.full_name || 'Anonymous'}
                 </p>
                 <p className="text-xs text-gray-500">
-                  Organizer
+                  {t('events.organizer')}
                 </p>
               </div>
               {!event.is_free && (
@@ -565,7 +567,7 @@ function EventsPageContent() {
               </div>
             ) : (
               <p className="text-gray-500 text-center py-4">
-                No events on this date
+                {t('events.noEventsOnDate')}
               </p>
             )}
           </div>
@@ -581,10 +583,10 @@ function EventsPageContent() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-display font-bold text-navy-900 mb-2">
-              Events & Networking
+              {t('events.title')}
             </h1>
             <p className="text-gray-600">
-              Connect, learn, and grow with Africa's tech community
+              {t('events.subtitle')}
             </p>
           </div>
           <Link
@@ -592,7 +594,7 @@ function EventsPageContent() {
             className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
           >
             <Plus className="h-5 w-5" />
-            Create Event
+            {t('events.create')}
           </Link>
         </div>
 
@@ -607,7 +609,7 @@ function EventsPageContent() {
                   : 'bg-white text-gray-700 border border-gray-200 hover:border-primary-300'
               }`}
             >
-              Upcoming Events
+              {t('events.upcomingEvents')}
             </button>
             <button
               onClick={() => setTimeFilter('past')}
@@ -617,7 +619,7 @@ function EventsPageContent() {
                   : 'bg-white text-gray-700 border border-gray-200 hover:border-primary-300'
               }`}
             >
-              Past Events
+              {t('events.pastEvents')}
             </button>
           </div>
 
@@ -632,7 +634,7 @@ function EventsPageContent() {
               }`}
             >
               <Grid3x3 className="h-4 w-4" />
-              Grid
+              {t('events.viewModes.grid')}
             </button>
             <button
               onClick={() => setViewMode('calendar')}
@@ -643,7 +645,7 @@ function EventsPageContent() {
               }`}
             >
               <Calendar className="h-4 w-4" />
-              Calendar
+              {t('events.viewModes.calendar')}
             </button>
           </div>
         </div>
@@ -656,7 +658,7 @@ function EventsPageContent() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search events by title, location, or description..."
+                placeholder={t('events.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -671,7 +673,7 @@ function EventsPageContent() {
               }`}
             >
               <Filter className="h-5 w-5" />
-              Filters
+              {t('events.filters')}
               {hasActiveFilters && !showFilters && (
                 <span className="bg-white text-primary-600 rounded-full w-5 h-5 text-xs font-bold flex items-center justify-center">
                   !
@@ -684,7 +686,7 @@ function EventsPageContent() {
                 className="flex items-center gap-2 px-6 py-3 bg-red-50 text-red-600 rounded-lg font-medium hover:bg-red-100 transition-colors"
               >
                 <X className="h-5 w-5" />
-                Clear
+                {t('events.clear')}
               </button>
             )}
           </div>
@@ -700,7 +702,7 @@ function EventsPageContent() {
               {/* Event Type */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Event Type
+                  {t('events.eventType')}
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {eventTypes.map((type) => {
@@ -728,7 +730,7 @@ function EventsPageContent() {
               {/* Format */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Format
+                  {t('events.format')}
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {formatOptions.map((format) => {
@@ -756,11 +758,11 @@ function EventsPageContent() {
               {/* City */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  City
+                  {t('events.city')}
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g., Nairobi, Lagos, Cape Town..."
+                  placeholder={t('events.cityPlaceholder')}
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -770,7 +772,7 @@ function EventsPageContent() {
               {/* Date Range */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Date Range
+                  {t('events.dateRange')}
                 </label>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -797,7 +799,7 @@ function EventsPageContent() {
               {/* Price Range */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Price Range (USD)
+                  {t('events.priceRange')}
                 </label>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -805,7 +807,7 @@ function EventsPageContent() {
                       type="number"
                       value={priceMin}
                       onChange={(e) => setPriceMin(e.target.value)}
-                      placeholder="Min"
+                      placeholder={t('events.priceMin')}
                       min="0"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     />
@@ -815,7 +817,7 @@ function EventsPageContent() {
                       type="number"
                       value={priceMax}
                       onChange={(e) => setPriceMax(e.target.value)}
-                      placeholder="Max"
+                      placeholder={t('events.priceMax')}
                       min="0"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     />
@@ -833,7 +835,7 @@ function EventsPageContent() {
                   className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
                 <label htmlFor="free-only" className="text-sm font-medium text-gray-700 cursor-pointer">
-                  Show free events only
+                  {t('events.freeOnly')}
                 </label>
               </div>
             </motion.div>
@@ -862,21 +864,21 @@ function EventsPageContent() {
           <div className="text-center py-16">
             <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-gray-900 mb-2">
-              No {timeFilter} events found
+              {t('events.noEventsFound', { timeFilter })}
             </h3>
             <p className="text-gray-600 mb-6">
               {hasActiveFilters
-                ? 'Try adjusting your filters to see more events'
+                ? t('events.tryAdjustingFilters')
                 : timeFilter === 'upcoming'
-                ? 'Be the first to create an event for the community'
-                : 'Check back later for past events'}
+                ? t('events.beFirstToCreate')
+                : t('events.checkBackLater')}
             </p>
             {hasActiveFilters ? (
               <button
                 onClick={clearFilters}
                 className="px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
               >
-                Clear Filters
+                {t('events.clearFilters')}
               </button>
             ) : (
               <Link
@@ -884,7 +886,7 @@ function EventsPageContent() {
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
               >
                 <Plus className="h-5 w-5" />
-                Create Event
+                {t('events.create')}
               </Link>
             )}
           </div>

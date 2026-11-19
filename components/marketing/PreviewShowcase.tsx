@@ -199,7 +199,7 @@ export default function PreviewShowcase({
                       <div className="p-6 flex flex-col flex-1">
                         {event.isSample && (
                           <span className="self-start text-[10px] uppercase tracking-wide text-gray-400 border border-white/15 rounded-full px-2 py-0.5 mb-3">
-                            Sample listing
+                            {t('previewShowcase.sampleListing')}
                           </span>
                         )}
                         <h3 className="text-lg font-bold text-white mb-3 line-clamp-2 group-hover:text-gold-500 transition-colors">
@@ -226,14 +226,14 @@ export default function PreviewShowcase({
                           {ended ? (
                             <span className="text-gray-500 font-medium text-sm flex items-center gap-2">
                               <Clock className="h-4 w-4" />
-                              Event ended
+                              {t('previewShowcase.eventEnded')}
                             </span>
                           ) : event.isSample ? (
                             <Link
                               href="/auth/register"
                               className="text-gold-500 hover:text-gold-400 font-medium text-sm inline-flex items-center gap-2"
                             >
-                              Sign up to see real events
+                              {t('previewShowcase.signUpToSeeRealEvents')}
                               <ArrowRight className="h-4 w-4" />
                             </Link>
                           ) : (
@@ -241,7 +241,7 @@ export default function PreviewShowcase({
                               href={`/events/${event.id}`}
                               className="text-gold-500 hover:text-gold-400 font-medium text-sm inline-flex items-center gap-2 group/link"
                             >
-                              View full details
+                              {t('previewShowcase.viewFullDetails')}
                               <ArrowRight className="h-4 w-4 group-hover/link:translate-x-1 transition-transform" />
                             </Link>
                           )}
@@ -256,7 +256,7 @@ export default function PreviewShowcase({
             href="/events"
             className="md:hidden flex items-center justify-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium mt-8"
           >
-            Browse all events
+            {t('previewShowcase.browseAllEvents')}
             <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
@@ -273,17 +273,17 @@ export default function PreviewShowcase({
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
             <div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-3">
-                Featured opportunities
+                {t('previewShowcase.featuredOpportunities')}
               </h2>
               <p className="text-base sm:text-lg text-gray-300">
-                Investment, partnerships, mentorship and roles — posted by verified members.
+                {t('previewShowcase.opportunitiesDescription')}
               </p>
             </div>
             <Link
               href="/auth/register?role=opportunities"
               className="hidden md:inline-flex items-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium shrink-0"
             >
-              Sign up to see all opportunities
+              {t('previewShowcase.signUpToSeeAllOpportunities')}
               <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
@@ -338,7 +338,7 @@ export default function PreviewShowcase({
                       <div className="p-6 flex flex-col flex-1">
                         {opp.isSample && (
                           <span className="self-start text-[10px] uppercase tracking-wide text-gray-400 border border-white/15 rounded-full px-2 py-0.5 mb-3">
-                            Sample listing
+                            {t('previewShowcase.sampleListing')}
                           </span>
                         )}
                         <h3 className="text-lg font-bold text-white mb-3 line-clamp-2 group-hover:text-gold-500 transition-colors">
@@ -351,7 +351,7 @@ export default function PreviewShowcase({
                           {deadline && (
                             <div className="flex items-center gap-2">
                               <Clock className="h-4 w-4 text-primary-500" />
-                              <span>Deadline: {deadline}</span>
+                              <span>{t('previewShowcase.deadline')} {deadline}</span>
                             </div>
                           )}
                           {opp.location && (
@@ -365,7 +365,7 @@ export default function PreviewShowcase({
                           {closed ? (
                             <span className="text-gray-500 font-medium text-sm flex items-center gap-2">
                               <Clock className="h-4 w-4" />
-                              Applications closed
+                              {t('previewShowcase.applicationsClosed')}
                             </span>
                           ) : (
                             <Link
@@ -373,7 +373,7 @@ export default function PreviewShowcase({
                               className="text-gold-500 hover:text-gold-400 font-medium text-sm inline-flex items-center gap-2 group/link"
                             >
                               <Lock className="h-3.5 w-3.5" />
-                              Sign up to view full details
+                              {t('previewShowcase.signUpToViewFullDetails')}
                               <ArrowRight className="h-4 w-4 group-hover/link:translate-x-1 transition-transform" />
                             </Link>
                           )}
@@ -388,7 +388,7 @@ export default function PreviewShowcase({
             href="/auth/register?role=opportunities"
             className="md:hidden flex items-center justify-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium mt-8"
           >
-            Sign up to see all opportunities
+            {t('previewShowcase.signUpToSeeAllOpportunities')}
             <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
@@ -403,11 +403,10 @@ export default function PreviewShowcase({
             <div className="max-w-7xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-3">
-                  Live investment opportunities
+                  {t('previewShowcase.liveInvestmentOpportunities')}
                 </h2>
                 <p className="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto">
-                  Anonymised for member privacy. Company names, founders and full metrics
-                  unlock when you join as a verified investor.
+                  {t('previewShowcase.investmentDescription')}
                 </p>
               </div>
 
@@ -436,11 +435,11 @@ export default function PreviewShowcase({
 
                     <dl className="space-y-2 text-sm mb-4">
                       <div className="flex justify-between gap-3">
-                        <dt className="text-gray-400">Raising</dt>
+                        <dt className="text-gray-400">{t('previewShowcase.raising')}</dt>
                         <dd className="text-white font-semibold">{deal.raising}</dd>
                       </div>
                       <div className="flex justify-between gap-3">
-                        <dt className="text-gray-400">Region</dt>
+                        <dt className="text-gray-400">{t('previewShowcase.region')}</dt>
                         <dd className="text-white text-right">{deal.location}</dd>
                       </div>
                     </dl>
@@ -454,7 +453,7 @@ export default function PreviewShowcase({
                       className="mt-auto inline-flex items-center gap-2 text-gold-500 hover:text-gold-400 font-semibold text-sm"
                     >
                       <Lock className="w-3.5 h-3.5" />
-                      Unlock full details
+                      {t('previewShowcase.unlockFullDetails')}
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                   </motion.div>
@@ -470,11 +469,10 @@ export default function PreviewShowcase({
             <div className="max-w-7xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-3xl sm:text-4xl font-display font-bold text-white mb-3">
-                  Member success stories
+                  {t('previewShowcase.memberSuccessStories')}
                 </h2>
                 <p className="text-gray-300 max-w-2xl mx-auto">
-                  Aggregated and anonymised outcomes from the network. Members control what
-                  is shared publicly.
+                  {t('previewShowcase.successStoriesDescription')}
                 </p>
               </div>
 

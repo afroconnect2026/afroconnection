@@ -56,6 +56,7 @@ interface Opportunity {
 }
 
 export default function OpportunitiesPage() {
+  const { t } = useTranslation()
   const [opportunities, setOpportunities] = useState<Opportunity[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<string>('all')
@@ -152,10 +153,10 @@ export default function OpportunitiesPage() {
         )
       )
 
-      toast.success(isSaved ? 'Removed from saved' : 'Saved!')
+      toast.success(isSaved ? t('opportunities.removedFromSaved') : t('opportunities.saved'))
     } catch (error) {
       console.error('Error saving opportunity:', error)
-      toast.error('Failed to save')
+      toast.error(t('common.error'))
     }
   }
 
@@ -259,9 +260,9 @@ export default function OpportunitiesPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Opportunities</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{t('opportunities.title')}</h1>
             <p className="text-gray-600 mt-1">
-              Discover jobs, investments, partnerships, and mentorship
+              {t('opportunities.subtitle')}
             </p>
           </div>
           <button
@@ -269,7 +270,7 @@ export default function OpportunitiesPage() {
             className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors flex items-center space-x-2"
           >
             <Plus className="h-5 w-5" />
-            <span>Post Opportunity</span>
+            <span>{t('opportunities.create')}</span>
           </button>
         </div>
 
@@ -283,25 +284,25 @@ export default function OpportunitiesPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search opportunities..."
+                placeholder={t('opportunities.searchPlaceholder')}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
 
             {/* Sort Dropdown */}
             <div className="flex items-center space-x-2">
-              <label className="text-sm text-gray-600 whitespace-nowrap">Sort by:</label>
+              <label className="text-sm text-gray-600 whitespace-nowrap">{t('opportunities.sortBy')}</label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
               >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="most_viewed">Most Viewed</option>
-                <option value="most_applications">Most Applications</option>
-                <option value="salary_high">Salary: High to Low</option>
-                <option value="salary_low">Salary: Low to High</option>
+                <option value="newest">{t('opportunities.sortOptions.newest')}</option>
+                <option value="oldest">{t('opportunities.sortOptions.oldest')}</option>
+                <option value="most_viewed">{t('opportunities.sortOptions.mostViewed')}</option>
+                <option value="most_applications">{t('opportunities.sortOptions.mostApplications')}</option>
+                <option value="salary_high">{t('opportunities.sortOptions.salaryHigh')}</option>
+                <option value="salary_low">{t('opportunities.sortOptions.salaryLow')}</option>
               </select>
             </div>
           </div>
@@ -317,7 +318,7 @@ export default function OpportunitiesPage() {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                All
+                {t('opportunities.filters.all')}
               </button>
               <button
                 onClick={() => setFilter('job')}
@@ -327,7 +328,7 @@ export default function OpportunitiesPage() {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                Jobs
+                {t('opportunities.filters.jobs')}
               </button>
               <button
                 onClick={() => setFilter('investment')}
@@ -337,7 +338,7 @@ export default function OpportunitiesPage() {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                Investments
+                {t('opportunities.filters.investments')}
               </button>
               <button
                 onClick={() => setFilter('partnership')}
@@ -347,7 +348,7 @@ export default function OpportunitiesPage() {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                Partnerships
+                {t('opportunities.filters.partnerships')}
               </button>
               <button
                 onClick={() => setFilter('mentorship')}
@@ -357,7 +358,7 @@ export default function OpportunitiesPage() {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                Mentorship
+                {t('opportunities.filters.mentorship')}
               </button>
             </div>
           </div>
@@ -367,18 +368,18 @@ export default function OpportunitiesPage() {
         {filteredOpportunities.length === 0 ? (
           <div className="text-center py-12">
             <Briefcase className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No opportunities found</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('opportunities.noOpportunities')}</h3>
             <p className="text-gray-500 mb-6">
               {searchQuery || filter !== 'all'
-                ? 'Try adjusting your filters'
-                : 'Be the first to post an opportunity!'}
+                ? t('opportunities.tryAdjustingFilters')
+                : t('opportunities.beFirstToPost')}
             </p>
             {filter === 'all' && !searchQuery && (
               <button
                 onClick={() => router.push('/opportunities/create')}
                 className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
               >
-                Post Opportunity
+                {t('opportunities.create')}
               </button>
             )}
           </div>
@@ -453,7 +454,7 @@ export default function OpportunitiesPage() {
                           <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
                           <span className="truncate">
                             {opportunity.location}
-                            {opportunity.is_remote && ' (Remote)'}
+                            {opportunity.is_remote && ` (${t('opportunities.remote')})`}
                           </span>
                         </div>
                       )}
@@ -518,7 +519,7 @@ export default function OpportunitiesPage() {
                         onClick={() => router.push(`/opportunities/${opportunity.id}`)}
                         className="text-primary-600 hover:text-primary-700 text-sm font-medium whitespace-nowrap ml-2"
                       >
-                        View Details
+                        {t('opportunities.viewDetails')}
                       </button>
                     </div>
                   </div>

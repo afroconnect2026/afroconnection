@@ -24,8 +24,10 @@ import {
   TEAM,
   VISION_STATEMENT,
 } from '@/lib/marketing/content'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
 export default function AboutPage() {
+  const { t } = useTranslation()
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-primary-900">
       <PublicNav active="/about" />
@@ -39,15 +41,14 @@ export default function AboutPage() {
         >
           <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
             <Compass className="w-4 h-4 text-gold-500" />
-            <span className="text-white text-sm font-medium">About AfroConnect</span>
+            <span className="text-white text-sm font-medium">{t('about.badge')}</span>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-white mb-6 leading-tight">
             {TAGLINE}
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 leading-relaxed">
-            We are building the trusted network layer for African opportunity —{' '}
-            {PLATFORM_FOCUS.toLowerCase()} — so the right people find each other on
-            purpose rather than by luck.
+            {t('about.intro')}{' '}
+            {PLATFORM_FOCUS.toLowerCase()} {t('about.introContinued')}
           </p>
         </motion.div>
       </section>
@@ -65,7 +66,7 @@ export default function AboutPage() {
               <Eye className="w-7 h-7 text-navy-900" />
             </div>
             <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mb-4">
-              Our Vision
+              {t('about.visionTitle')}
             </h2>
             <p className="text-gray-200 text-base sm:text-lg leading-relaxed">
               {VISION_STATEMENT}
@@ -83,7 +84,7 @@ export default function AboutPage() {
               <Target className="w-7 h-7 text-white" />
             </div>
             <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mb-4">
-              Our Mission
+              {t('about.missionTitle')}
             </h2>
             <p className="text-gray-200 text-base sm:text-lg leading-relaxed">
               {MISSION_STATEMENT}
@@ -97,10 +98,10 @@ export default function AboutPage() {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
-              Why We Built This
+              {t('about.storyTitle')}
             </h2>
             <p className="text-gray-300 text-base sm:text-lg">
-              The gap AfroConnect exists to close.
+              {t('about.storySubtitle')}
             </p>
           </div>
 
@@ -126,10 +127,10 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
-              What We Stand For
+              {t('about.valuesTitle')}
             </h2>
             <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto">
-              Four principles that decide what we build and what we refuse to build.
+              {t('about.valuesSubtitle')}
             </p>
           </div>
 
@@ -159,10 +160,10 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
-              Meet the Team
+              {t('about.teamTitle')}
             </h2>
             <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto">
-              The founders and operators building AfroConnect.
+              {t('about.teamSubtitle')}
             </p>
           </div>
 
@@ -203,7 +204,7 @@ export default function AboutPage() {
                     className="inline-flex items-center gap-2 mt-5 text-gray-300 hover:text-gold-500 transition-colors text-sm"
                   >
                     <Linkedin className="w-4 h-4" />
-                    Connect on LinkedIn
+                    {t('about.connectOnLinkedIn')}
                   </a>
                 )}
               </motion.div>
@@ -212,7 +213,7 @@ export default function AboutPage() {
           )}
 
           <div className="mt-12 text-center">
-            <p className="text-gray-300 mb-4">Follow AfroConnect</p>
+            <p className="text-gray-300 mb-4">{t('about.followUs')}</p>
             <div className="flex justify-center">
               <SocialLinks includeEmail />
             </div>
@@ -224,17 +225,16 @@ export default function AboutPage() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary-600 to-primary-700">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6">
-            Want to see it before you join?
+            {t('about.ctaTitle')}
           </h2>
           <p className="text-lg sm:text-xl text-white/90 mb-8">
-            Browse live events, featured opportunities and anonymised deals — no account
-            required.
+            {t('about.ctaSubtitle')}
           </p>
           <Link
             href="/preview"
             className="inline-flex items-center gap-2 bg-gradient-gold text-navy-900 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-gold-500/50 transition-all group"
           >
-            Explore the public preview
+            {t('about.ctaButton')}
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

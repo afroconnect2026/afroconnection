@@ -454,5 +454,24 @@
     "strongMatch": "Forte compatibilité",
     "moderateMatch": "Compatibilité modérée",
     "weakMatch": "Faible compatibilité"
+  },
+
+  "about": {
+    "badge": "À propos d'AfroConnect",
+    "intro": "Nous construisons la couche de réseau de confiance pour les opportunités africaines —",
+    "introContinued": "— pour que les bonnes personnes se trouvent par intention plutôt que par chance.",
+    "visionTitle": "Notre Vision",
+    "missionTitle": "Notre Mission",
+    "storyTitle": "Pourquoi nous avons créé ceci",
+    "storySubtitle": "L'écart qu'AfroConnect existe pour combler.",
+    "valuesTitle": "Ce que nous défendons",
+    "valuesSubtitle": "Quatre principes qui décident de ce que nous construisons et de ce que nous refusons de construire.",
+    "teamTitle": "Rencontrez l'équipe",
+    "teamSubtitle": "Les fondateurs et opérateurs qui construisent AfroConnect.",
+    "connectOnLinkedIn": "Connectez-vous sur LinkedIn",
+    "followUs": "Suivez AfroConnect",
+    "ctaTitle": "Voulez-vous le voir avant de rejoindre?",
+    "ctaSubtitle": "Parcourez les événements en direct, les opportunités en vedette et les offres anonymisées — aucun compte requis.",
+    "ctaButton": "Explorer l'aperçu public"
   }
 }

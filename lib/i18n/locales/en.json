@@ -454,5 +454,24 @@
     "strongMatch": "Strong Match",
     "moderateMatch": "Moderate Match",
     "weakMatch": "Weak Match"
+  },
+
+  "about": {
+    "badge": "About AfroConnect",
+    "intro": "We are building the trusted network layer for African opportunity —",
+    "introContinued": "— so the right people find each other on purpose rather than by luck.",
+    "visionTitle": "Our Vision",
+    "missionTitle": "Our Mission",
+    "storyTitle": "Why We Built This",
+    "storySubtitle": "The gap AfroConnect exists to close.",
+    "valuesTitle": "What We Stand For",
+    "valuesSubtitle": "Four principles that decide what we build and what we refuse to build.",
+    "teamTitle": "Meet the Team",
+    "teamSubtitle": "The founders and operators building AfroConnect.",
+    "connectOnLinkedIn": "Connect on LinkedIn",
+    "followUs": "Follow AfroConnect",
+    "ctaTitle": "Want to see it before you join?",
+    "ctaSubtitle": "Browse live events, featured opportunities and anonymised deals — no account required.",
+    "ctaButton": "Explore the public preview"
   }
 }

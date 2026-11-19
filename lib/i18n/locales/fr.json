@@ -238,6 +238,21 @@
         "checkEmail": "Vérifiez votre email pour le lien de réinitialisation"
       }
     },
+    "resetPasswordPage": {
+      "title": "Choisissez un nouveau mot de passe",
+      "newPassword": "Nouveau mot de passe",
+      "linkInvalid": "Ce lien de réinitialisation est invalide ou a expiré.",
+      "requestNewLink": "Demander un nouveau lien",
+      "updating": "Mise à jour...",
+      "updatePassword": "Mettre à jour le mot de passe",
+      "errors": {
+        "passwordsNoMatch": "Les mots de passe ne correspondent pas",
+        "updateFailed": "Échec de la mise à jour du mot de passe"
+      },
+      "success": {
+        "passwordUpdated": "Mot de passe mis à jour"
+      }
+    },
     "register": {
       "title": "Rejoignez AfroConnect",
       "subtitle": "Connectez-vous avec les entrepreneurs, investisseurs et opportunités du monde entier",

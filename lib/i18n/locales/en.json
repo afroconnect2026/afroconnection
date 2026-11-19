@@ -238,6 +238,21 @@
         "checkEmail": "Check your email for the reset link"
       }
     },
+    "resetPasswordPage": {
+      "title": "Choose a New Password",
+      "newPassword": "New Password",
+      "linkInvalid": "This reset link is invalid or has expired.",
+      "requestNewLink": "Request a new link",
+      "updating": "Updating...",
+      "updatePassword": "Update Password",
+      "errors": {
+        "passwordsNoMatch": "Passwords do not match",
+        "updateFailed": "Failed to update password"
+      },
+      "success": {
+        "passwordUpdated": "Password updated"
+      }
+    },
     "register": {
       "title": "Join AfroConnect",
       "subtitle": "Connect with entrepreneurs, investors, and opportunities worldwide",

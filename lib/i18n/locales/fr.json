@@ -222,6 +222,22 @@
     "resetPassword": "Réinitialiser le mot de passe",
     "sendResetLink": "Envoyer le lien de réinitialisation",
     "backToLogin": "Retour à la connexion",
+    "forgotPassword": {
+      "title": "Réinitialiser le mot de passe",
+      "subtitle": "Nous vous enverrons un lien par email pour choisir un nouveau mot de passe",
+      "emailSent": "Email envoyé",
+      "emailSentMessage": "Si un compte existe pour <strong>{email}</strong>, vous recevrez sous peu un lien de réinitialisation du mot de passe.",
+      "sendAgain": "Envoyer à nouveau",
+      "sending": "Envoi en cours...",
+      "backToSignIn": "Retour à la connexion",
+      "errors": {
+        "enterEmail": "Veuillez entrer votre email",
+        "sendFailed": "Échec de l'envoi de l'email de réinitialisation"
+      },
+      "success": {
+        "checkEmail": "Vérifiez votre email pour le lien de réinitialisation"
+      }
+    },
     "register": {
       "title": "Rejoignez AfroConnect",
       "subtitle": "Connectez-vous avec les entrepreneurs, investisseurs et opportunités du monde entier",

@@ -222,6 +222,22 @@
     "resetPassword": "Reset Password",
     "sendResetLink": "Send Reset Link",
     "backToLogin": "Back to Login",
+    "forgotPassword": {
+      "title": "Reset Password",
+      "subtitle": "We will email you a link to choose a new password",
+      "emailSent": "Email sent",
+      "emailSentMessage": "If an account exists for <strong>{email}</strong>, you will receive a password reset link shortly.",
+      "sendAgain": "Send again",
+      "sending": "Sending...",
+      "backToSignIn": "Back to sign in",
+      "errors": {
+        "enterEmail": "Please enter your email",
+        "sendFailed": "Failed to send reset email"
+      },
+      "success": {
+        "checkEmail": "Check your email for the reset link"
+      }
+    },
     "register": {
       "title": "Join AfroConnect",
       "subtitle": "Connect with entrepreneurs, investors, and opportunities worldwide",

@@ -84,13 +84,9 @@ export default function LanguageSwitcher({
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 rounded-lg border border-white/20 bg-white/10 hover:bg-gold-500 hover:border-gold-500 transition-all group backdrop-blur-sm"
+        className="flex items-center space-x-1 px-3 py-2 rounded-lg border border-white/20 bg-white/10 hover:bg-gold-500 hover:border-gold-500 transition-all group backdrop-blur-sm"
       >
-        {showIcon && <Globe className="h-4 w-4 text-white group-hover:text-navy-900 transition-colors" />}
-        <span className="text-lg">
-          {languages.find(l => l.code === language)?.flag}
-        </span>
-        <span className="text-sm font-medium text-white group-hover:text-navy-900 transition-colors">
+        <span className="text-sm font-bold text-white group-hover:text-navy-900 transition-colors">
           {language.toUpperCase()}
         </span>
       </button>
@@ -104,27 +100,17 @@ export default function LanguageSwitcher({
           />
 
           {/* Dropdown menu */}
-          <div className="absolute right-0 mt-2 w-56 rounded-lg bg-navy-900 border border-gold-500/30 shadow-xl shadow-gold-500/20 z-20 overflow-hidden backdrop-blur-lg">
+          <div className="absolute right-0 mt-2 w-24 rounded-lg bg-navy-900 border border-gold-500/30 shadow-xl shadow-gold-500/20 z-20 overflow-hidden backdrop-blur-lg">
             {languages.map((lang) => (
               <button
                 key={lang.code}
                 onClick={() => handleLanguageChange(lang.code)}
                 disabled={isLoading}
-                className={`w-full flex items-center justify-between px-4 py-3 text-left hover:bg-gold-500 hover:text-navy-900 transition-all ${
-                  language === lang.code ? 'bg-gold-500/20 text-gold-400' : 'text-white'
+                className={`w-full flex items-center justify-center px-4 py-2.5 text-center hover:bg-gold-500 hover:text-navy-900 transition-all ${
+                  language === lang.code ? 'bg-gold-500 text-navy-900 font-bold' : 'text-white'
                 } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
-                <div className="flex items-center space-x-3">
-                  <span className="text-xl">{lang.flag}</span>
-                  <div>
-                    <p className="text-sm font-medium">{lang.name}</p>
-                    <p className="text-xs opacity-70">{lang.code.toUpperCase()}</p>
-                  </div>
-                </div>
-
-                {language === lang.code && (
-                  <Check className="h-4 w-4" />
-                )}
+                <span className="text-sm font-bold">{lang.code.toUpperCase()}</span>
               </button>
             ))}
           </div>

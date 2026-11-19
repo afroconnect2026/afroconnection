@@ -32,7 +32,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function loadLanguagePreference() {
       try {
-        // Try to get from user profile
+        // Priority 1: Check if user is logged in and has saved preference in database
         const { data: { user } } = await supabase.auth.getUser()
 
         if (user) {
@@ -49,11 +49,23 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
           }
         }
 
-        // Fall back to browser language
+        // Priority 2: Check localStorage (for returning visitors who manually switched)
+        const savedLang = localStorage.getItem('preferred-language')
+        if (savedLang === 'en' || savedLang === 'fr') {
+          setLanguageState(savedLang)
+          setIsLoading(false)
+          return
+        }
+
+        // Priority 3: Auto-detect from browser/phone language
         const browserLang = navigator.language.toLowerCase()
+        console.log('🌍 Browser language detected:', browserLang)
+
         if (browserLang.startsWith('fr')) {
+          console.log('✅ Setting language to French based on browser')
           setLanguageState('fr')
         } else {
+          console.log('✅ Setting language to English (default)')
           setLanguageState('en')
         }
       } catch (error) {

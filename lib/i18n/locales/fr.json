@@ -473,5 +473,16 @@
     "ctaTitle": "Voulez-vous le voir avant de rejoindre?",
     "ctaSubtitle": "Parcourez les événements en direct, les opportunités en vedette et les offres anonymisées — aucun compte requis.",
     "ctaButton": "Explorer l'aperçu public"
+  },
+
+  "howItWorksPage": {
+    "heroTitle": "De l'inscription à",
+    "heroHighlight": "l'accord signé",
+    "heroSubtitle": "AfroConnect vous connecte avec les bonnes personnes au bon moment. Pas de démarchage à froid, pas de barrières — juste l'introduction qui fait avancer votre travail.",
+    "getStartedFree": "Commencer gratuitement",
+    "ctaTitle": "Prêt à commencer?",
+    "ctaSubtitle": "Rejoignez les entrepreneurs, investisseurs et professionnels qui construisent l'avenir des affaires africaines.",
+    "createFreeAccount": "Créer un compte gratuit",
+    "browsePreview": "Parcourir l'aperçu"
   }
 }

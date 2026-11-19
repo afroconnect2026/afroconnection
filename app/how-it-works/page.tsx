@@ -7,8 +7,10 @@ import PublicNav from '@/components/marketing/PublicNav'
 import PublicFooter from '@/components/marketing/PublicFooter'
 import HowItWorks from '@/components/marketing/HowItWorks'
 import AiExplained from '@/components/marketing/AiExplained'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
 export default function HowItWorksPage() {
+  const { t } = useTranslation()
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-primary-900">
       <PublicNav active="/how-it-works" />
@@ -22,9 +24,9 @@ export default function HowItWorksPage() {
             transition={{ delay: 0.1 }}
             className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-white mb-6"
           >
-            From Sign Up to{' '}
+            {t('howItWorksPage.heroTitle')}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">
-              Signed Deal
+              {t('howItWorksPage.heroHighlight')}
             </span>
           </motion.h1>
 
@@ -34,8 +36,7 @@ export default function HowItWorksPage() {
             transition={{ delay: 0.2 }}
             className="text-lg sm:text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed"
           >
-            AfroConnect connects you with the right people at the right time. No cold outreach,
-            no gatekeeping — just the introduction that moves your work forward.
+            {t('howItWorksPage.heroSubtitle')}
           </motion.p>
 
           <motion.div
@@ -47,7 +48,7 @@ export default function HowItWorksPage() {
               href="/auth/register"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-gold-400 to-gold-500 text-navy-900 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-gold-500/50 hover:scale-105 transition-all shadow-xl"
             >
-              <span>Get Started Free</span>
+              <span>{t('howItWorksPage.getStartedFree')}</span>
               <ArrowRight className="w-5 h-5" />
             </Link>
           </motion.div>
@@ -64,11 +65,10 @@ export default function HowItWorksPage() {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6">
-            Ready to Get Started?
+            {t('howItWorksPage.ctaTitle')}
           </h2>
           <p className="text-lg sm:text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
-            Join the entrepreneurs, investors and professionals building the future of African
-            business.
+            {t('howItWorksPage.ctaSubtitle')}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -76,14 +76,14 @@ export default function HowItWorksPage() {
               className="bg-gradient-to-r from-gold-400 to-gold-500 text-navy-900 px-10 py-5 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-gold-500/50 hover:scale-105 transition-all flex items-center space-x-2 shadow-xl"
             >
               <UserPlus className="w-5 h-5" />
-              <span>Create Free Account</span>
+              <span>{t('howItWorksPage.createFreeAccount')}</span>
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
               href="/preview"
               className="bg-white text-navy-900 px-8 py-5 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-xl"
             >
-              Browse the Preview
+              {t('howItWorksPage.browsePreview')}
             </Link>
           </div>
         </div>

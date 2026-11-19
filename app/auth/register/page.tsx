@@ -27,6 +27,7 @@ import {
   ROLE_CTAS,
 } from '@/lib/marketing/content'
 import type { PlatformUserType, RoleCta } from '@/lib/marketing/content'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
 type UserType = PlatformUserType
 
@@ -38,6 +39,7 @@ const roleIcons: Record<RoleCta['icon'], LucideIcon> = {
 }
 
 function RegisterPageContent() {
+  const { t } = useTranslation()
   const searchParams = useSearchParams()
   const router = useRouter()
   const supabase = createClient()
@@ -59,12 +61,12 @@ function RegisterPageContent() {
 
   const handleRegister = async () => {
     if (!userType || !fullName || !email || !password) {
-      toast.error('Please fill all fields')
+      toast.error(t('auth.pleaseFillAllFields'))
       return
     }
 
     if (password.length < 8) {
-      toast.error('Password must be at least 8 characters')
+      toast.error(t('auth.register.errors.passwordLength'))
       return
     }
 
@@ -74,7 +76,7 @@ function RegisterPageContent() {
       // Respect the admin "User Registration" toggle (ignored if the setting RPC is unavailable)
       const { data: publicSettings } = await supabase.rpc('get_public_settings')
       if ((publicSettings as any)?.userRegistration === false) {
-        throw new Error('New registrations are temporarily closed. Please check back soon.')
+        throw new Error(t('auth.register.errors.registrationClosed'))
       }
 
       const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -99,17 +101,17 @@ function RegisterPageContent() {
       if (authData.user) {
         // Profile is created by the database trigger (handle_new_user)
         if (authData.session) {
-          toast.success('Account created successfully! Welcome to AfroConnect.')
+          toast.success(t('auth.register.success.created'))
           router.refresh()
           router.push('/dashboard')
         } else {
-          toast.success('Account created! Please check your email to confirm.')
+          toast.success(t('auth.register.success.checkEmail'))
           router.push('/auth/login')
         }
       }
     } catch (error: any) {
       console.error('Registration error:', error)
-      toast.error(error.message || 'Failed to create account')
+      toast.error(error.message || t('auth.register.errors.createFailed'))
     } finally {
       setLoading(false)
     }
@@ -144,12 +146,12 @@ function RegisterPageContent() {
             </div>
           )}
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-3">
-            {selectedRole ? selectedRole.headline : 'Join AfroConnect'}
+            {selectedRole ? selectedRole.headline : t('auth.register.title')}
           </h1>
           <p className="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto">
             {selectedRole
               ? selectedRole.subheadline
-              : 'Connect with entrepreneurs, investors, and opportunities worldwide'}
+              : t('auth.register.subtitle')}
           </p>
         </div>
 
@@ -186,10 +188,10 @@ function RegisterPageContent() {
           >
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-white mb-2">
-                What brings you to AfroConnect?
+                {t('auth.register.step1.question')}
               </h2>
               <p className="text-gray-400">
-                Choose the path that matches your goal — we'll tailor everything from here
+                {t('auth.register.step1.description')}
               </p>
             </div>
 
@@ -228,7 +230,7 @@ function RegisterPageContent() {
                     {isSelected && (
                       <div className="mt-3 flex items-center text-primary-600 text-sm font-semibold">
                         <CheckCircle2 className="w-4 h-4 mr-1" />
-                        Selected
+                        {t('auth.register.step1.selected')}
                       </div>
                     )}
                   </button>
@@ -237,11 +239,11 @@ function RegisterPageContent() {
             </div>
 
             <p className="text-center text-gray-400 text-sm mt-6">
-              Not sure?{' '}
+              {t('auth.register.step1.notSure')}{' '}
               <Link href="/preview" className="text-gold-400 hover:text-gold-300 font-semibold">
-                Browse the network first
+                {t('auth.register.step1.browseFirst')}
               </Link>{' '}
-              — no account needed
+              {t('auth.register.step1.noAccountNeeded')}
             </p>
           </motion.div>
         )}
@@ -256,14 +258,13 @@ function RegisterPageContent() {
             <div className="mb-8">
               <div className="inline-flex items-center gap-2 text-primary-600 text-sm font-semibold mb-3">
                 <Target className="w-4 h-4" />
-                Tailoring your matches
+                {t('auth.register.step2.tailoring')}
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 {onboarding.question}
               </h2>
               <p className="text-gray-600">
-                This is the single field that most improves who we match you with. You can
-                change it later in your profile.
+                {t('auth.register.step2.description')}
               </p>
             </div>
 
@@ -305,14 +306,14 @@ function RegisterPageContent() {
                 disabled={!goalAnswer}
                 className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-4 rounded-xl font-bold text-lg hover:from-primary-700 hover:to-primary-800 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
               >
-                <span>Continue</span>
+                <span>{t('auth.register.step2.continue')}</span>
                 <ArrowRight className="w-5 h-5" />
               </button>
               <button
                 onClick={() => setStep(1)}
                 className="w-full bg-gray-100 border border-gray-300 text-gray-700 py-4 rounded-xl font-bold hover:bg-gray-200 transition-all"
               >
-                Back
+                {t('auth.register.step2.back')}
               </button>
             </div>
           </motion.div>
@@ -326,24 +327,24 @@ function RegisterPageContent() {
             className="bg-white rounded-2xl shadow-2xl p-8"
           >
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Create Your Account</h2>
-              <p className="text-gray-600">Fill in your details to get started</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('auth.register.step3.title')}</h2>
+              <p className="text-gray-600">{t('auth.register.step3.subtitle')}</p>
             </div>
 
             <div className="space-y-5">
               <div>
                 <label className="block text-gray-700 font-semibold mb-2">
                   {userType === 'company'
-                    ? 'Company Name'
+                    ? t('auth.register.step3.companyName')
                     : userType === 'investor'
-                      ? 'Organization/Individual Name'
-                      : 'Full Name'}
+                      ? t('auth.register.step3.organizationName')
+                      : t('auth.fullName')}
                 </label>
                 {(userType === 'company' || userType === 'investor') && (
                   <p className="text-sm text-gray-500 mb-2">
                     {userType === 'company'
-                      ? 'Enter your organization or company name'
-                      : 'Enter your fund name, organization, or your full name'}
+                      ? t('auth.register.step3.companyNameHint')
+                      : t('auth.register.step3.organizationNameHint')}
                   </p>
                 )}
                 <div className="relative">
@@ -354,10 +355,10 @@ function RegisterPageContent() {
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder={
                       userType === 'company'
-                        ? 'e.g., Acme Corporation'
+                        ? t('auth.register.step3.companyPlaceholder')
                         : userType === 'investor'
-                          ? 'e.g., ABC Ventures or John Smith'
-                          : 'e.g., John Doe'
+                          ? t('auth.register.step3.investorPlaceholder')
+                          : t('auth.register.step3.personalPlaceholder')
                     }
                     className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl pl-12 pr-4 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors"
                   />
@@ -365,33 +366,33 @@ function RegisterPageContent() {
               </div>
 
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">Email Address</label>
+                <label className="block text-gray-700 font-semibold mb-2">{t('auth.emailAddress')}</label>
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="you@example.com"
+                    placeholder={t('auth.emailPlaceholder')}
                     className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl pl-12 pr-4 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">Password</label>
+                <label className="block text-gray-700 font-semibold mb-2">{t('auth.password')}</label>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Min. 8 characters"
+                    placeholder={t('auth.register.step3.passwordPlaceholder')}
                     className="w-full bg-gray-50 border-2 border-gray-200 rounded-xl pl-12 pr-4 py-3.5 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-primary-500 focus:bg-white transition-colors"
                   />
                 </div>
                 <p className="text-gray-500 text-sm mt-2">
-                  Use at least 8 characters with letters and numbers
+                  {t('auth.register.step3.passwordHint')}
                 </p>
               </div>
             </div>
@@ -401,7 +402,7 @@ function RegisterPageContent() {
               <div className="mt-6 flex items-start gap-2 bg-primary-50 border border-primary-200 rounded-xl px-4 py-3">
                 <CheckCircle2 className="w-4 h-4 text-primary-600 mt-0.5 shrink-0" />
                 <p className="text-sm text-primary-800">
-                  We will tune your matches for{' '}
+                  {t('auth.register.step3.matchTuning')}{' '}
                   <span className="font-semibold">{goalAnswer.toLowerCase()}</span>.
                 </p>
               </div>
@@ -413,7 +414,7 @@ function RegisterPageContent() {
                 disabled={loading}
                 className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-4 rounded-xl font-bold text-lg hover:from-primary-700 hover:to-primary-800 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Creating Account...' : 'Create Account'}
+                {loading ? t('auth.register.step3.creating') : t('auth.register.step3.createAccount')}
               </button>
 
               <button
@@ -421,14 +422,14 @@ function RegisterPageContent() {
                 disabled={loading}
                 className="w-full bg-gray-100 border border-gray-300 text-gray-700 py-4 rounded-xl font-bold hover:bg-gray-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Back
+                {t('auth.register.step2.back')}
               </button>
             </div>
 
             <p className="text-center text-gray-500 mt-6">
-              Already have an account?{' '}
+              {t('auth.alreadyHaveAccount')}{' '}
               <Link href="/auth/login" className="text-primary-600 hover:underline font-semibold">
-                Sign In
+                {t('auth.signIn')}
               </Link>
             </p>
           </motion.div>
@@ -439,11 +440,13 @@ function RegisterPageContent() {
 }
 
 export default function RegisterPage() {
+  const { t } = useTranslation()
+
   return (
     <Suspense
       fallback={
         <div className="min-h-screen bg-gradient-to-br from-navy-900 via-navy-800 to-primary-900 flex items-center justify-center">
-          <div className="text-white">Loading...</div>
+          <div className="text-white">{t('common.loading')}</div>
         </div>
       }
     >

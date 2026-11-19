@@ -95,6 +95,71 @@
     }
   },
 
+  "platform": {
+    "focus": "Réseautage + Investissement + Mentorat + Partenariats commerciaux",
+    "pillars": {
+      "networking": {
+        "title": "Réseautage",
+        "description": "Atteignez des fondateurs, investisseurs et opérateurs vérifiés sur les marchés africains et la diaspora — sans démarchage à froid."
+      },
+      "investment": {
+        "title": "Investissement",
+        "description": "Flux de transactions dans les deux sens : les fondateurs apparaissent aux investisseurs dont la thèse correspond réellement à leur stade et secteur."
+      },
+      "mentorship": {
+        "title": "Mentorat",
+        "description": "Trouvez des opérateurs qui ont déjà résolu le problème devant vous, dans un marché que vous comprenez."
+      },
+      "partnerships": {
+        "title": "Partenariats commerciaux",
+        "description": "Trouvez des partenaires de distribution, co-fondateurs et alliés d'entrée sur le marché pour l'expansion transfrontalière."
+      }
+    }
+  },
+
+  "roles": {
+    "investor": {
+      "label": "Je suis investisseur",
+      "headline": "Trouvez votre prochain investissement en Afrique",
+      "subheadline": "Filtrez les fondateurs par secteur, stade et traction — et voyez qui correspond à votre thèse avant de prendre le rendez-vous.",
+      "benefits": {
+        "1": "Flux de transactions organisé correspondant à votre thèse",
+        "2": "Profils de fondateurs vérifiés avec stade et traction",
+        "3": "Messagerie directe — pas d'intermédiaires"
+      }
+    },
+    "founder": {
+      "label": "Je suis fondateur",
+      "headline": "Construisez le réseau dont votre entreprise a besoin",
+      "subheadline": "Investisseurs, co-fondateurs, mentors et partenaires — adaptés au stade réel de votre startup.",
+      "benefits": {
+        "1": "Soyez découvert par les investisseurs soutenant votre secteur",
+        "2": "Trouvez des co-fondateurs et des membres d'équipe initiaux",
+        "3": "Apprenez des opérateurs qui ont déjà évolué avant vous"
+      }
+    },
+    "opportunities": {
+      "label": "Je cherche des opportunités",
+      "headline": "Rôles, partenariats et mentorat à travers l'Afrique",
+      "subheadline": "Parcourez les opportunités en direct d'entreprises et fondateurs vérifiés, et obtenez des correspondances adaptées à votre expertise.",
+      "benefits": {
+        "1": "Rôles en direct, partenariats et sièges consultatifs",
+        "2": "Adapté à vos compétences, secteur et localisation",
+        "3": "Postulez une fois — votre profil fait le reste"
+      }
+    },
+    "funding": {
+      "label": "Je cherche un financement",
+      "headline": "Présentez-vous aux investisseurs qui financent votre stade",
+      "subheadline": "Ajoutez votre stade de financement et montant de levée, et nous présentons votre startup aux investisseurs qui écrivent activement ces chèques.",
+      "benefits": {
+        "1": "Associé aux investisseurs actifs dans votre secteur",
+        "2": "Montrez la traction, le stade et la demande dans un profil",
+        "3": "Suivez qui a consulté votre startup"
+      }
+    }
+  },
+
   "footer": {
     "connectingAfricaToOpportunity": "Connecter l'Afrique à l'opportunité",
     "inOneNetwork": "dans un réseau vérifié",
@@ -156,7 +221,50 @@
     "googleSignIn": "Continuer avec Google",
     "resetPassword": "Réinitialiser le mot de passe",
     "sendResetLink": "Envoyer le lien de réinitialisation",
-    "backToLogin": "Retour à la connexion"
+    "backToLogin": "Retour à la connexion",
+    "register": {
+      "title": "Rejoignez AfroConnect",
+      "subtitle": "Connectez-vous avec les entrepreneurs, investisseurs et opportunités du monde entier",
+      "step1": {
+        "question": "Qu'est-ce qui vous amène sur AfroConnect?",
+        "description": "Choisissez le parcours qui correspond à votre objectif — nous personnaliserons tout à partir d'ici",
+        "selected": "Sélectionné",
+        "notSure": "Pas sûr?",
+        "browseFirst": "Parcourez le réseau d'abord",
+        "noAccountNeeded": "— aucun compte nécessaire"
+      },
+      "step2": {
+        "tailoring": "Personnalisation de vos correspondances",
+        "description": "C'est le champ unique qui améliore le plus les personnes avec qui nous vous mettons en relation. Vous pouvez le modifier plus tard dans votre profil.",
+        "continue": "Continuer",
+        "back": "Retour"
+      },
+      "step3": {
+        "title": "Créez votre compte",
+        "subtitle": "Remplissez vos informations pour commencer",
+        "companyName": "Nom de l'entreprise",
+        "organizationName": "Nom de l'organisation/individu",
+        "companyNameHint": "Entrez le nom de votre organisation ou entreprise",
+        "organizationNameHint": "Entrez le nom de votre fonds, organisation ou votre nom complet",
+        "companyPlaceholder": "ex: Acme Corporation",
+        "investorPlaceholder": "ex: ABC Ventures ou Jean Dupont",
+        "personalPlaceholder": "ex: Jean Dupont",
+        "passwordHint": "Utilisez au moins 8 caractères avec des lettres et des chiffres",
+        "passwordPlaceholder": "Min. 8 caractères",
+        "matchTuning": "Nous ajusterons vos correspondances pour",
+        "creating": "Création du compte...",
+        "createAccount": "Créer un compte"
+      },
+      "errors": {
+        "passwordLength": "Le mot de passe doit contenir au moins 8 caractères",
+        "registrationClosed": "Les nouvelles inscriptions sont temporairement fermées. Veuillez revenir bientôt.",
+        "createFailed": "Échec de la création du compte"
+      },
+      "success": {
+        "created": "Compte créé avec succès! Bienvenue sur AfroConnect.",
+        "checkEmail": "Compte créé! Veuillez vérifier votre email pour confirmer."
+      }
+    }
   },
 
   "dashboard": {

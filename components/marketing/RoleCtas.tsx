@@ -11,15 +11,24 @@ import {
   TrendingUp,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { ROLE_CTAS } from '@/lib/marketing/content'
-import type { RoleCta } from '@/lib/marketing/content'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
-const roleIcons: Record<RoleCta['icon'], LucideIcon> = {
+type RoleSlug = 'investor' | 'founder' | 'opportunities' | 'funding'
+type RoleIcon = 'TrendingUp' | 'Rocket' | 'Briefcase' | 'DollarSign'
+
+const roleIcons: Record<RoleIcon, LucideIcon> = {
   TrendingUp,
   Rocket,
   Briefcase,
   DollarSign,
 }
+
+const roles: Array<{ slug: RoleSlug; icon: RoleIcon; color: string }> = [
+  { slug: 'investor', icon: 'TrendingUp', color: 'from-gold-500 to-gold-600' },
+  { slug: 'founder', icon: 'Rocket', color: 'from-primary-500 to-primary-600' },
+  { slug: 'opportunities', icon: 'Briefcase', color: 'from-blue-500 to-blue-600' },
+  { slug: 'funding', icon: 'DollarSign', color: 'from-purple-500 to-purple-600' },
+]
 
 interface RoleCtasProps {
   /** `full` renders the section with heading and benefit lists. */
@@ -31,14 +40,15 @@ interface RoleCtasProps {
 
 export default function RoleCtas({
   variant = 'full',
-  heading = 'Where do you fit in?',
-  subheading = 'Pick the path that describes you. Your onboarding, matches and feed are tuned to it from the first click.',
+  heading,
+  subheading,
   className = '',
 }: RoleCtasProps) {
+  const { t } = useTranslation()
   if (variant === 'compact') {
     return (
       <div className={`flex flex-wrap items-center justify-center gap-3 ${className}`}>
-        {ROLE_CTAS.map((role) => {
+        {roles.map((role) => {
           const Icon = roleIcons[role.icon]
 
           return (
@@ -48,7 +58,7 @@ export default function RoleCtas({
               className="group inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border-2 border-white/25 text-white px-5 py-3 rounded-xl font-semibold text-sm sm:text-base hover:bg-gold-500 hover:text-navy-900 hover:border-gold-500 transition-all"
             >
               <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span>{role.label}</span>
+              <span>{t(`roles.${role.slug}.label`)}</span>
               <ArrowRight className="w-4 h-4 opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all" />
             </Link>
           )
@@ -62,15 +72,15 @@ export default function RoleCtas({
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
-            {heading}
+            {heading || 'Where do you fit in?'}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-            {subheading}
+            {subheading || 'Pick the path that describes you. Your onboarding, matches and feed are tuned to it from the first click.'}
           </p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {ROLE_CTAS.map((role, i) => {
+          {roles.map((role, i) => {
             const Icon = roleIcons[role.icon]
 
             return (
@@ -92,22 +102,22 @@ export default function RoleCtas({
                     <Icon className="w-7 h-7 text-white" />
                   </div>
 
-                  <h3 className="text-xl font-bold text-white mb-2">{role.label}</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">{t(`roles.${role.slug}.label`)}</h3>
                   <p className="text-gray-300 text-sm mb-5 leading-relaxed">
-                    {role.subheadline}
+                    {t(`roles.${role.slug}.subheadline`)}
                   </p>
 
                   <ul className="space-y-2 mb-6">
-                    {role.benefits.map((benefit) => (
-                      <li key={benefit} className="flex items-start text-sm text-gray-400">
+                    {[1, 2, 3].map((num) => (
+                      <li key={num} className="flex items-start text-sm text-gray-400">
                         <CheckCircle2 className="w-4 h-4 text-primary-500 mr-2 mt-0.5 shrink-0" />
-                        <span>{benefit}</span>
+                        <span>{t(`roles.${role.slug}.benefits.${num}`)}</span>
                       </li>
                     ))}
                   </ul>
 
                   <span className="mt-auto inline-flex items-center gap-2 text-gold-500 font-semibold text-sm group-hover:text-gold-400">
-                    Start here
+                    {t('common.startHere', 'Start here')}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Link>

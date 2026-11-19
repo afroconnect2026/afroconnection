@@ -95,6 +95,71 @@
     }
   },
 
+  "platform": {
+    "focus": "Networking + Investment + Mentorship + Business Partnerships",
+    "pillars": {
+      "networking": {
+        "title": "Networking",
+        "description": "Reach verified founders, investors and operators across African markets and the diaspora — without cold outreach."
+      },
+      "investment": {
+        "title": "Investment",
+        "description": "Deal flow that moves both ways: founders surface to investors whose thesis actually fits their stage and sector."
+      },
+      "mentorship": {
+        "title": "Mentorship",
+        "description": "Get matched with operators who have already solved the problem in front of you, in a market you understand."
+      },
+      "partnerships": {
+        "title": "Business Partnerships",
+        "description": "Find distribution partners, co-founders and market-entry allies for expansion across borders."
+      }
+    }
+  },
+
+  "roles": {
+    "investor": {
+      "label": "I'm an Investor",
+      "headline": "Find your next investment in Africa",
+      "subheadline": "Screen founders by sector, stage and traction — and see who matches your thesis before you take the meeting.",
+      "benefits": {
+        "1": "Curated deal flow matched to your thesis",
+        "2": "Verified founder profiles with stage and traction",
+        "3": "Direct messaging — no gatekeepers"
+      }
+    },
+    "founder": {
+      "label": "I'm a Founder",
+      "headline": "Build the network your company needs",
+      "subheadline": "Investors, co-founders, mentors and partners — matched to the stage your startup is actually at.",
+      "benefits": {
+        "1": "Get discovered by investors backing your sector",
+        "2": "Find co-founders and early team members",
+        "3": "Learn from operators who have scaled before you"
+      }
+    },
+    "opportunities": {
+      "label": "I'm Looking for Opportunities",
+      "headline": "Roles, partnerships and mentorship across Africa",
+      "subheadline": "Browse live opportunities from vetted companies and founders, and get matched to the ones that fit your expertise.",
+      "benefits": {
+        "1": "Live roles, partnerships and advisory seats",
+        "2": "Matched to your skills, sector and location",
+        "3": "Apply once — your profile does the rest"
+      }
+    },
+    "funding": {
+      "label": "I'm Looking for Funding",
+      "headline": "Get in front of investors who fund your stage",
+      "subheadline": "Add your funding stage and raise amount, and we put your startup in front of the investors actively writing those cheques.",
+      "benefits": {
+        "1": "Matched with investors active in your sector",
+        "2": "Show traction, stage and ask in one profile",
+        "3": "Track who viewed your startup"
+      }
+    }
+  },
+
   "footer": {
     "connectingAfricaToOpportunity": "Connecting Africa to Opportunity",
     "inOneNetwork": "in one verified network",
@@ -138,7 +203,7 @@
     "lookingForWork": "Looking for Work",
     "needFunding": "Need Funding",
     "orChoosePath": "Or choose your path →",
-    "pleaseF illAllFields": "Please fill all fields",
+    "pleaseFillAllFields": "Please fill all fields",
     "welcomeBackToast": "Welcome back!",
     "invalidCredentials": "Invalid credentials",
     "googleNotEnabled": "Google sign-in is not enabled yet. Please use email and password.",
@@ -156,7 +221,50 @@
     "googleSignIn": "Continue with Google",
     "resetPassword": "Reset Password",
     "sendResetLink": "Send Reset Link",
-    "backToLogin": "Back to Login"
+    "backToLogin": "Back to Login",
+    "register": {
+      "title": "Join AfroConnect",
+      "subtitle": "Connect with entrepreneurs, investors, and opportunities worldwide",
+      "step1": {
+        "question": "What brings you to AfroConnect?",
+        "description": "Choose the path that matches your goal — we'll tailor everything from here",
+        "selected": "Selected",
+        "notSure": "Not sure?",
+        "browseFirst": "Browse the network first",
+        "noAccountNeeded": "— no account needed"
+      },
+      "step2": {
+        "tailoring": "Tailoring your matches",
+        "description": "This is the single field that most improves who we match you with. You can change it later in your profile.",
+        "continue": "Continue",
+        "back": "Back"
+      },
+      "step3": {
+        "title": "Create Your Account",
+        "subtitle": "Fill in your details to get started",
+        "companyName": "Company Name",
+        "organizationName": "Organization/Individual Name",
+        "companyNameHint": "Enter your organization or company name",
+        "organizationNameHint": "Enter your fund name, organization, or your full name",
+        "companyPlaceholder": "e.g., Acme Corporation",
+        "investorPlaceholder": "e.g., ABC Ventures or John Smith",
+        "personalPlaceholder": "e.g., John Doe",
+        "passwordHint": "Use at least 8 characters with letters and numbers",
+        "passwordPlaceholder": "Min. 8 characters",
+        "matchTuning": "We will tune your matches for",
+        "creating": "Creating Account...",
+        "createAccount": "Create Account"
+      },
+      "errors": {
+        "passwordLength": "Password must be at least 8 characters",
+        "registrationClosed": "New registrations are temporarily closed. Please check back soon.",
+        "createFailed": "Failed to create account"
+      },
+      "success": {
+        "created": "Account created successfully! Welcome to AfroConnect.",
+        "checkEmail": "Account created! Please check your email to confirm."
+      }
+    }
   },
 
   "dashboard": {

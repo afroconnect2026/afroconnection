@@ -15,6 +15,7 @@ import PublicNav from '@/components/marketing/PublicNav'
 import PublicFooter from '@/components/marketing/PublicFooter'
 import { createClient } from '@/lib/supabase/client'
 import { SAMPLE_EVENTS } from '@/lib/marketing/content'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
 interface PublicEvent {
   id: string
@@ -40,6 +41,7 @@ function formatDate(value: string | null | undefined): string | null {
 }
 
 export default function EventsBrowsePage() {
+  const { t } = useTranslation()
   const [events, setEvents] = useState<PublicEvent[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -83,20 +85,19 @@ export default function EventsBrowsePage() {
             <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 mb-6">
               <Eye className="w-4 h-4 text-gold-500" />
               <span className="text-white text-sm font-medium">
-                Public preview — no account needed
+                {t('eventsBrowse.badge')}
               </span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-white mb-6">
-              Events{' '}
+              {t('eventsBrowse.title')}{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">
-                Happening Now
+                {t('eventsBrowse.titleHighlight')}
               </span>
             </h1>
 
             <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Roundtables, clinics and summits where members meet in person and online. Create a
-              free account to RSVP and check in.
+              {t('eventsBrowse.subtitle')}
             </p>
 
             <Link
@@ -104,7 +105,7 @@ export default function EventsBrowsePage() {
               className="inline-flex items-center gap-2 bg-gradient-gold text-navy-900 px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-gold-500/50 transition-all"
             >
               <UserPlus className="w-5 h-5" />
-              <span>Create Free Account to RSVP</span>
+              <span>{t('eventsBrowse.createAccountToRsvp')}</span>
               <ArrowRight className="w-5 h-5" />
             </Link>
           </motion.div>
@@ -168,7 +169,7 @@ export default function EventsBrowsePage() {
                     <div className="p-6 flex flex-col flex-1">
                       {event.isSample && (
                         <span className="self-start text-[10px] uppercase tracking-wide text-gray-400 border border-white/15 rounded-full px-2 py-0.5 mb-3">
-                          Sample event
+                          {t('eventsBrowse.sampleEvent')}
                         </span>
                       )}
 
@@ -198,7 +199,7 @@ export default function EventsBrowsePage() {
                         {ended && (
                           <div className="flex items-center gap-2 text-sm text-gray-500">
                             <Clock className="w-4 h-4 shrink-0" />
-                            <span>Event ended</span>
+                            <span>{t('eventsBrowse.eventEnded')}</span>
                           </div>
                         )}
                       </div>
@@ -208,12 +209,12 @@ export default function EventsBrowsePage() {
                           href="/auth/register"
                           className="inline-flex items-center gap-2 text-gold-500 hover:text-gold-400 font-semibold text-sm group/link"
                         >
-                          Sign up to RSVP
+                          {t('eventsBrowse.signUpToRsvp')}
                           <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                         </Link>
                       ) : (
                         <span className="text-gray-500 text-sm italic">
-                          Example event
+                          {t('eventsBrowse.exampleEvent')}
                         </span>
                       )}
                     </div>
@@ -226,15 +227,15 @@ export default function EventsBrowsePage() {
           {!loading && events.length === 0 && (
             <div className="text-center py-20">
               <Calendar className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-white mb-2">No Events Yet</h3>
+              <h3 className="text-2xl font-bold text-white mb-2">{t('eventsBrowse.noEventsTitle')}</h3>
               <p className="text-gray-400 mb-6">
-                Check back soon for upcoming roundtables, clinics and summits.
+                {t('eventsBrowse.noEventsMessage')}
               </p>
               <Link
                 href="/auth/register"
                 className="inline-flex items-center gap-2 text-gold-500 hover:text-gold-400 font-semibold"
               >
-                Create an account to get notified
+                {t('eventsBrowse.createAccountToNotify')}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -246,11 +247,10 @@ export default function EventsBrowsePage() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/5 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-6">
-            Want to RSVP and Check In?
+            {t('eventsBrowse.ctaTitle')}
           </h2>
           <p className="text-lg sm:text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
-            Create a free account to register for events, network with attendees, and get matched
-            with the right people at each event.
+            {t('eventsBrowse.ctaSubtitle')}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -258,14 +258,14 @@ export default function EventsBrowsePage() {
               className="bg-gradient-to-r from-gold-400 to-gold-500 text-navy-900 px-10 py-5 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-gold-500/50 hover:scale-105 transition-all flex items-center space-x-2 shadow-xl"
             >
               <UserPlus className="w-5 h-5" />
-              <span>Create Free Account</span>
+              <span>{t('eventsBrowse.createFreeAccount')}</span>
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
               href="/preview"
               className="bg-white text-navy-900 px-8 py-5 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-xl"
             >
-              Browse More Opportunities
+              {t('eventsBrowse.browseMore')}
             </Link>
           </div>
         </div>

@@ -298,16 +298,59 @@
     }
   },
 
+  "layout": {
+    "maintenance": {
+      "title": "Nous revenons tout de suite",
+      "message": "AfroConnect subit une maintenance programmée. Veuillez revenir sous peu.",
+      "signOut": "Se déconnecter"
+    },
+    "newMessage": "Nouveau message de {sender}",
+    "footer": {
+      "aboutTeam": "À propos et équipe",
+      "support": "Support",
+      "privacy": "Confidentialité",
+      "terms": "Conditions",
+      "followUs": "Suivez-nous",
+      "copyright": "© {year} AfroConnect. Connecter l'Afrique à l'opportunité."
+    }
+  },
+
   "dashboard": {
     "title": "Tableau de bord",
+    "welcomeBack": "Bon retour!",
     "welcome": "Bon retour",
+    "userType": {
+      "entrepreneur": "Entrepreneur",
+      "investor": "Investisseur",
+      "professional": "Professionnel",
+      "company": "Entreprise",
+      "member": "Membre"
+    },
     "stats": {
+      "myConnections": "Mes connexions",
+      "unreadMessages": "Messages non lus",
+      "activeOpportunities": "Opportunités actives",
+      "networkMembers": "Membres du réseau",
       "connections": "Connexions",
       "opportunities": "Opportunités",
       "events": "Événements",
       "messages": "Messages"
     },
-    "quickActions": "Actions rapides",
+    "quickActions": {
+      "title": "Actions rapides",
+      "exploreNetwork": {
+        "title": "Explorer le réseau",
+        "description": "Découvrez des entrepreneurs, investisseurs et professionnels"
+      },
+      "findOpportunities": {
+        "title": "Trouver des opportunités",
+        "description": "Parcourez les emplois, investissements et partenariats"
+      },
+      "completeProfile": {
+        "title": "Compléter le profil",
+        "description": "Ajoutez plus de détails pour améliorer votre visibilité"
+      }
+    },
     "recentActivity": "Activité récente",
     "suggestedConnections": "Connexions suggérées",
     "upcomingEvents": "Événements à venir"
@@ -402,6 +445,10 @@
   "profile": {
     "title": "Profil",
     "edit": "Modifier le profil",
+    "editYourProfile": "Modifier votre profil",
+    "cancel": "Annuler",
+    "saveChanges": "Enregistrer les modifications",
+    "saving": "Enregistrement...",
     "about": "À propos",
     "location": "Localisation",
     "industry": "Industrie",
@@ -411,7 +458,74 @@
     "verification": "Vérification",
     "requestVerification": "Demander la vérification",
     "verified": "Vérifié",
-    "unverified": "Non vérifié"
+    "unverified": "Non vérifié",
+    "cover": {
+      "editCover": "Modifier la couverture",
+      "uploading": "Téléchargement..."
+    },
+    "avatar": {
+      "uploading": "Téléchargement..."
+    },
+    "availability": {
+      "available": "Disponible pour le travail",
+      "unavailable": "Non disponible",
+      "updating": "Mise à jour...",
+      "nowAvailable": "Vous êtes maintenant disponible pour le travail",
+      "nowUnavailable": "Vous n'êtes plus disponible",
+      "updateFailed": "Échec de la mise à jour du statut de disponibilité"
+    },
+    "actions": {
+      "getVerified": "Se faire vérifier",
+      "shareProfile": "Partager le profil",
+      "profileLinkCopied": "Lien du profil copié!",
+      "couldNotCopyLink": "Impossible de copier le lien"
+    },
+    "form": {
+      "fullName": "Nom complet *",
+      "fullNamePlaceholder": "Votre nom complet",
+      "bio": "Bio",
+      "bioPlaceholder": "Parlez aux autres de vous, de votre expérience et de ce que vous recherchez...",
+      "country": "Pays",
+      "countryPlaceholder": "ex: Nigeria",
+      "city": "Ville",
+      "cityPlaceholder": "ex: Lagos",
+      "phone": "Téléphone (optionnel)",
+      "phonePlaceholder": "+234 xxx xxx xxxx",
+      "socialLinks": "Liens sociaux et professionnels",
+      "website": "Site web",
+      "websitePlaceholder": "https://votresite.com",
+      "linkedin": "Profil LinkedIn",
+      "linkedinPlaceholder": "https://linkedin.com/in/votreprofil",
+      "twitter": "Profil Twitter",
+      "twitterPlaceholder": "https://twitter.com/votrenom"
+    },
+    "view": {
+      "addYourName": "Ajoutez votre nom",
+      "addBio": "Ajoutez une bio pour parler de vous aux autres",
+      "linkedinProfile": "Profil LinkedIn",
+      "twitterProfile": "Profil Twitter"
+    },
+    "completion": {
+      "title": "Complétez votre profil",
+      "description": "Ajoutez plus d'informations pour augmenter votre visibilité et vous connecter aux bonnes opportunités",
+      "percentComplete": "{percent}% complet"
+    },
+    "sections": {
+      "about": "À propos",
+      "aboutDefault": "Ajoutez une description détaillée de vous, de votre expérience et de ce que vous recherchez sur AfroConnect.",
+      "skillsInterests": "Compétences et intérêts",
+      "skillsDefault": "Ajoutez vos compétences et intérêts pour aider les autres à vous trouver"
+    },
+    "toast": {
+      "profileUpdated": "Profil mis à jour avec succès!",
+      "profileUpdateFailed": "Échec de la mise à jour du profil",
+      "avatarUpdated": "Avatar mis à jour!",
+      "avatarUploadFailed": "Échec du téléchargement de l'avatar",
+      "coverUpdated": "Photo de couverture mise à jour!",
+      "coverUploadFailed": "Échec du téléchargement de la photo de couverture",
+      "selectImage": "Veuillez sélectionner un fichier image",
+      "imageTooLarge": "L'image doit être inférieure à {size}Mo"
+    }
   },
 
   "settings": {
@@ -421,12 +535,51 @@
       "profile": "Profil",
       "privacy": "Confidentialité",
       "notifications": "Notifications",
-      "language": "Langue et région",
+      "language": "Langue",
       "verification": "Vérification"
     },
+    "account": {
+      "title": "Compte",
+      "email": "Email",
+      "accountType": "Type de compte",
+      "editProfile": "Modifier le profil",
+      "changePassword": "Changer le mot de passe",
+      "newPassword": "Nouveau mot de passe (min 8 caractères)",
+      "confirmPassword": "Confirmer le nouveau mot de passe",
+      "saving": "Enregistrement...",
+      "changePasswordButton": "Changer le mot de passe",
+      "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordsNoMatch": "Les mots de passe ne correspondent pas",
+      "passwordChanged": "Mot de passe modifié",
+      "passwordChangeFailed": "Échec de la modification du mot de passe"
+    },
+    "verification": {
+      "title": "Vérification du compte",
+      "status": {
+        "verified": "Vérifié",
+        "pending": "En cours d'examen",
+        "infoNeeded": "Plus d'informations nécessaires",
+        "rejected": "Non approuvé",
+        "none": "Non vérifié"
+      },
+      "cta": {
+        "viewDetails": "Voir les détails",
+        "viewOrUpdate": "Voir ou mettre à jour la demande",
+        "provideInfo": "Fournir des informations",
+        "updateResubmit": "Mettre à jour et renvoyer",
+        "requestVerification": "Demander la vérification"
+      },
+      "noneMessage": "Obtenez un badge vérifié pour gagner la confiance et mieux vous classer dans les recherches."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Choisissez les notifications par email et dans l'application que vous recevez.",
+      "preferences": "Préférences de notification",
+      "viewAll": "Voir toutes les notifications"
+    },
     "language": {
-      "title": "Langue",
-      "description": "Choisissez votre langue préférée",
+      "title": "Langue et région",
+      "description": "Choisissez votre langue préférée pour l'interface de la plateforme.",
       "current": "Langue actuelle"
     },
     "saveChanges": "Enregistrer les modifications",
@@ -484,5 +637,41 @@
     "ctaSubtitle": "Rejoignez les entrepreneurs, investisseurs et professionnels qui construisent l'avenir des affaires africaines.",
     "createFreeAccount": "Créer un compte gratuit",
     "browsePreview": "Parcourir l'aperçu"
+  },
+
+  "preview": {
+    "badge": "Aperçu public — aucune inscription requise",
+    "title": "Voir le réseau",
+    "titleHighlight": "avant de rejoindre",
+    "subtitle": "Événements réels, opportunités en vedette, transactions d'investissement anonymisées et exemples des correspondances que nous faisons. Tout ce qui est sensible reste privé — les membres contrôlent ce que les visiteurs peuvent voir.",
+    "anchors": {
+      "events": "Événements",
+      "opportunities": "Opportunités",
+      "deals": "Transactions d'investissement",
+      "stories": "Histoires de succès"
+    },
+    "privacyNote": "Les noms d'entreprises, coordonnées et métriques complètes sont masqués jusqu'à ce que vous soyez un membre vérifié.",
+    "closingTitle": "Ceci est l'aperçu. Le réseau est plus grand.",
+    "closingSubtitle": "Créez un compte gratuit pour voir les profils complets, envoyer des messages directs aux membres, postuler à des opportunités et obtenir des correspondances.",
+    "createAccount": "Créer votre compte gratuit"
+  },
+
+  "eventsBrowse": {
+    "badge": "Aperçu public — aucun compte nécessaire",
+    "title": "Événements",
+    "titleHighlight": "En cours",
+    "subtitle": "Tables rondes, cliniques et sommets où les membres se rencontrent en personne et en ligne. Créez un compte gratuit pour confirmer votre présence et vous enregistrer.",
+    "createAccountToRsvp": "Créer un compte gratuit pour confirmer",
+    "sampleEvent": "Événement exemple",
+    "exampleEvent": "Événement exemple",
+    "eventEnded": "Événement terminé",
+    "signUpToRsvp": "Inscrivez-vous pour confirmer",
+    "noEventsTitle": "Aucun événement pour le moment",
+    "noEventsMessage": "Revenez bientôt pour les prochaines tables rondes, cliniques et sommets.",
+    "createAccountToNotify": "Créez un compte pour être informé",
+    "ctaTitle": "Vous voulez confirmer votre présence et vous enregistrer?",
+    "ctaSubtitle": "Créez un compte gratuit pour vous inscrire aux événements, réseauter avec les participants et être mis en relation avec les bonnes personnes à chaque événement.",
+    "createFreeAccount": "Créer un compte gratuit",
+    "browseMore": "Parcourir plus d'opportunités"
   }
 }

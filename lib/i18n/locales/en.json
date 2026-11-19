@@ -298,16 +298,59 @@
     }
   },
 
+  "layout": {
+    "maintenance": {
+      "title": "We'll be right back",
+      "message": "AfroConnect is undergoing scheduled maintenance. Please check back shortly.",
+      "signOut": "Sign out"
+    },
+    "newMessage": "New message from {sender}",
+    "footer": {
+      "aboutTeam": "About & Team",
+      "support": "Support",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "followUs": "Follow us",
+      "copyright": "© {year} AfroConnect. Connecting Africa to Opportunity."
+    }
+  },
+
   "dashboard": {
     "title": "Dashboard",
+    "welcomeBack": "Welcome back!",
     "welcome": "Welcome back",
+    "userType": {
+      "entrepreneur": "Entrepreneur",
+      "investor": "Investor",
+      "professional": "Professional",
+      "company": "Company",
+      "member": "Member"
+    },
     "stats": {
+      "myConnections": "My Connections",
+      "unreadMessages": "Unread Messages",
+      "activeOpportunities": "Active Opportunities",
+      "networkMembers": "Network Members",
       "connections": "Connections",
       "opportunities": "Opportunities",
       "events": "Events",
       "messages": "Messages"
     },
-    "quickActions": "Quick Actions",
+    "quickActions": {
+      "title": "Quick Actions",
+      "exploreNetwork": {
+        "title": "Explore Network",
+        "description": "Discover entrepreneurs, investors, and professionals"
+      },
+      "findOpportunities": {
+        "title": "Find Opportunities",
+        "description": "Browse jobs, investments, and partnerships"
+      },
+      "completeProfile": {
+        "title": "Complete Profile",
+        "description": "Add more details to improve your visibility"
+      }
+    },
     "recentActivity": "Recent Activity",
     "suggestedConnections": "Suggested Connections",
     "upcomingEvents": "Upcoming Events"
@@ -325,17 +368,26 @@
       "companies": "Companies"
     },
     "resultsCount": "Found {count} {count, plural, one {member} other {members}}",
+    "showingFirst": "showing first 24",
     "noMembers": "No members found",
-    "tryAdjusting": "Try adjusting your search or filters"
+    "tryAdjusting": "Try adjusting your search or filters",
+    "viewProfile": "View Profile",
+    "noBio": "No bio provided yet"
   },
 
   "connections": {
     "title": "My Connections",
+    "subtitle": "Manage your professional network",
     "tabs": {
-      "all": "All Connections",
-      "pending": "Pending Requests",
-      "sent": "Sent Requests"
+      "all": "Connections",
+      "pending": "Requests",
+      "sent": "Sent"
     },
+    "dealroom": "Dealroom",
+    "removeConnection": "Remove connection",
+    "accept": "Accept",
+    "decline": "Decline",
+    "pending": "Pending",
     "requestSent": "Connection request sent!",
     "requestAccepted": "Connection accepted!",
     "requestDeclined": "Connection declined",
@@ -343,13 +395,35 @@
     "removeConfirm": "Are you sure you want to remove this connection?",
     "noConnections": "No connections yet",
     "noPending": "No pending requests",
-    "noSent": "No sent requests"
+    "noSent": "No pending sent requests",
+    "startBuilding": "Start building your network!",
+    "exploreNetwork": "Explore Network",
+    "allCaughtUp": "You're all caught up!",
+    "sendRequests": "Send connection requests to start networking!"
   },
 
   "opportunities": {
     "title": "Opportunities",
+    "subtitle": "Discover jobs, investments, partnerships, and mentorship",
     "create": "Post Opportunity",
     "myOpportunities": "My Opportunities",
+    "searchPlaceholder": "Search opportunities...",
+    "sortBy": "Sort by:",
+    "sortOptions": {
+      "newest": "Newest First",
+      "oldest": "Oldest First",
+      "mostViewed": "Most Viewed",
+      "mostApplications": "Most Applications",
+      "salaryHigh": "Salary: High to Low",
+      "salaryLow": "Salary: Low to High"
+    },
+    "filters": {
+      "all": "All",
+      "jobs": "Jobs",
+      "investments": "Investments",
+      "partnerships": "Partnerships",
+      "mentorship": "Mentorship"
+    },
     "types": {
       "job": "Job Opening",
       "investment": "Investment",
@@ -361,35 +435,92 @@
       "approved": "Approved",
       "rejected": "Rejected"
     },
+    "remote": "Remote",
+    "viewDetails": "View Details",
     "apply": "Apply",
     "save": "Save",
     "share": "Share",
     "applications": "Applications",
-    "noOpportunities": "No opportunities found"
+    "noOpportunities": "No opportunities found",
+    "tryAdjustingFilters": "Try adjusting your filters",
+    "beFirstToPost": "Be the first to post an opportunity!",
+    "saved": "Saved!",
+    "removedFromSaved": "Removed from saved"
   },
 
   "events": {
-    "title": "Events",
+    "title": "Events & Networking",
+    "subtitle": "Connect, learn, and grow with Africa's tech community",
     "create": "Create Event",
     "myEvents": "My Events",
-    "types": {
-      "networking": "Networking",
-      "workshop": "Workshop",
-      "conference": "Conference",
-      "webinar": "Webinar",
-      "meetup": "Meetup"
+    "upcomingEvents": "Upcoming Events",
+    "pastEvents": "Past Events",
+    "viewModes": {
+      "grid": "Grid",
+      "calendar": "Calendar"
     },
+    "searchPlaceholder": "Search events by title, location, or description...",
+    "filters": "Filters",
+    "clearFilters": "Clear Filters",
+    "clear": "Clear",
+    "eventType": "Event Type",
+    "format": "Format",
+    "city": "City",
+    "cityPlaceholder": "e.g., Nairobi, Lagos, Cape Town...",
+    "dateRange": "Date Range",
+    "priceRange": "Price Range (USD)",
+    "priceMin": "Min",
+    "priceMax": "Max",
+    "freeOnly": "Show free events only",
+    "types": {
+      "conference": "Conference",
+      "meetup": "Meetup",
+      "webinar": "Webinar",
+      "workshop": "Workshop",
+      "networking": "Networking"
+    },
+    "formats": {
+      "inPerson": "In-Person",
+      "virtual": "Virtual",
+      "hybrid": "Hybrid"
+    },
+    "featured": "Featured",
+    "free": "FREE",
+    "onlineEvent": "Online Event",
+    "multiDay": "Multi-day",
+    "attending": "attending",
+    "spotsLeft": "spots left",
+    "organizer": "Organizer",
+    "noEventsFound": "No {timeFilter} events found",
+    "tryAdjustingFilters": "Try adjusting your filters to see more events",
+    "beFirstToCreate": "Be the first to create an event for the community",
+    "checkBackLater": "Check back later for past events",
+    "noEventsOnDate": "No events on this date",
+    "eventsOn": "Events on",
     "rsvp": "RSVP",
-    "attending": "Attending",
     "checkIn": "Check In",
-    "viewAttendees": "View Attendees",
-    "noEvents": "No events found"
+    "viewAttendees": "View Attendees"
   },
 
   "notifications": {
     "title": "Notifications",
-    "markAllRead": "Mark All as Read",
-    "noNotifications": "No notifications",
+    "unreadCount": "{count} unread notification{count, plural, one {} other {s}}",
+    "allCaughtUp": "All caught up!",
+    "preferences": "Preferences",
+    "filters": {
+      "all": "All",
+      "unread": "Unread"
+    },
+    "markAllRead": "Mark all as read",
+    "markAsRead": "Mark as read",
+    "delete": "Delete",
+    "noUnread": "No unread notifications",
+    "noNotifications": "No notifications yet",
+    "caughtUp": "You're all caught up!",
+    "willNotify": "We'll notify you when something happens",
+    "notificationDeleted": "Notification deleted",
+    "markedAsRead": "Marked as read",
+    "allMarkedAsRead": "All notifications marked as read",
     "types": {
       "connection_request": "Connection Request",
       "connection_accepted": "Connection Accepted",
@@ -402,6 +533,10 @@
   "profile": {
     "title": "Profile",
     "edit": "Edit Profile",
+    "editYourProfile": "Edit Your Profile",
+    "cancel": "Cancel",
+    "saveChanges": "Save Changes",
+    "saving": "Saving...",
     "about": "About",
     "location": "Location",
     "industry": "Industry",
@@ -411,7 +546,74 @@
     "verification": "Verification",
     "requestVerification": "Request Verification",
     "verified": "Verified",
-    "unverified": "Not Verified"
+    "unverified": "Not Verified",
+    "cover": {
+      "editCover": "Edit Cover",
+      "uploading": "Uploading..."
+    },
+    "avatar": {
+      "uploading": "Uploading..."
+    },
+    "availability": {
+      "available": "Available for Work",
+      "unavailable": "Unavailable",
+      "updating": "Updating...",
+      "nowAvailable": "You are now available for work",
+      "nowUnavailable": "You are now unavailable",
+      "updateFailed": "Failed to update availability status"
+    },
+    "actions": {
+      "getVerified": "Get Verified",
+      "shareProfile": "Share Profile",
+      "profileLinkCopied": "Profile link copied!",
+      "couldNotCopyLink": "Could not copy link"
+    },
+    "form": {
+      "fullName": "Full Name *",
+      "fullNamePlaceholder": "Your full name",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell others about yourself, your experience, and what you're looking for...",
+      "country": "Country",
+      "countryPlaceholder": "e.g., Nigeria",
+      "city": "City",
+      "cityPlaceholder": "e.g., Lagos",
+      "phone": "Phone (Optional)",
+      "phonePlaceholder": "+234 xxx xxx xxxx",
+      "socialLinks": "Social & Professional Links",
+      "website": "Website",
+      "websitePlaceholder": "https://yourwebsite.com",
+      "linkedin": "LinkedIn Profile",
+      "linkedinPlaceholder": "https://linkedin.com/in/yourprofile",
+      "twitter": "Twitter Profile",
+      "twitterPlaceholder": "https://twitter.com/yourhandle"
+    },
+    "view": {
+      "addYourName": "Add your name",
+      "addBio": "Add a bio to tell others about yourself",
+      "linkedinProfile": "LinkedIn Profile",
+      "twitterProfile": "Twitter Profile"
+    },
+    "completion": {
+      "title": "Complete Your Profile",
+      "description": "Add more information to increase your visibility and connect with the right opportunities",
+      "percentComplete": "{percent}% Complete"
+    },
+    "sections": {
+      "about": "About",
+      "aboutDefault": "Add a detailed description about yourself, your experience, and what you're looking for on AfroConnect.",
+      "skillsInterests": "Skills & Interests",
+      "skillsDefault": "Add your skills and interests to help others find you"
+    },
+    "toast": {
+      "profileUpdated": "Profile updated successfully!",
+      "profileUpdateFailed": "Failed to update profile",
+      "avatarUpdated": "Avatar updated!",
+      "avatarUploadFailed": "Failed to upload avatar",
+      "coverUpdated": "Cover photo updated!",
+      "coverUploadFailed": "Failed to upload cover photo",
+      "selectImage": "Please select an image file",
+      "imageTooLarge": "Image must be smaller than {size}MB"
+    }
   },
 
   "settings": {
@@ -421,12 +623,51 @@
       "profile": "Profile",
       "privacy": "Privacy",
       "notifications": "Notifications",
-      "language": "Language & Region",
+      "language": "Language",
       "verification": "Verification"
     },
+    "account": {
+      "title": "Account",
+      "email": "Email",
+      "accountType": "Account type",
+      "editProfile": "Edit profile",
+      "changePassword": "Change Password",
+      "newPassword": "New password (min 8 characters)",
+      "confirmPassword": "Confirm new password",
+      "saving": "Saving...",
+      "changePasswordButton": "Change Password",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "passwordsNoMatch": "Passwords do not match",
+      "passwordChanged": "Password changed",
+      "passwordChangeFailed": "Failed to change password"
+    },
+    "verification": {
+      "title": "Account Verification",
+      "status": {
+        "verified": "Verified",
+        "pending": "Under review",
+        "infoNeeded": "More information needed",
+        "rejected": "Not approved",
+        "none": "Not verified"
+      },
+      "cta": {
+        "viewDetails": "View details",
+        "viewOrUpdate": "View or update request",
+        "provideInfo": "Provide information",
+        "updateResubmit": "Update and resubmit",
+        "requestVerification": "Request verification"
+      },
+      "noneMessage": "Get a verified badge to build trust and rank higher in search."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Choose which email and in-app notifications you receive.",
+      "preferences": "Notification preferences",
+      "viewAll": "View all notifications"
+    },
     "language": {
-      "title": "Language",
-      "description": "Choose your preferred language",
+      "title": "Language & Region",
+      "description": "Choose your preferred language for the platform interface.",
       "current": "Current Language"
     },
     "saveChanges": "Save Changes",
@@ -484,5 +725,111 @@
     "ctaSubtitle": "Join the entrepreneurs, investors and professionals building the future of African business.",
     "createFreeAccount": "Create Free Account",
     "browsePreview": "Browse the Preview"
+  },
+
+  "preview": {
+    "badge": "Public preview — no sign up required",
+    "title": "See the network",
+    "titleHighlight": "before you join",
+    "subtitle": "Real events, featured opportunities, anonymised investment deals and examples of the matches we make. Everything sensitive stays private — members control what visitors can see.",
+    "anchors": {
+      "events": "Events",
+      "opportunities": "Opportunities",
+      "deals": "Investment deals",
+      "stories": "Success stories"
+    },
+    "privacyNote": "Company names, contact details and full metrics are hidden until you are a verified member.",
+    "closingTitle": "This is the preview. The network is bigger.",
+    "closingSubtitle": "Create a free account to see full profiles, message members directly, apply to opportunities and get matched.",
+    "createAccount": "Create your free account"
+  },
+
+  "eventsBrowse": {
+    "badge": "Public preview — no account needed",
+    "title": "Events",
+    "titleHighlight": "Happening Now",
+    "subtitle": "Roundtables, clinics and summits where members meet in person and online. Create a free account to RSVP and check in.",
+    "createAccountToRsvp": "Create Free Account to RSVP",
+    "sampleEvent": "Sample event",
+    "exampleEvent": "Example event",
+    "eventEnded": "Event ended",
+    "signUpToRsvp": "Sign up to RSVP",
+    "viewFullDetails": "View full details",
+    "sampleListing": "Sample listing",
+    "signUpToSeeRealEvents": "Sign up to see real events",
+    "noEventsTitle": "No Events Yet",
+    "noEventsMessage": "Check back soon for upcoming roundtables, clinics and summits.",
+    "createAccountToNotify": "Create an account to get notified",
+    "ctaTitle": "Want to RSVP and Check In?",
+    "ctaSubtitle": "Create a free account to register for events, network with attendees, and get matched with the right people at each event.",
+    "createFreeAccount": "Create Free Account",
+    "browseMore": "Browse More Opportunities"
+  },
+
+  "marketing": {
+    "startHere": "Start here",
+    "notSureYet": "Not sure yet?",
+    "browseNetworkFirst": "Browse the network first",
+    "noAccountNeeded": "— no account needed.",
+    "whereDoYouFit": "Where do you fit in?",
+    "pickYourPath": "Pick the path that describes you. Your onboarding, matches and feed are tuned to it from the first click.",
+    "seeFullJourney": "See the full journey",
+    "whatAfroConnectIsFor": "What AfroConnect is for",
+    "seeWhatIsInside": "See what is inside before you sign up",
+    "matchingExplained": "Matching, explained",
+    "trustAndCredibility": "Trust & credibility",
+    "builtOnVerifiedMembers": "Built on verified members",
+    "everyProfileChecked": "Every profile is checked before it can match. Here is what members get out of it.",
+    "ourGrowingEcosystem": "Our growing ecosystem",
+    "partnersDescription": "Funds, accelerators, trade bodies and founder communities working with AfroConnect to bring verified opportunity onto the platform."
+  },
+
+  "previewShowcase": {
+    "publicPreview": "Public preview — no account needed",
+    "eventsHappeningNow": "Events happening now",
+    "eventsDescription": "Roundtables, clinics and summits where members meet in person and online.",
+    "browseAllEvents": "Browse all events",
+    "featuredOpportunities": "Featured opportunities",
+    "opportunitiesDescription": "Investment, partnerships, mentorship and roles — posted by verified members.",
+    "signUpToSeeAllOpportunities": "Sign up to see all opportunities",
+    "sampleListing": "Sample listing",
+    "eventEnded": "Event ended",
+    "signUpToSeeRealEvents": "Sign up to see real events",
+    "viewFullDetails": "View full details",
+    "signUpToRSVP": "Sign up to RSVP",
+    "deadline": "Deadline:",
+    "applicationsClosed": "Applications closed",
+    "signUpToViewFullDetails": "Sign up to view full details",
+    "liveInvestmentOpportunities": "Live investment opportunities",
+    "investmentDescription": "Anonymised for member privacy. Company names, founders and full metrics unlock when you join as a verified investor.",
+    "raising": "Raising",
+    "region": "Region",
+    "unlockFullDetails": "Unlock full details",
+    "memberSuccessStories": "Member success stories",
+    "successStoriesDescription": "Aggregated and anonymised outcomes from the network. Members control what is shared publicly."
+  },
+
+  "aiExplained": {
+    "headline": "What our AI actually does for you",
+    "subheadline": "No buzzwords. Three concrete jobs the matching engine does every time you use AfroConnect.",
+    "smartMatching": {
+      "title": "Smart Matching",
+      "example": "Our AI matches fintech investors with founders in Africa who are raising seed funding.",
+      "supporting": "It reads sector, stage, ticket size and location on both sides, so an investor writing $250K seed cheques into fintech sees exactly those founders — not a feed of everyone."
+    },
+    "profileOptimization": {
+      "title": "Profile Optimization",
+      "example": "Adding your funding stage helps investors find and understand your startup faster.",
+      "supporting": "We tell you which specific field is missing and what it unlocks — add your raise amount and you appear in the searches investors are already running."
+    },
+    "compatibilityScores": {
+      "title": "Compatibility Scores",
+      "example": "See at a glance how closely your goals align with a potential investor or co-founder.",
+      "supporting": "Every suggested connection carries a score and a plain-English reason, so you know why the match was made before you send the first message."
+    },
+    "whatMatchLooksLike": "What a match looks like in practice",
+    "matchExamples": "Illustrative examples of the matches the engine produces — every one carries a score and a reason.",
+    "matchScore": "Match score",
+    "matchWhy": "Why: "
   }
 }

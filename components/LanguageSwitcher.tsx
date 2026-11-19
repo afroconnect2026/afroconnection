@@ -15,14 +15,10 @@ export default function LanguageSwitcher({
   showIcon = true
 }: LanguageSwitcherProps) {
   const { language, setLanguage, languages, t } = useLanguage()
-  const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const handleLanguageChange = async (langCode: 'en' | 'fr') => {
-    if (langCode === language) {
-      setIsOpen(false)
-      return
-    }
+    if (langCode === language) return
 
     setIsLoading(true)
     try {
@@ -32,7 +28,6 @@ export default function LanguageSwitcher({
           ? 'Language changed to English'
           : 'Langue changée en Français'
       )
-      setIsOpen(false)
     } catch (error) {
       toast.error('Failed to change language')
     } finally {
@@ -79,43 +74,23 @@ export default function LanguageSwitcher({
     )
   }
 
-  // Dropdown variant
+  // Dropdown variant (now side-by-side buttons)
   return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-1 px-3 py-2 rounded-lg border border-white/20 bg-white/10 hover:bg-gold-500 hover:border-gold-500 transition-all group backdrop-blur-sm"
-      >
-        <span className="text-sm font-bold text-white group-hover:text-navy-900 transition-colors">
-          {language.toUpperCase()}
-        </span>
-      </button>
-
-      {isOpen && (
-        <>
-          {/* Overlay to close dropdown when clicking outside */}
-          <div
-            className="fixed inset-0 z-10"
-            onClick={() => setIsOpen(false)}
-          />
-
-          {/* Dropdown menu */}
-          <div className="absolute right-0 mt-2 w-24 rounded-lg bg-navy-900 border border-gold-500/30 shadow-xl shadow-gold-500/20 z-20 overflow-hidden backdrop-blur-lg">
-            {languages.map((lang) => (
-              <button
-                key={lang.code}
-                onClick={() => handleLanguageChange(lang.code)}
-                disabled={isLoading}
-                className={`w-full flex items-center justify-center px-4 py-2.5 text-center hover:bg-gold-500 hover:text-navy-900 transition-all ${
-                  language === lang.code ? 'bg-gold-500 text-navy-900 font-bold' : 'text-white'
-                } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                <span className="text-sm font-bold">{lang.code.toUpperCase()}</span>
-              </button>
-            ))}
-          </div>
-        </>
-      )}
+    <div className="flex items-center gap-1 bg-white/10 rounded-lg p-1 backdrop-blur-sm border border-white/20">
+      {languages.map((lang) => (
+        <button
+          key={lang.code}
+          onClick={() => handleLanguageChange(lang.code)}
+          disabled={isLoading}
+          className={`px-3 py-1.5 rounded-md text-sm font-bold transition-all ${
+            language === lang.code
+              ? 'bg-gold-500 text-navy-900'
+              : 'text-white hover:bg-white/10'
+          } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+          {lang.code.toUpperCase()}
+        </button>
+      ))}
     </div>
   )
 }

@@ -24,7 +24,8 @@
     "connected": "Connecté",
     "pending": "En attente",
     "accept": "Accepter",
-    "decline": "Refuser"
+    "decline": "Refuser",
+    "startHere": "Commencer ici"
   },
 
   "nav": {
@@ -368,17 +369,26 @@
       "companies": "Entreprises"
     },
     "resultsCount": "Trouvé {count} {count, plural, one {membre} other {membres}}",
+    "showingFirst": "affichage des 24 premiers",
     "noMembers": "Aucun membre trouvé",
-    "tryAdjusting": "Essayez d'ajuster votre recherche ou vos filtres"
+    "tryAdjusting": "Essayez d'ajuster votre recherche ou vos filtres",
+    "viewProfile": "Voir le profil",
+    "noBio": "Aucune biographie fournie"
   },
 
   "connections": {
     "title": "Mes connexions",
+    "subtitle": "Gérez votre réseau professionnel",
     "tabs": {
-      "all": "Toutes les connexions",
-      "pending": "Demandes en attente",
-      "sent": "Demandes envoyées"
+      "all": "Connexions",
+      "pending": "Demandes",
+      "sent": "Envoyées"
     },
+    "dealroom": "Dealroom",
+    "removeConnection": "Supprimer la connexion",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "pending": "En attente",
     "requestSent": "Demande de connexion envoyée!",
     "requestAccepted": "Connexion acceptée!",
     "requestDeclined": "Connexion refusée",
@@ -386,13 +396,35 @@
     "removeConfirm": "Êtes-vous sûr de vouloir supprimer cette connexion?",
     "noConnections": "Aucune connexion pour le moment",
     "noPending": "Aucune demande en attente",
-    "noSent": "Aucune demande envoyée"
+    "noSent": "Aucune demande en attente envoyée",
+    "startBuilding": "Commencez à construire votre réseau!",
+    "exploreNetwork": "Explorer le réseau",
+    "allCaughtUp": "Vous êtes à jour!",
+    "sendRequests": "Envoyez des demandes de connexion pour commencer le réseautage!"
   },
 
   "opportunities": {
     "title": "Opportunités",
+    "subtitle": "Découvrez des emplois, investissements, partenariats et mentorat",
     "create": "Publier une opportunité",
     "myOpportunities": "Mes opportunités",
+    "searchPlaceholder": "Rechercher des opportunités...",
+    "sortBy": "Trier par:",
+    "sortOptions": {
+      "newest": "Plus récentes",
+      "oldest": "Plus anciennes",
+      "mostViewed": "Plus consultées",
+      "mostApplications": "Plus de candidatures",
+      "salaryHigh": "Salaire: Élevé à Bas",
+      "salaryLow": "Salaire: Bas à Élevé"
+    },
+    "filters": {
+      "all": "Toutes",
+      "jobs": "Emplois",
+      "investments": "Investissements",
+      "partnerships": "Partenariats",
+      "mentorship": "Mentorat"
+    },
     "types": {
       "job": "Offre d'emploi",
       "investment": "Investissement",
@@ -404,35 +436,92 @@
       "approved": "Approuvé",
       "rejected": "Rejeté"
     },
+    "remote": "À distance",
+    "viewDetails": "Voir les détails",
     "apply": "Postuler",
     "save": "Enregistrer",
     "share": "Partager",
     "applications": "Candidatures",
-    "noOpportunities": "Aucune opportunité trouvée"
+    "noOpportunities": "Aucune opportunité trouvée",
+    "tryAdjustingFilters": "Essayez d'ajuster vos filtres",
+    "beFirstToPost": "Soyez le premier à publier une opportunité!",
+    "saved": "Enregistré!",
+    "removedFromSaved": "Retiré des enregistrements"
   },
 
   "events": {
-    "title": "Événements",
+    "title": "Événements et réseautage",
+    "subtitle": "Connectez, apprenez et grandissez avec la communauté technologique africaine",
     "create": "Créer un événement",
     "myEvents": "Mes événements",
-    "types": {
-      "networking": "Réseautage",
-      "workshop": "Atelier",
-      "conference": "Conférence",
-      "webinar": "Webinaire",
-      "meetup": "Rencontre"
+    "upcomingEvents": "Événements à venir",
+    "pastEvents": "Événements passés",
+    "viewModes": {
+      "grid": "Grille",
+      "calendar": "Calendrier"
     },
+    "searchPlaceholder": "Rechercher des événements par titre, lieu ou description...",
+    "filters": "Filtres",
+    "clearFilters": "Effacer les filtres",
+    "clear": "Effacer",
+    "eventType": "Type d'événement",
+    "format": "Format",
+    "city": "Ville",
+    "cityPlaceholder": "ex: Nairobi, Lagos, Le Cap...",
+    "dateRange": "Plage de dates",
+    "priceRange": "Fourchette de prix (USD)",
+    "priceMin": "Min",
+    "priceMax": "Max",
+    "freeOnly": "Afficher uniquement les événements gratuits",
+    "types": {
+      "conference": "Conférence",
+      "meetup": "Rencontre",
+      "webinar": "Webinaire",
+      "workshop": "Atelier",
+      "networking": "Réseautage"
+    },
+    "formats": {
+      "inPerson": "En personne",
+      "virtual": "Virtuel",
+      "hybrid": "Hybride"
+    },
+    "featured": "En vedette",
+    "free": "GRATUIT",
+    "onlineEvent": "Événement en ligne",
+    "multiDay": "Plusieurs jours",
+    "attending": "participants",
+    "spotsLeft": "places restantes",
+    "organizer": "Organisateur",
+    "noEventsFound": "Aucun événement {timeFilter} trouvé",
+    "tryAdjustingFilters": "Essayez d'ajuster vos filtres pour voir plus d'événements",
+    "beFirstToCreate": "Soyez le premier à créer un événement pour la communauté",
+    "checkBackLater": "Revenez plus tard pour les événements passés",
+    "noEventsOnDate": "Aucun événement à cette date",
+    "eventsOn": "Événements le",
     "rsvp": "RSVP",
-    "attending": "Participe",
     "checkIn": "Enregistrement",
-    "viewAttendees": "Voir les participants",
-    "noEvents": "Aucun événement trouvé"
+    "viewAttendees": "Voir les participants"
   },
 
   "notifications": {
     "title": "Notifications",
+    "unreadCount": "{count} notification{count, plural, one {} other {s}} non lue{count, plural, one {} other {s}}",
+    "allCaughtUp": "Tout est à jour!",
+    "preferences": "Préférences",
+    "filters": {
+      "all": "Toutes",
+      "unread": "Non lues"
+    },
     "markAllRead": "Tout marquer comme lu",
-    "noNotifications": "Aucune notification",
+    "markAsRead": "Marquer comme lu",
+    "delete": "Supprimer",
+    "noUnread": "Aucune notification non lue",
+    "noNotifications": "Aucune notification pour le moment",
+    "caughtUp": "Vous êtes à jour!",
+    "willNotify": "Nous vous informerons quand quelque chose se produira",
+    "notificationDeleted": "Notification supprimée",
+    "markedAsRead": "Marqué comme lu",
+    "allMarkedAsRead": "Toutes les notifications marquées comme lues",
     "types": {
       "connection_request": "Demande de connexion",
       "connection_accepted": "Connexion acceptée",
@@ -440,6 +529,14 @@
       "event_reminder": "Rappel d'événement",
       "new_message": "Nouveau message"
     }
+  },
+
+  "messages": {
+    "title": "Dealroom",
+    "selectDealroom": "Sélectionnez un dealroom pour commencer à collaborer",
+    "chooseDealroom": "Choisissez parmi vos dealrooms à gauche",
+    "dealroomOpened": "Dealroom ouvert!",
+    "failedToOpen": "Échec de l'ouverture du dealroom"
   },
 
   "profile": {
@@ -666,6 +763,9 @@
     "exampleEvent": "Événement exemple",
     "eventEnded": "Événement terminé",
     "signUpToRsvp": "Inscrivez-vous pour confirmer",
+    "viewFullDetails": "Voir tous les détails",
+    "sampleListing": "Annonce exemple",
+    "signUpToSeeRealEvents": "Inscrivez-vous pour voir de vrais événements",
     "noEventsTitle": "Aucun événement pour le moment",
     "noEventsMessage": "Revenez bientôt pour les prochaines tables rondes, cliniques et sommets.",
     "createAccountToNotify": "Créez un compte pour être informé",
@@ -673,5 +773,89 @@
     "ctaSubtitle": "Créez un compte gratuit pour vous inscrire aux événements, réseauter avec les participants et être mis en relation avec les bonnes personnes à chaque événement.",
     "createFreeAccount": "Créer un compte gratuit",
     "browseMore": "Parcourir plus d'opportunités"
+  },
+
+  "marketing": {
+    "startHere": "Commencer ici",
+    "notSureYet": "Pas encore sûr?",
+    "browseNetworkFirst": "Parcourez le réseau d'abord",
+    "noAccountNeeded": "— aucun compte nécessaire.",
+    "whereDoYouFit": "Où vous situez-vous?",
+    "pickYourPath": "Choisissez le parcours qui vous décrit. Votre intégration, vos correspondances et votre fil sont adaptés dès le premier clic.",
+    "seeFullJourney": "Voir le parcours complet",
+    "whatAfroConnectIsFor": "À quoi sert AfroConnect",
+    "seeWhatIsInside": "Découvrez ce qu'il y a à l'intérieur avant de vous inscrire",
+    "matchingExplained": "Correspondances, expliquées",
+    "trustAndCredibility": "Confiance et crédibilité",
+    "builtOnVerifiedMembers": "Basé sur des membres vérifiés",
+    "everyProfileChecked": "Chaque profil est vérifié avant de pouvoir correspondre. Voici ce que les membres en retirent.",
+    "ourGrowingEcosystem": "Notre écosystème en croissance",
+    "partnersDescription": "Fonds, accélérateurs, organismes commerciaux et communautés de fondateurs travaillant avec AfroConnect pour apporter des opportunités vérifiées sur la plateforme."
+  },
+
+  "previewShowcase": {
+    "publicPreview": "Aperçu public — aucun compte nécessaire",
+    "eventsHappeningNow": "Événements en cours",
+    "eventsDescription": "Tables rondes, cliniques et sommets où les membres se rencontrent en personne et en ligne.",
+    "browseAllEvents": "Parcourir tous les événements",
+    "featuredOpportunities": "Opportunités en vedette",
+    "opportunitiesDescription": "Investissement, partenariats, mentorat et rôles — publiés par des membres vérifiés.",
+    "signUpToSeeAllOpportunities": "Inscrivez-vous pour voir toutes les opportunités",
+    "sampleListing": "Annonce exemple",
+    "eventEnded": "Événement terminé",
+    "signUpToSeeRealEvents": "Inscrivez-vous pour voir de vrais événements",
+    "viewFullDetails": "Voir tous les détails",
+    "signUpToRSVP": "Inscrivez-vous pour confirmer",
+    "deadline": "Date limite:",
+    "applicationsClosed": "Candidatures fermées",
+    "signUpToViewFullDetails": "Inscrivez-vous pour voir tous les détails",
+    "liveInvestmentOpportunities": "Opportunités d'investissement en direct",
+    "investmentDescription": "Anonymisées pour la confidentialité des membres. Les noms d'entreprises, les fondateurs et les métriques complètes sont débloqués lorsque vous rejoignez en tant qu'investisseur vérifié.",
+    "raising": "Levée de fonds",
+    "region": "Région",
+    "unlockFullDetails": "Débloquer tous les détails",
+    "memberSuccessStories": "Histoires de succès des membres",
+    "successStoriesDescription": "Résultats agrégés et anonymisés du réseau. Les membres contrôlent ce qui est partagé publiquement."
+  },
+
+  "roleCtas": {
+    "heading": "Où vous situez-vous?",
+    "subheading": "Choisissez le parcours qui vous décrit. Votre intégration, vos correspondances et votre flux sont adaptés dès le premier clic.",
+    "notSure": "Pas sûr encore?",
+    "browseFirst": "Parcourez le réseau d'abord",
+    "noAccountNeeded": "— aucun compte nécessaire."
+  },
+
+  "testimonials": {
+    "badge": "Confiance et crédibilité",
+    "headline": "Construit sur des membres vérifiés",
+    "subheadline": "Chaque profil est vérifié avant de pouvoir correspondre. Voici ce que les membres en retirent.",
+    "ecosystemTitle": "Notre écosystème en croissance",
+    "ecosystemSubtitle": "Fonds, accélérateurs, organismes commerciaux et communautés de fondateurs travaillant avec AfroConnect pour apporter des opportunités vérifiées sur la plateforme."
+  },
+
+  "aiExplained": {
+    "badge": "Correspondance, expliquée",
+    "headline": "Ce que notre IA fait réellement pour vous",
+    "subheadline": "Pas de jargon. Trois tâches concrètes que le moteur de correspondance effectue chaque fois que vous utilisez AfroConnect.",
+    "smartMatching": {
+      "title": "Correspondance intelligente",
+      "example": "Notre IA met en relation les investisseurs fintech avec les fondateurs en Afrique qui lèvent des fonds de démarrage.",
+      "supporting": "Il lit le secteur, le stade, la taille du ticket et l'emplacement des deux côtés, de sorte qu'un investisseur écrivant des chèques de démarrage de 250 000 $ dans la fintech voit exactement ces fondateurs — pas un flux de tout le monde."
+    },
+    "profileOptimization": {
+      "title": "Optimisation du profil",
+      "example": "L'ajout de votre stade de financement aide les investisseurs à trouver et comprendre votre startup plus rapidement.",
+      "supporting": "Nous vous indiquons quel champ spécifique manque et ce qu'il débloque — ajoutez votre montant de levée et vous apparaissez dans les recherches que les investisseurs effectuent déjà."
+    },
+    "compatibilityScores": {
+      "title": "Scores de compatibilité",
+      "example": "Voyez d'un coup d'œil dans quelle mesure vos objectifs s'alignent avec un investisseur ou un co-fondateur potentiel.",
+      "supporting": "Chaque connexion suggérée comporte un score et une raison en langage clair, vous savez donc pourquoi la correspondance a été faite avant d'envoyer le premier message."
+    },
+    "whatMatchLooksLike": "À quoi ressemble une correspondance en pratique",
+    "matchExamples": "Exemples illustratifs des correspondances que le moteur produit — chacune comporte un score et une raison.",
+    "matchScore": "Score de correspondance",
+    "matchWhy": "Pourquoi: "
   }
 }

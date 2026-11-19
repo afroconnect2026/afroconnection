@@ -24,7 +24,8 @@
     "connected": "Connected",
     "pending": "Pending",
     "accept": "Accept",
-    "decline": "Decline"
+    "decline": "Decline",
+    "startHere": "Start here"
   },
 
   "nav": {
@@ -530,6 +531,14 @@
     }
   },
 
+  "messages": {
+    "title": "Dealroom",
+    "selectDealroom": "Select a dealroom to start collaborating",
+    "chooseDealroom": "Choose from your dealrooms on the left",
+    "dealroomOpened": "Dealroom opened!",
+    "failedToOpen": "Failed to open dealroom"
+  },
+
   "profile": {
     "title": "Profile",
     "edit": "Edit Profile",
@@ -809,7 +818,24 @@
     "successStoriesDescription": "Aggregated and anonymised outcomes from the network. Members control what is shared publicly."
   },
 
+  "roleCtas": {
+    "heading": "Where do you fit in?",
+    "subheading": "Pick the path that describes you. Your onboarding, matches and feed are tuned to it from the first click.",
+    "notSure": "Not sure yet?",
+    "browseFirst": "Browse the network first",
+    "noAccountNeeded": "— no account needed."
+  },
+
+  "testimonials": {
+    "badge": "Trust & credibility",
+    "headline": "Built on verified members",
+    "subheadline": "Every profile is checked before it can match. Here is what members get out of it.",
+    "ecosystemTitle": "Our growing ecosystem",
+    "ecosystemSubtitle": "Funds, accelerators, trade bodies and founder communities working with AfroConnect to bring verified opportunity onto the platform."
+  },
+
   "aiExplained": {
+    "badge": "Matching, explained",
     "headline": "What our AI actually does for you",
     "subheadline": "No buzzwords. Three concrete jobs the matching engine does every time you use AfroConnect.",
     "smartMatching": {

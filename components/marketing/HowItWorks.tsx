@@ -107,7 +107,7 @@ export default function HowItWorks({ variant = 'full' }: HowItWorksProps) {
               href="/how-it-works"
               className="inline-flex items-center gap-2 text-gold-500 hover:text-gold-400 font-semibold transition-colors"
             >
-              See the full journey
+              {t('marketing.seeFullJourney')}
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
@@ -118,16 +118,17 @@ export default function HowItWorks({ variant = 'full' }: HowItWorksProps) {
           <div className="mt-16 bg-gradient-to-br from-white/10 to-white/5 border border-white/15 rounded-3xl p-8 sm:p-10">
           <div className="text-center mb-10">
             <p className="text-gold-500 font-semibold uppercase tracking-wider text-xs sm:text-sm mb-3">
-              What AfroConnect is for
+              {t('marketing.whatAfroConnectIsFor')}
             </p>
             <p className="text-xl sm:text-2xl md:text-3xl font-display font-bold text-white">
-              {PLATFORM_FOCUS}
+              {t('platform.focus')}
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {PLATFORM_PILLARS.map((pillar, i) => {
               const Icon = pillarIcons[pillar.icon]
+              const pillarKey = pillar.title.toLowerCase().replace(/\s+/g, '')
 
               return (
                 <motion.div
@@ -139,8 +140,8 @@ export default function HowItWorks({ variant = 'full' }: HowItWorksProps) {
                   viewport={{ once: true }}
                 >
                   <Icon className="w-8 h-8 text-gold-500 mb-4" />
-                  <h4 className="text-white font-bold text-lg mb-2">{pillar.title}</h4>
-                  <p className="text-gray-300 text-sm leading-relaxed">{pillar.description}</p>
+                  <h4 className="text-white font-bold text-lg mb-2">{t(`platform.pillars.${pillarKey}.title`)}</h4>
+                  <p className="text-gray-300 text-sm leading-relaxed">{t(`platform.pillars.${pillarKey}.description`)}</p>
                 </motion.div>
               )
             })}
@@ -151,7 +152,7 @@ export default function HowItWorks({ variant = 'full' }: HowItWorksProps) {
               href="/preview"
               className="inline-flex items-center gap-2 text-gold-500 hover:text-gold-400 font-semibold transition-colors"
             >
-              See what is inside before you sign up
+              {t('marketing.seeWhatIsInside')}
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>

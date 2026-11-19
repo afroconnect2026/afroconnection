@@ -7,8 +7,10 @@ import AuthenticatedLayout from '@/components/AuthenticatedLayout'
 import ConversationsList from '@/components/messages/ConversationsList'
 import ChatInterface from '@/components/messages/ChatInterface'
 import { MessageCircle } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
 function MessagesPageContent() {
+  const { t } = useTranslation()
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null)
@@ -59,7 +61,7 @@ function MessagesPageContent() {
               <div className="p-4 border-b border-gray-200">
                 <h1 className="text-2xl font-bold text-navy-900 flex items-center space-x-2">
                   <MessageCircle className="h-6 w-6 text-primary-600" />
-                  <span>Dealroom</span>
+                  <span>{t('messages.title')}</span>
                 </h1>
               </div>
               <ConversationsList
@@ -80,8 +82,8 @@ function MessagesPageContent() {
                 <div className="flex-1 flex items-center justify-center text-gray-400">
                   <div className="text-center">
                     <MessageCircle className="h-16 w-16 mx-auto mb-4 text-gray-300" />
-                    <p className="text-lg font-medium">Select a dealroom to start collaborating</p>
-                    <p className="text-sm mt-2">Choose from your dealrooms on the left</p>
+                    <p className="text-lg font-medium">{t('messages.selectDealroom')}</p>
+                    <p className="text-sm mt-2">{t('messages.chooseDealroom')}</p>
                   </div>
                 </div>
               )}

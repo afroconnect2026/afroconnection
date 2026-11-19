@@ -8,21 +8,24 @@ import {
   PARTNERS,
   TESTIMONIALS,
 } from '@/lib/marketing/content'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
 export default function Testimonials() {
+  const { t } = useTranslation()
+
   return (
     <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 scroll-mt-20 bg-white/5 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14">
           <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
             <ShieldCheck className="w-4 h-4 text-gold-500" />
-            <span className="text-white text-sm font-medium">Trust &amp; credibility</span>
+            <span className="text-white text-sm font-medium">{t('testimonials.badge')}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-4">
-            Built on verified members
+            {t('testimonials.headline')}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-            Every profile is checked before it can match. Here is what members get out of it.
+            {t('testimonials.subheadline')}
           </p>
         </div>
 
@@ -73,11 +76,10 @@ export default function Testimonials() {
           <>
             <div className="text-center mb-8">
               <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mb-3">
-                Our growing ecosystem
+                {t('testimonials.ecosystemTitle')}
               </h3>
               <p className="text-gray-300 max-w-2xl mx-auto">
-                Funds, accelerators, trade bodies and founder communities working with
-                AfroConnect to bring verified opportunity onto the platform.
+                {t('testimonials.ecosystemSubtitle')}
               </p>
             </div>
 

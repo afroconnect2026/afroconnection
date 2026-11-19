@@ -8,6 +8,7 @@ import EntrepreneurDashboard from '@/components/dashboard/EntrepreneurDashboard'
 import InvestorDashboard from '@/components/dashboard/InvestorDashboard'
 import ProfessionalDashboard from '@/components/dashboard/ProfessionalDashboard'
 import CompanyDashboard from '@/components/dashboard/CompanyDashboard'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 import { motion } from 'framer-motion'
 import {
   TrendingUp,
@@ -35,6 +36,7 @@ const stagger = {
 }
 
 export default function DashboardPage() {
+  const { t } = useTranslation()
   const [user, setUser] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -107,30 +109,30 @@ export default function DashboardPage() {
   }
 
   const dashboardStats = [
-    { name: 'My Connections', value: stats.connections.toString(), icon: Users, color: 'text-primary-600' },
-    { name: 'Unread Messages', value: stats.messages.toString(), icon: MessageCircle, color: 'text-blue-600' },
-    { name: 'Active Opportunities', value: stats.opportunities.toString(), icon: Briefcase, color: 'text-gold-600' },
-    { name: 'Network Members', value: stats.networkSize.toString(), icon: TrendingUp, color: 'text-green-600' },
+    { name: t('dashboard.stats.myConnections'), value: stats.connections.toString(), icon: Users, color: 'text-primary-600' },
+    { name: t('dashboard.stats.unreadMessages'), value: stats.messages.toString(), icon: MessageCircle, color: 'text-blue-600' },
+    { name: t('dashboard.stats.activeOpportunities'), value: stats.opportunities.toString(), icon: Briefcase, color: 'text-gold-600' },
+    { name: t('dashboard.stats.networkMembers'), value: stats.networkSize.toString(), icon: TrendingUp, color: 'text-green-600' },
   ]
 
   const quickActions = [
     {
-      title: 'Explore Network',
-      description: 'Discover entrepreneurs, investors, and professionals',
+      title: t('dashboard.quickActions.exploreNetwork.title'),
+      description: t('dashboard.quickActions.exploreNetwork.description'),
       href: '/explore',
       icon: Users,
       color: 'from-primary-500 to-primary-600'
     },
     {
-      title: 'Find Opportunities',
-      description: 'Browse jobs, investments, and partnerships',
+      title: t('dashboard.quickActions.findOpportunities.title'),
+      description: t('dashboard.quickActions.findOpportunities.description'),
       href: '/opportunities',
       icon: Briefcase,
       color: 'from-gold-500 to-gold-600'
     },
     {
-      title: 'Complete Profile',
-      description: 'Add more details to improve your visibility',
+      title: t('dashboard.quickActions.completeProfile.title'),
+      description: t('dashboard.quickActions.completeProfile.description'),
       href: '/profile',
       icon: Rocket,
       color: 'from-blue-500 to-blue-600'
@@ -138,8 +140,9 @@ export default function DashboardPage() {
   ]
 
   const getUserTypeLabel = () => {
-    if (!profile?.user_type) return 'Member'
-    return profile.user_type.charAt(0).toUpperCase() + profile.user_type.slice(1)
+    if (!profile?.user_type) return t('dashboard.userType.member')
+    const userType = profile.user_type as 'entrepreneur' | 'investor' | 'professional' | 'company'
+    return t(`dashboard.userType.${userType}`)
   }
 
   // Render type-specific dashboard
@@ -174,10 +177,10 @@ export default function DashboardPage() {
         >
           <div className="flex items-center space-x-2 mb-2">
             <Sparkles className="w-5 h-5 text-gold-500" />
-            <span className="text-sm text-gray-600">Welcome back!</span>
+            <span className="text-sm text-gray-600">{t('dashboard.welcomeBack')}</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-display font-bold text-navy-900">
-            {profile?.full_name || user?.email || 'Dashboard'}
+            {profile?.full_name || user?.email || t('dashboard.title')}
           </h1>
           <p className="text-gray-600 mt-1">
             {getUserTypeLabel()} • {profile?.country || 'Global'}

@@ -8,6 +8,7 @@ import { NOTIFICATION_ICONS } from '@/components/NotificationBell'
 import { Bell, Check, CheckCheck, Trash2, Settings as SettingsIcon } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import toast from 'react-hot-toast'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
 interface Notification {
   id: string
@@ -20,6 +21,7 @@ interface Notification {
 }
 
 export default function NotificationsPage() {
+  const { t } = useTranslation()
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<'all' | 'unread'>('all')
@@ -67,10 +69,10 @@ export default function NotificationsPage() {
       setNotifications(prev =>
         prev.map(n => n.id === notificationId ? { ...n, read: true } : n)
       )
-      toast.success('Marked as read')
+      toast.success(t('notifications.markedAsRead'))
     } catch (error) {
       console.error('Error marking as read:', error)
-      toast.error('Failed to mark as read')
+      toast.error(t('common.error'))
     }
   }
 
@@ -88,10 +90,10 @@ export default function NotificationsPage() {
       if (error) throw error
 
       setNotifications(prev => prev.map(n => ({ ...n, read: true })))
-      toast.success('All notifications marked as read')
+      toast.success(t('notifications.allMarkedAsRead'))
     } catch (error) {
       console.error('Error marking all as read:', error)
-      toast.error('Failed to mark all as read')
+      toast.error(t('common.error'))
     }
   }
 
@@ -105,10 +107,10 @@ export default function NotificationsPage() {
       if (error) throw error
 
       setNotifications(prev => prev.filter(n => n.id !== notificationId))
-      toast.success('Notification deleted')
+      toast.success(t('notifications.notificationDeleted'))
     } catch (error) {
       console.error('Error deleting notification:', error)
-      toast.error('Failed to delete notification')
+      toast.error(t('common.error'))
     }
   }
 
@@ -161,9 +163,9 @@ export default function NotificationsPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Notifications</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{t('notifications.title')}</h1>
             <p className="text-gray-600 mt-1">
-              {unreadCount > 0 ? `${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}` : 'All caught up!'}
+              {unreadCount > 0 ? t('notifications.unreadCount', { count: unreadCount }) : t('notifications.allCaughtUp')}
             </p>
           </div>
           <button
@@ -171,7 +173,7 @@ export default function NotificationsPage() {
             className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
           >
             <SettingsIcon className="h-5 w-5" />
-            <span className="hidden sm:inline">Preferences</span>
+            <span className="hidden sm:inline">{t('notifications.preferences')}</span>
           </button>
         </div>
 
@@ -187,7 +189,7 @@ export default function NotificationsPage() {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                All ({notifications.length})
+                {t('notifications.filters.all')} ({notifications.length})
               </button>
               <button
                 onClick={() => setFilter('unread')}
@@ -197,7 +199,7 @@ export default function NotificationsPage() {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                Unread ({unreadCount})
+                {t('notifications.filters.unread')} ({unreadCount})
               </button>
             </div>
             {unreadCount > 0 && (
@@ -206,7 +208,7 @@ export default function NotificationsPage() {
                 className="flex items-center space-x-2 px-4 py-2 text-primary-600 hover:bg-primary-50 rounded-lg transition-colors text-sm font-medium"
               >
                 <CheckCheck className="h-4 w-4" />
-                <span className="hidden sm:inline">Mark all as read</span>
+                <span className="hidden sm:inline">{t('notifications.markAllRead')}</span>
               </button>
             )}
           </div>
@@ -217,10 +219,10 @@ export default function NotificationsPage() {
           <div className="text-center py-12 bg-white rounded-lg shadow-sm">
             <Bell className="h-16 w-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">
-              {filter === 'unread' ? 'No unread notifications' : 'No notifications yet'}
+              {filter === 'unread' ? t('notifications.noUnread') : t('notifications.noNotifications')}
             </h3>
             <p className="text-gray-500">
-              {filter === 'unread' ? "You're all caught up!" : "We'll notify you when something happens"}
+              {filter === 'unread' ? t('notifications.caughtUp') : t('notifications.willNotify')}
             </p>
           </div>
         ) : (
@@ -268,7 +270,7 @@ export default function NotificationsPage() {
                         <button
                           onClick={() => markAsRead(notification.id)}
                           className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
-                          title="Mark as read"
+                          title={t('notifications.markAsRead')}
                         >
                           <Check className="h-4 w-4" />
                         </button>
@@ -276,7 +278,7 @@ export default function NotificationsPage() {
                       <button
                         onClick={() => deleteNotification(notification.id)}
                         className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        title="Delete"
+                        title={t('notifications.delete')}
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>

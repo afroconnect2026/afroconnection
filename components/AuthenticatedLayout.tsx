@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import Logo from '@/components/Logo'
 import NotificationBell from '@/components/NotificationBell'
 import SocialLinks from '@/components/marketing/SocialLinks'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 import {
   Home,
   LayoutDashboard,
@@ -28,19 +29,8 @@ interface AuthenticatedLayoutProps {
   children: ReactNode
 }
 
-const navigation = [
-  { name: 'Home', href: '/', icon: Home },
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Explore', href: '/explore', icon: Search },
-  { name: 'Connections', href: '/connections', icon: Users },
-  { name: 'Dealroom', href: '/messages', icon: MessageCircle },
-  { name: 'Opportunities', href: '/opportunities', icon: Briefcase },
-  { name: 'Events', href: '/events', icon: Calendar },
-  { name: 'Profile', href: '/profile', icon: User },
-  { name: 'Settings', href: '/settings', icon: Settings },
-]
-
 export default function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
+  const { t } = useTranslation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [unreadCount, setUnreadCount] = useState(0)
   const [userId, setUserId] = useState<string | null>(null)
@@ -48,6 +38,18 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
+
+  const navigation = [
+    { name: t('nav.home'), href: '/', icon: Home },
+    { name: t('nav.dashboard'), href: '/dashboard', icon: LayoutDashboard },
+    { name: t('nav.explore'), href: '/explore', icon: Search },
+    { name: t('nav.connections'), href: '/connections', icon: Users },
+    { name: t('nav.messages'), href: '/messages', icon: MessageCircle },
+    { name: t('nav.opportunities'), href: '/opportunities', icon: Briefcase },
+    { name: t('nav.events'), href: '/events', icon: Calendar },
+    { name: t('nav.profile'), href: '/profile', icon: User },
+    { name: t('nav.settings'), href: '/settings', icon: Settings },
+  ]
 
   useEffect(() => {
     let cleanup: (() => void) | undefined
@@ -141,7 +143,7 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
               .single()
 
             // Show toast notification
-            toast.success(`New message from ${sender?.full_name || 'Someone'}`, {
+            toast.success(t('layout.newMessage', { sender: sender?.full_name || 'Someone' }), {
               duration: 4000,
               icon: '💬'
             })
@@ -168,15 +170,15 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
         <div className="max-w-md text-center bg-white rounded-xl shadow p-8">
           <Settings className="w-12 h-12 text-primary-600 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">We&apos;ll be right back</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('layout.maintenance.title')}</h1>
           <p className="text-gray-600 mb-6">
-            AfroConnect is undergoing scheduled maintenance. Please check back shortly.
+            {t('layout.maintenance.message')}
           </p>
           <button
             onClick={handleLogout}
             className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
           >
-            Sign out
+            {t('layout.maintenance.signOut')}
           </button>
         </div>
       </div>
@@ -248,7 +250,7 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
                 className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 px-3 py-2 rounded-lg text-sm font-medium"
               >
                 <LogOut className="h-5 w-5" />
-                <span className="hidden md:inline">Logout</span>
+                <span className="hidden md:inline">{t('nav.logout')}</span>
               </button>
             </div>
           </div>
@@ -305,32 +307,32 @@ export default function AuthenticatedLayout({ children }: AuthenticatedLayoutPro
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
             <Link href="/about" className="text-gray-600 hover:text-primary-600 transition-colors">
-              About &amp; Team
+              {t('layout.footer.aboutTeam')}
             </Link>
             <Link href="/support" className="text-gray-600 hover:text-primary-600 transition-colors">
-              Support
+              {t('layout.footer.support')}
             </Link>
             <Link
               href="/legal/privacy"
               className="text-gray-600 hover:text-primary-600 transition-colors"
             >
-              Privacy
+              {t('layout.footer.privacy')}
             </Link>
             <Link
               href="/legal/terms"
               className="text-gray-600 hover:text-primary-600 transition-colors"
             >
-              Terms
+              {t('layout.footer.terms')}
             </Link>
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500">Follow us</span>
+            <span className="text-sm text-gray-500">{t('layout.footer.followUs')}</span>
             <SocialLinks variant="ghost" size="sm" />
           </div>
         </div>
         <p className="max-w-7xl mx-auto text-center md:text-left text-xs text-gray-400 mt-6">
-          © {new Date().getFullYear()} AfroConnect. Connecting Africa to Opportunity.
+          {t('layout.footer.copyright', { year: new Date().getFullYear() })}
         </p>
       </footer>
     </div>

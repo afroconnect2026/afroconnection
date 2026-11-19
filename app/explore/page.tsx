@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import AuthenticatedLayout from '@/components/AuthenticatedLayout'
 import { motion } from 'framer-motion'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 import {
   Search,
   Filter,
@@ -27,15 +28,8 @@ const fadeIn = {
   visible: { opacity: 1, y: 0 }
 }
 
-const userTypes = [
-  { value: 'all', label: 'All', icon: Users },
-  { value: 'entrepreneur', label: 'Entrepreneurs', icon: Rocket },
-  { value: 'investor', label: 'Investors', icon: TrendingUp },
-  { value: 'professional', label: 'Professionals', icon: Award },
-  { value: 'company', label: 'Companies', icon: Building2 },
-]
-
 export default function ExplorePage() {
+  const { t } = useTranslation()
   const [user, setUser] = useState<any>(null)
   const [currentUserProfile, setCurrentUserProfile] = useState<any>(null)
   const [profiles, setProfiles] = useState<any[]>([])
@@ -45,6 +39,14 @@ export default function ExplorePage() {
   const [totalCount, setTotalCount] = useState(0)
   const router = useRouter()
   const supabase = createClient()
+
+  const userTypes = [
+    { value: 'all', label: t('explore.filters.all'), icon: Users },
+    { value: 'entrepreneur', label: t('explore.filters.entrepreneurs'), icon: Rocket },
+    { value: 'investor', label: t('explore.filters.investors'), icon: TrendingUp },
+    { value: 'professional', label: t('explore.filters.professionals'), icon: Award },
+    { value: 'company', label: t('explore.filters.companies'), icon: Building2 },
+  ]
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -199,10 +201,10 @@ export default function ExplorePage() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-2">
-              Explore Network
+              {t('explore.title')}
             </h1>
             <p className="text-gray-600">
-              Discover and connect with entrepreneurs, investors, and professionals worldwide
+              {t('explore.subtitle')}
             </p>
           </div>
 
@@ -213,7 +215,7 @@ export default function ExplorePage() {
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search by name, location, or keywords..."
+                placeholder={t('explore.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
@@ -246,8 +248,8 @@ export default function ExplorePage() {
           {/* Results Count */}
           <div className="mb-6">
             <p className="text-gray-600">
-              Found <span className="font-semibold text-navy-900">{totalCount}</span> {totalCount === 1 ? 'member' : 'members'}
-              {totalCount > 24 && <span className="text-sm text-gray-500"> (showing first 24)</span>}
+              {t('explore.resultsCount', { count: totalCount })}
+              {totalCount > 24 && <span className="text-sm text-gray-500"> ({t('explore.showingFirst')})</span>}
             </p>
           </div>
 
@@ -292,7 +294,7 @@ export default function ExplorePage() {
 
                     {/* Bio */}
                     <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                      {profile.bio || 'No bio provided yet'}
+                      {profile.bio || t('explore.noBio')}
                     </p>
 
                     {/* AI Match Badge */}
@@ -326,7 +328,7 @@ export default function ExplorePage() {
                       className="w-full bg-primary-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors flex items-center justify-center space-x-2"
                     >
                       <MessageCircle className="h-4 w-4" />
-                      <span>View Profile</span>
+                      <span>{t('explore.viewProfile')}</span>
                     </button>
                   </div>
                 </motion.div>
@@ -335,11 +337,9 @@ export default function ExplorePage() {
           ) : (
             <div className="bg-white rounded-xl p-12 border border-gray-200 text-center">
               <Globe className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-navy-900 mb-2">No members found</h3>
+              <h3 className="text-xl font-bold text-navy-900 mb-2">{t('explore.noMembers')}</h3>
               <p className="text-gray-600">
-                {searchQuery || selectedType !== 'all'
-                  ? 'Try adjusting your search or filters'
-                  : 'Be the first to join this amazing network!'}
+                {t('explore.tryAdjusting')}
               </p>
             </div>
           )}

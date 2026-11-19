@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import AuthenticatedLayout from '@/components/AuthenticatedLayout'
 import { motion } from 'framer-motion'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 import {
   Users,
   UserPlus,
@@ -33,6 +34,7 @@ const fadeIn = {
 type Tab = 'connections' | 'requests' | 'sent'
 
 export default function ConnectionsPage() {
+  const { t } = useTranslation()
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
   const [activeTab, setActiveTab] = useState<Tab>('connections')
@@ -89,10 +91,10 @@ export default function ConnectionsPage() {
       const { error } = await acceptConnectionRequest(connectionId)
       if (error) throw error
 
-      toast.success('Connection accepted!')
+      toast.success(t('connections.requestAccepted'))
       loadData()
     } catch (error: any) {
-      toast.error(error.message || 'Failed to accept')
+      toast.error(error.message || t('common.error'))
     } finally {
       setActionLoading(null)
     }
@@ -104,27 +106,27 @@ export default function ConnectionsPage() {
       const { error } = await declineConnectionRequest(connectionId)
       if (error) throw error
 
-      toast.success('Request declined')
+      toast.success(t('connections.requestDeclined'))
       loadData()
     } catch (error: any) {
-      toast.error(error.message || 'Failed to decline')
+      toast.error(error.message || t('common.error'))
     } finally {
       setActionLoading(null)
     }
   }
 
   const handleRemove = async (connectionId: string) => {
-    if (!confirm('Are you sure you want to remove this connection?')) return
+    if (!confirm(t('connections.removeConfirm'))) return
 
     setActionLoading(connectionId)
     try {
       const { error } = await removeConnection(connectionId)
       if (error) throw error
 
-      toast.success('Connection removed')
+      toast.success(t('connections.connectionRemoved'))
       loadData()
     } catch (error: any) {
-      toast.error(error.message || 'Failed to remove')
+      toast.error(error.message || t('common.error'))
     } finally {
       setActionLoading(null)
     }
@@ -158,7 +160,7 @@ export default function ConnectionsPage() {
 
       router.push(`/messages?conversation=${newConvo.id}`)
     } catch (error) {
-      toast.error('Failed to open dealroom')
+      toast.error(t('messages.failedToOpen'))
     }
   }
 
@@ -221,13 +223,13 @@ export default function ConnectionsPage() {
               className="flex items-center space-x-2 bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
             >
               <MessageCircle className="h-4 w-4" />
-              <span>Dealroom</span>
+              <span>{t('connections.dealroom')}</span>
             </button>
             <button
               onClick={() => handleRemove(connection.id)}
               disabled={actionLoading === connection.id}
               className="p-2 text-gray-400 hover:text-red-600 transition-colors disabled:opacity-50"
-              title="Remove connection"
+              title={t('connections.removeConnection')}
             >
               <Trash2 className="h-5 w-5" />
             </button>
@@ -289,7 +291,7 @@ export default function ConnectionsPage() {
                 className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium disabled:opacity-50"
               >
                 <UserCheck className="h-4 w-4" />
-                <span>Accept</span>
+                <span>{t('connections.accept')}</span>
               </button>
               <button
                 onClick={() => handleDecline(request.id)}
@@ -297,13 +299,13 @@ export default function ConnectionsPage() {
                 className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm font-medium disabled:opacity-50"
               >
                 <UserX className="h-4 w-4" />
-                <span>Decline</span>
+                <span>{t('connections.decline')}</span>
               </button>
             </div>
           ) : (
             <div className="flex items-center space-x-2 text-gray-500 ml-4">
               <Clock className="h-5 w-5" />
-              <span className="text-sm font-medium">Pending</span>
+              <span className="text-sm font-medium">{t('connections.pending')}</span>
             </div>
           )}
         </div>
@@ -326,10 +328,10 @@ export default function ConnectionsPage() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-2">
-              My Connections
+              {t('connections.title')}
             </h1>
             <p className="text-gray-600">
-              Manage your professional network
+              {t('connections.subtitle')}
             </p>
           </div>
 
@@ -344,7 +346,7 @@ export default function ConnectionsPage() {
               }`}
             >
               <Users className="h-4 w-4" />
-              <span>Connections ({connections.length})</span>
+              <span>{t('connections.tabs.all')} ({connections.length})</span>
             </button>
             <button
               onClick={() => setActiveTab('requests')}
@@ -355,7 +357,7 @@ export default function ConnectionsPage() {
               }`}
             >
               <UserPlus className="h-4 w-4" />
-              <span>Requests ({pendingRequests.length})</span>
+              <span>{t('connections.tabs.pending')} ({pendingRequests.length})</span>
             </button>
             <button
               onClick={() => setActiveTab('sent')}
@@ -366,7 +368,7 @@ export default function ConnectionsPage() {
               }`}
             >
               <Clock className="h-4 w-4" />
-              <span>Sent ({sentRequests.length})</span>
+              <span>{t('connections.tabs.sent')} ({sentRequests.length})</span>
             </button>
           </div>
 
@@ -384,14 +386,14 @@ export default function ConnectionsPage() {
                   ) : (
                     <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
                       <Users className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-xl font-bold text-navy-900 mb-2">No connections yet</h3>
-                      <p className="text-gray-600 mb-4">Start building your network!</p>
+                      <h3 className="text-xl font-bold text-navy-900 mb-2">{t('connections.noConnections')}</h3>
+                      <p className="text-gray-600 mb-4">{t('connections.startBuilding')}</p>
                       <Link
                         href="/explore"
                         className="inline-flex items-center space-x-2 bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
                       >
                         <UserPlus className="h-5 w-5" />
-                        <span>Explore Network</span>
+                        <span>{t('connections.exploreNetwork')}</span>
                       </Link>
                     </div>
                   )}
@@ -405,8 +407,8 @@ export default function ConnectionsPage() {
                   ) : (
                     <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
                       <UserPlus className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-xl font-bold text-navy-900 mb-2">No pending requests</h3>
-                      <p className="text-gray-600">You're all caught up!</p>
+                      <h3 className="text-xl font-bold text-navy-900 mb-2">{t('connections.noPending')}</h3>
+                      <p className="text-gray-600">{t('connections.allCaughtUp')}</p>
                     </div>
                   )}
                 </>
@@ -419,8 +421,8 @@ export default function ConnectionsPage() {
                   ) : (
                     <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
                       <Clock className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-xl font-bold text-navy-900 mb-2">No pending sent requests</h3>
-                      <p className="text-gray-600">Send connection requests to start networking!</p>
+                      <h3 className="text-xl font-bold text-navy-900 mb-2">{t('connections.noSent')}</h3>
+                      <p className="text-gray-600">{t('connections.sendRequests')}</p>
                     </div>
                   )}
                 </>

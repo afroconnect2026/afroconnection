@@ -21,6 +21,7 @@ import {
   SAMPLE_OPPORTUNITIES,
   SUCCESS_STORIES,
 } from '@/lib/marketing/content'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 
 interface PreviewEvent {
   id: string
@@ -68,6 +69,7 @@ export default function PreviewShowcase({
   variant = 'landing',
   limit = 4,
 }: PreviewShowcaseProps) {
+  const { t } = useTranslation()
   const [events, setEvents] = useState<PreviewEvent[]>([])
   const [opportunities, setOpportunities] = useState<PreviewOpportunity[]>([])
   const [loading, setLoading] = useState(true)
@@ -128,21 +130,21 @@ export default function PreviewShowcase({
               <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-4">
                 <Eye className="w-3.5 h-3.5 text-gold-500" />
                 <span className="text-white text-xs font-medium">
-                  Public preview — no account needed
+                  {t('previewShowcase.publicPreview')}
                 </span>
               </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-white mb-3">
-                Events happening now
+                {t('previewShowcase.eventsHappeningNow')}
               </h2>
               <p className="text-base sm:text-lg text-gray-300">
-                Roundtables, clinics and summits where members meet in person and online.
+                {t('previewShowcase.eventsDescription')}
               </p>
             </div>
             <Link
               href="/events"
               className="hidden md:inline-flex items-center gap-2 text-gold-500 hover:text-gold-400 transition-colors font-medium shrink-0"
             >
-              Browse all events
+              {t('previewShowcase.browseAllEvents')}
               <ArrowRight className="h-5 w-5" />
             </Link>
           </div>

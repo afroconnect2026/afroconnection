@@ -8,6 +8,7 @@ import EntrepreneurProfileFields from '@/components/profile/EntrepreneurProfileF
 import InvestorProfileFields from '@/components/profile/InvestorProfileFields'
 import ProfessionalProfileFields from '@/components/profile/ProfessionalProfileFields'
 import CompanyProfileFields from '@/components/profile/CompanyProfileFields'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 import { motion } from 'framer-motion'
 import {
   User,
@@ -35,6 +36,7 @@ const fadeIn = {
 }
 
 export default function ProfilePage() {
+  const { t } = useTranslation()
   const [user, setUser] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -166,7 +168,7 @@ export default function ProfilePage() {
           if (typeError) {
             console.error('Type-specific save error:', typeError)
             // Don't throw - basic profile is saved, just warn
-            toast.error('Profile saved, but some fields may not have been updated')
+            toast.error(t('profile.toast.profileUpdateFailed'))
           }
         }
       }
@@ -174,10 +176,10 @@ export default function ProfilePage() {
       // Update local profile state
       setProfile({ ...profile, ...formData })
       setEditMode(false)
-      toast.success('Profile updated successfully!')
+      toast.success(t('profile.toast.profileUpdated'))
     } catch (error: any) {
       console.error('Save error:', error)
-      toast.error(error.message || 'Failed to update profile')
+      toast.error(error.message || t('profile.toast.profileUpdateFailed'))
     } finally {
       setSaving(false)
     }
@@ -211,13 +213,13 @@ export default function ProfilePage() {
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file')
+      toast.error(t('profile.toast.selectImage'))
       return
     }
 
     // Validate file size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
-      toast.error('Image must be smaller than 2MB')
+      toast.error(t('profile.toast.imageTooLarge', { size: '2' }))
       return
     }
 

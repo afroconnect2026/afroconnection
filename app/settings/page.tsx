@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import AuthenticatedLayout from '@/components/AuthenticatedLayout'
+import { useTranslation } from '@/lib/i18n/LanguageContext'
 import {
   Settings,
   User,
@@ -24,6 +25,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 type Tab = 'account' | 'verification' | 'notifications' | 'language'
 
 export default function SettingsPage() {
+  const { t } = useTranslation()
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState<Tab>('account')
   const [email, setEmail] = useState('')
@@ -65,11 +67,11 @@ export default function SettingsPage() {
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault()
     if (newPassword.length < 8) {
-      toast.error('Password must be at least 8 characters')
+      toast.error(t('settings.account.passwordTooShort'))
       return
     }
     if (newPassword !== confirmPassword) {
-      toast.error('Passwords do not match')
+      toast.error(t('settings.account.passwordsNoMatch'))
       return
     }
     setSavingPassword(true)
@@ -78,9 +80,9 @@ export default function SettingsPage() {
       if (error) throw error
       setNewPassword('')
       setConfirmPassword('')
-      toast.success('Password changed')
+      toast.success(t('settings.account.passwordChanged'))
     } catch (error: any) {
-      toast.error(error.message || 'Failed to change password')
+      toast.error(error.message || t('settings.account.passwordChangeFailed'))
     } finally {
       setSavingPassword(false)
     }
@@ -97,19 +99,19 @@ export default function SettingsPage() {
   }
 
   const tabs: { id: Tab; label: string; icon: any }[] = [
-    { id: 'account', label: 'Account', icon: User },
-    { id: 'verification', label: 'Verification', icon: ShieldCheck },
-    { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'language', label: 'Language', icon: Globe },
+    { id: 'account', label: t('settings.tabs.account'), icon: User },
+    { id: 'verification', label: t('settings.tabs.verification'), icon: ShieldCheck },
+    { id: 'notifications', label: t('settings.tabs.notifications'), icon: Bell },
+    { id: 'language', label: t('settings.tabs.language'), icon: Globe },
   ]
 
   const vStatus = profile?.is_verified ? 'verified' : verification?.status && verification.status !== 'approved' ? verification.status : 'none'
   const vConfig: Record<string, { label: string; icon: any; color: string; cta: string }> = {
-    verified: { label: 'Verified', icon: CheckCircle, color: 'text-green-700 bg-green-50 border-green-200', cta: 'View details' },
-    pending: { label: 'Under review', icon: Clock, color: 'text-yellow-800 bg-yellow-50 border-yellow-200', cta: 'View or update request' },
-    info_needed: { label: 'More information needed', icon: AlertCircle, color: 'text-blue-800 bg-blue-50 border-blue-200', cta: 'Provide information' },
-    rejected: { label: 'Not approved', icon: XCircle, color: 'text-red-800 bg-red-50 border-red-200', cta: 'Update and resubmit' },
-    none: { label: 'Not verified', icon: ShieldCheck, color: 'text-gray-700 bg-gray-50 border-gray-200', cta: 'Request verification' },
+    verified: { label: t('settings.verification.status.verified'), icon: CheckCircle, color: 'text-green-700 bg-green-50 border-green-200', cta: t('settings.verification.cta.viewDetails') },
+    pending: { label: t('settings.verification.status.pending'), icon: Clock, color: 'text-yellow-800 bg-yellow-50 border-yellow-200', cta: t('settings.verification.cta.viewOrUpdate') },
+    info_needed: { label: t('settings.verification.status.infoNeeded'), icon: AlertCircle, color: 'text-blue-800 bg-blue-50 border-blue-200', cta: t('settings.verification.cta.provideInfo') },
+    rejected: { label: t('settings.verification.status.rejected'), icon: XCircle, color: 'text-red-800 bg-red-50 border-red-200', cta: t('settings.verification.cta.updateResubmit') },
+    none: { label: t('settings.verification.status.none'), icon: ShieldCheck, color: 'text-gray-700 bg-gray-50 border-gray-200', cta: t('settings.verification.cta.requestVerification') },
   }
   const v = vConfig[vStatus] || vConfig.none
   const VIcon = v.icon
@@ -119,7 +121,7 @@ export default function SettingsPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center gap-3 mb-6">
           <Settings className="w-8 h-8 text-primary-600" />
-          <h1 className="text-3xl font-bold text-navy-900">Settings</h1>
+          <h1 className="text-3xl font-bold text-navy-900">{t('settings.title')}</h1>
         </div>
 
         <div className="flex gap-2 mb-6 overflow-x-auto">
@@ -149,14 +151,14 @@ export default function SettingsPage() {
         {tab === 'account' && (
           <div className="space-y-6">
             <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-lg font-bold text-navy-900 mb-4">Account</h2>
+              <h2 className="text-lg font-bold text-navy-900 mb-4">{t('settings.account.title')}</h2>
               <div className="grid sm:grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p className="text-gray-500">Email</p>
+                  <p className="text-gray-500">{t('settings.account.email')}</p>
                   <p className="font-medium text-gray-900 break-all">{email}</p>
                 </div>
                 <div>
-                  <p className="text-gray-500">Account type</p>
+                  <p className="text-gray-500">{t('settings.account.accountType')}</p>
                   <p className="font-medium text-gray-900 capitalize">{profile?.user_type || 'n/a'}</p>
                 </div>
               </div>
@@ -164,20 +166,20 @@ export default function SettingsPage() {
                 href="/profile"
                 className="mt-4 inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 font-medium text-sm"
               >
-                Edit profile <ChevronRight className="w-4 h-4" />
+                {t('settings.account.editProfile')} <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
 
             <form onSubmit={handleChangePassword} className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
               <h2 className="text-lg font-bold text-navy-900 flex items-center gap-2">
-                <Lock className="w-5 h-5" /> Change Password
+                <Lock className="w-5 h-5" /> {t('settings.account.changePassword')}
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 <input
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="New password (min 8 characters)"
+                  placeholder={t('settings.account.newPassword')}
                   minLength={8}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
@@ -186,7 +188,7 @@ export default function SettingsPage() {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirm new password"
+                  placeholder={t('settings.account.confirmPassword')}
                   minLength={8}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
@@ -197,7 +199,7 @@ export default function SettingsPage() {
                 disabled={savingPassword}
                 className="bg-primary-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-primary-700 disabled:opacity-50"
               >
-                {savingPassword ? 'Saving...' : 'Change Password'}
+                {savingPassword ? t('settings.account.saving') : t('settings.account.changePasswordButton')}
               </button>
             </form>
           </div>
@@ -205,12 +207,12 @@ export default function SettingsPage() {
 
         {tab === 'verification' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-lg font-bold text-navy-900 mb-4">Account Verification</h2>
+            <h2 className="text-lg font-bold text-navy-900 mb-4">{t('settings.verification.title')}</h2>
             <div className={`flex items-start gap-3 border rounded-lg p-4 ${v.color}`}>
               <VIcon className="w-6 h-6 flex-shrink-0" />
               <div>
                 <p className="font-semibold">{v.label}</p>
-                {vStatus === 'none' && <p className="text-sm mt-1">Get a verified badge to build trust and rank higher in search.</p>}
+                {vStatus === 'none' && <p className="text-sm mt-1">{t('settings.verification.noneMessage')}</p>}
                 {(vStatus === 'info_needed' || vStatus === 'rejected') && verification?.rejection_reason && (
                   <p className="text-sm mt-1">{verification.rejection_reason}</p>
                 )}
@@ -228,20 +230,20 @@ export default function SettingsPage() {
 
         {tab === 'notifications' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-lg font-bold text-navy-900 mb-2">Notifications</h2>
-            <p className="text-sm text-gray-600 mb-4">Choose which email and in-app notifications you receive.</p>
+            <h2 className="text-lg font-bold text-navy-900 mb-2">{t('settings.notifications.title')}</h2>
+            <p className="text-sm text-gray-600 mb-4">{t('settings.notifications.description')}</p>
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/notifications/preferences"
                 className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-primary-700"
               >
-                <Bell className="w-4 h-4" /> Notification preferences
+                <Bell className="w-4 h-4" /> {t('settings.notifications.preferences')}
               </Link>
               <Link
                 href="/notifications"
                 className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 px-6 py-2.5 rounded-lg font-medium hover:bg-gray-50"
               >
-                View all notifications
+                {t('settings.notifications.viewAll')}
               </Link>
             </div>
           </div>
@@ -249,9 +251,9 @@ export default function SettingsPage() {
 
         {tab === 'language' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-lg font-bold text-navy-900 mb-2">Language & Region</h2>
+            <h2 className="text-lg font-bold text-navy-900 mb-2">{t('settings.language.title')}</h2>
             <p className="text-sm text-gray-600 mb-6">
-              Choose your preferred language for the platform interface.
+              {t('settings.language.description')}
             </p>
             <LanguageSwitcher variant="inline" showIcon />
           </div>
